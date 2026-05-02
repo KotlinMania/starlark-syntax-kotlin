@@ -199,6 +199,24 @@ sealed class Token {
         is Reserved -> error("Reserved tokens should not reach the parser")
     }
 
+    /**
+     * Wrap this token into the appropriate [io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol]
+     * variant for the LALRPOP parser stack.
+     *
+     * Variant assignments mirror lalrpop-kotlin's `KotlinSymbolEmit` convention:
+     * terminals deduplicated by type kind, in `extern { enum Token { ... } }` declaration
+     * order from `tmp/starlark_syntax/src/syntax/grammar.lalrpop`. See
+     * [io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol] for the full table.
+     */
+    fun toSymbol(): io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol = when (this) {
+        is Identifier -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant1(name)
+        is StringToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant1(value)
+        is IntToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant2(value)
+        is FloatToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant3(value)
+        is FStringToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant4(value)
+        else -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant0(this)
+    }
+
     override fun toString(): String = when (this) {
         is Indent -> "new indentation block"
         is Dedent -> "end of indentation block"
