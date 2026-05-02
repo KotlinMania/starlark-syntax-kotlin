@@ -24,7 +24,7 @@ import io.github.kotlinmania.starlarksyntax.codemap.Span
 
 private const val LINT_SUPPRESISON_PREFIX: String = "starlark-lint-disable "
 
-private data class SuppressionInfo(
+internal data class SuppressionInfo(
     /** The original span of the comment token containing the suppression. */
     val tokenSpan: Span,
     /** The span that this suppression effects. */

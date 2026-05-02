@@ -19,7 +19,7 @@ package io.github.kotlinmania.starlarksyntax.spandisplay
  */
 
 import io.github.kotlinmania.starlarksyntax.codemap.FileSpanRef
-import io.github.kotlinmania.starlarksyntax.faststring.fastStringLen
+import io.github.kotlinmania.starlarksyntax.faststring.len
 
 /** Annotation type matching the upstream `annotate_snippets::AnnotationType`. */
 internal enum class AnnotationType {
@@ -87,7 +87,7 @@ fun spanDisplay(
         // characters.
         // Our spans are in terms of bytes, but our resolved spans in terms of characters.
         val rangeStartChars = region.begin.column
-        val rangeLenChars = fastStringLen(span.sourceSpan()).value
+        val rangeLenChars = len(span.sourceSpan()).value
 
         return Slice(
             source = source,

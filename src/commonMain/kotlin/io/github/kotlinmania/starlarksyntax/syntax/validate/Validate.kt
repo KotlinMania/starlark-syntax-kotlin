@@ -29,8 +29,8 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgsP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ParameterP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.visitExpr
-import io.github.kotlinmania.starlarksyntax.syntax.ast.visitStmt
+import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitExpr
+import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitStmt
 import io.github.kotlinmania.starlarksyntax.syntax.call.CallArgsUnpack
 import io.github.kotlinmania.starlarksyntax.syntax.def.DefParams
 import io.github.kotlinmania.starlarksyntax.dialect.DialectTypes
@@ -156,14 +156,14 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
 
     fun expr(x: AstExpr, parserState: ParserState) {
         when (val node = x.node) {
-            is ExprP.Literal<*> -> {
+            is ExprP.Literal -> {
                 if (node.literal is AstLiteral.Ellipsis) {
                     if (parserState.dialect.enableTypes == DialectTypes.Disable) {
                         parserState.error(x.span, "`...` is not allowed in this dialect")
                     }
                 }
             }
-            is ExprP.Lambda<*> -> {
+            is ExprP.Lambda -> {
                 if (!parserState.dialect.enableLambda) {
                     parserState.error(x.span, "`lambda` is not allowed in this dialect")
                 }
@@ -171,7 +171,7 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
             }
             else -> {}
         }
-        node.visitExpr { y -> expr(y, parserState) }
+        x.node.visitExpr { y -> expr(y, parserState) }
     }
 
     f(stmt, parserState, true, false, false)

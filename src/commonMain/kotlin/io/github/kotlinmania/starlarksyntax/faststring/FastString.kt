@@ -43,7 +43,7 @@ private fun skipAtMost1Byte(x: String, n: Int): Int {
 }
 
 /** Find the character at position `i`. */
-fun fastStringAt(x: String, i: CharIndex): Char? {
+fun at(x: String, i: CharIndex): Char? {
     val bytes = x.encodeToByteArray()
     if (i.value >= bytes.size) {
         // Important that skipAtMost1Byte gets called with all valid character.
@@ -65,7 +65,7 @@ fun fastStringAt(x: String, i: CharIndex): Char? {
  * Find the length of the string in characters.
  * If the length matches the length in bytes, the string must be 7bit ASCII.
  */
-fun fastStringLen(x: String): CharIndex {
+fun len(x: String): CharIndex {
     val bytes = x.encodeToByteArray()
     val n = skipAtMost1Byte(x, bytes.size)
     return if (n == bytes.size) {
@@ -80,16 +80,16 @@ fun fastStringLen(x: String): CharIndex {
  * If the needle represents a complete character, this will be equivalent to doing
  * search for that character in the string.
  */
-fun fastStringCountMatchesByte(x: String, needle: Byte): Int {
+fun countMatchesByte(x: String, needle: Byte): Int {
     return x.encodeToByteArray().count { it == needle }
 }
 
 /** Find the number of times a `needle` occurs within a string, non-overlapping. */
-fun fastStringCountMatches(x: String, needle: String): Int {
+fun countMatches(x: String, needle: String): Int {
     return if (needle.length == 1) {
         // If we are searching for a 1-byte string, we can provide a much faster path.
         // Since it is one byte, given how UTF8 works, all the resultant slices must be UTF8 too.
-        fastStringCountMatchesByte(x, needle.encodeToByteArray()[0])
+        countMatchesByte(x, needle.encodeToByteArray()[0])
     } else {
         var count = 0
         var idx = 0
@@ -114,7 +114,7 @@ data class StrIndices(
 )
 
 /** Split the string at given char offset. `null` if offset is out of bounds. */
-fun fastStringSplitAt(x: String, i: CharIndex): Pair<String, String>? {
+fun splitAt(x: String, i: CharIndex): Pair<String, String>? {
     if (i.value == 0) {
         return Pair("", x)
     }
@@ -140,8 +140,8 @@ fun fastStringSplitAt(x: String, i: CharIndex): Pair<String, String>? {
 }
 
 /** Perform the Starlark operation `x[:i]` (`i` is an unsigned integer here). */
-private fun fastStringSplitAtEnd(x: String, i: CharIndex): String {
-    return when (val pair = fastStringSplitAt(x, i)) {
+private fun splitAtEnd(x: String, i: CharIndex): String {
+    return when (val pair = splitAt(x, i)) {
         null -> x
         else -> pair.first
     }
@@ -161,7 +161,7 @@ private fun convertStrIndicesSlow(
             || start == null
             || end == null
     )
-    val len = fastStringLen(s)
+    val len = len(s)
     val (cstart, cend) = convertIndices(len.value, start, end)
     if (cstart > cend) {
         return null
@@ -175,15 +175,15 @@ private fun convertStrIndicesSlow(
         // we know the string is ASCII.
         sBytes.decodeToString(startIdx.value, endIdx.value)
     } else {
-        val (_, tail) = fastStringSplitAt(s, startIdx)!!
-        val (head, _) = fastStringSplitAt(tail, endIdx - startIdx)!!
+        val (_, tail) = splitAt(s, startIdx)!!
+        val (head, _) = splitAt(tail, endIdx - startIdx)!!
         head
     }
     return StrIndices(startIdx, haystack)
 }
 
 /** Convert common `start` and `end` arguments of `str` functions like `str.find`. */
-fun fastStringConvertStrIndices(
+fun convertStrIndices(
     s: String,
     start: Int?,
     end: Int?,
@@ -193,16 +193,16 @@ fun fastStringConvertStrIndices(
         // by avoiding computing the length of the string.
         start == null && end == null -> StrIndices(CharIndex(0), s)
         start != null && end == null && start >= 0 -> {
-            val (_, tail) = fastStringSplitAt(s, CharIndex(start)) ?: return null
+            val (_, tail) = splitAt(s, CharIndex(start)) ?: return null
             StrIndices(CharIndex(start), tail)
         }
         start == null && end != null && end >= 0 -> {
-            val tail = fastStringSplitAtEnd(s, CharIndex(end))
+            val tail = splitAtEnd(s, CharIndex(end))
             StrIndices(CharIndex(0), tail)
         }
         start != null && end != null && start >= 0 && end >= start -> {
-            val (_, tail) = fastStringSplitAt(s, CharIndex(start)) ?: return null
-            val sub = fastStringSplitAtEnd(tail, CharIndex(end - start))
+            val (_, tail) = splitAt(s, CharIndex(start)) ?: return null
+            val sub = splitAtEnd(tail, CharIndex(end - start))
             StrIndices(CharIndex(start), sub)
         }
         start != null && end != null && (start >= 0) == (end >= 0) && start > end -> null
@@ -210,7 +210,7 @@ fun fastStringConvertStrIndices(
     }
 }
 
-fun fastStringContains(haystack: String, needle: String): Boolean {
+fun contains(haystack: String, needle: String): Boolean {
     if (needle.isEmpty()) {
         return true
     }

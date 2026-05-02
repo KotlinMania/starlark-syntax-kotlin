@@ -3,6 +3,7 @@ kotlin = "2.3.20"
 coroutines = "1.10.2"
 serialization = "1.8.0"
 datetime = "0.6.1"
+starlark-syntax-kotlin = "0.1.1"
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -13,3 +14,4 @@ kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-c
 kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serialization-core", version.ref = "serialization" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
+starlark-syntax-kotlin = { module = "io.github.kotlinmania:starlark-syntax-kotlin", version.ref = "starlark-syntax-kotlin" }

@@ -230,6 +230,15 @@ fun <P : AstPayload> StmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
     visitChildren(::pick)
 }
 
+/**
+ * Forwarder mirroring Rust's `impl<T> Deref for Spanned<T>` (codemap.rs:179) — call sites
+ * in upstream like `stmt.visit_expr(...)` resolve through `Deref::deref` to the inner
+ * `StmtP::visit_expr`. Kotlin has no Deref, so we expose the same name on the wrapper.
+ */
+fun <P : AstPayload> AstStmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+    node.visitExpr(f)
+}
+
 fun <P : AstPayload> StmtP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
     fun pick(x: VisitMut<P>) {
         when (x) {

@@ -23,8 +23,8 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.dialect.Dialect
+import io.github.kotlinmania.starlarksyntax.error.Error
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
-// (StarlarkError dropped — was a stubby duplicate of error.rs; using Throwable.)
 
 sealed class LexemeError(val message: String) {
     data object Indentation : LexemeError("Parse error: incorrect indentation")
@@ -57,7 +57,7 @@ class Lexer(
 
     private fun errSpan(msg: LexemeError, start: Int, end: Int): EvalException {
         return EvalException.new(
-            Throwable(msg.message),
+            Error.newOther(Throwable(msg.message)),
             Span(Pos(start), Pos(end)),
             codemap
         )

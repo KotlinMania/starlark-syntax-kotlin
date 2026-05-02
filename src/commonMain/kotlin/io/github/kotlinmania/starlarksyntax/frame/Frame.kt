@@ -20,7 +20,7 @@ package io.github.kotlinmania.starlarksyntax.frame
 
 import io.github.kotlinmania.starlarksyntax.codemap.FileSpan
 import io.github.kotlinmania.starlarksyntax.faststring.CharIndex
-import io.github.kotlinmania.starlarksyntax.faststring.fastStringSplitAt
+import io.github.kotlinmania.starlarksyntax.faststring.splitAt
 
 /** A frame of the call-stack. */
 data class Frame(
@@ -66,7 +66,7 @@ data class Frame(
 private fun truncateSnippet(snippet: String, maxLen: Int): Pair<String, String> {
     val ddd = "..."
     check(maxLen >= ddd.length)
-    val split = fastStringSplitAt(snippet, CharIndex(maxLen - ddd.length))
+    val split = splitAt(snippet, CharIndex(maxLen - ddd.length))
     if (split == null) return Pair(snippet, "")
     val (a, b) = split
     if (b.length < 4) return Pair(snippet, "")

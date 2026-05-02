@@ -199,16 +199,6 @@ sealed class Token {
         is Reserved -> error("Reserved tokens should not reach the parser")
     }
 
-    /** Wrap this token into the appropriate GrammarSymbol variant for the parser stack. */
-    fun toSymbol(): io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol = when (this) {
-        is FloatToken -> io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol.Variant1(value)
-        is FStringToken -> io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol.Variant2(value)
-        is Identifier -> io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol.Variant3(name)
-        is IntToken -> io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol.Variant4(value)
-        is StringToken -> io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol.Variant3(value)
-        else -> io.github.kotlinmania.starlarksyntax.syntax.parser.GrammarSymbol.Variant0(this)
-    }
-
     override fun toString(): String = when (this) {
         is Indent -> "new indentation block"
         is Dedent -> "end of indentation block"

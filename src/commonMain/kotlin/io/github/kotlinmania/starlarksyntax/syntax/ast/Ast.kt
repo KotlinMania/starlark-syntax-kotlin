@@ -112,6 +112,8 @@ sealed class ArgumentP<P : AstPayload> {
         is Named -> name.node
         else -> null
     }
+
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 sealed class ParameterP<P : AstPayload> {
@@ -138,6 +140,8 @@ sealed class ParameterP<P : AstPayload> {
         is KwArgs -> name
         is NoArgs, is Slash -> null
     }
+
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 sealed class AstLiteral {
@@ -145,6 +149,8 @@ sealed class AstLiteral {
     class Float(val value: AstFloat) : AstLiteral()
     class String(val value: AstString) : AstLiteral()
     class Ellipsis : AstLiteral()
+
+    override fun toString(): kotlin.String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 class LambdaP<P : AstPayload>(
@@ -164,7 +170,7 @@ class LambdaP<P : AstPayload>(
 class CallArgsP<P : AstPayload>(val args: List<AstArgumentP<P>>)
 
 sealed class ExprP<P : AstPayload> {
-    class Tuple<P : AstPayload>(val elems: List<AstExprP<P>>) : ExprP<P>()
+    class Tuple<P : AstPayload>(val elems: kotlin.collections.List<AstExprP<P>>) : ExprP<P>()
     class Dot<P : AstPayload>(val target: AstExprP<P>, val attr: AstString) : ExprP<P>()
     class Call<P : AstPayload>(val target: AstExprP<P>, val args: CallArgsP<P>) : ExprP<P>()
     class Index<P : AstPayload>(val target: AstExprP<P>, val index: AstExprP<P>) : ExprP<P>()
@@ -207,6 +213,8 @@ sealed class ExprP<P : AstPayload> {
         val clauses: kotlin.collections.List<ClauseP<P>>,
     ) : ExprP<P>()
     class FString<P : AstPayload>(val fstring: AstFStringP<P>) : ExprP<P>()
+
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 /** Restricted expression at type position. */
@@ -218,7 +226,9 @@ class TypeExprP<P : AstPayload>(
      */
     val expr: AstExprP<P>,
     val payload: Any?, // P::TypeExprPayload
-)
+) {
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
+}
 
 /** In some places e.g. AssignModify, the Tuple case is not allowed. */
 sealed class AssignTargetP<P : AstPayload> {
@@ -228,6 +238,8 @@ sealed class AssignTargetP<P : AstPayload> {
     class Index<P : AstPayload>(val target: AstExprP<P>, val index: AstExprP<P>) : AssignTargetP<P>()
     class Dot<P : AstPayload>(val target: AstExprP<P>, val attr: AstString) : AssignTargetP<P>()
     class Identifier<P : AstPayload>(val ident: AstAssignIdentP<P>) : AssignTargetP<P>()
+
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 /** `x: t = y`. */
@@ -241,7 +253,9 @@ class AssignP<P : AstPayload>(
 data class AssignIdentP<P : AstPayload>(
     val ident: String,
     val payload: Any?, // P::IdentAssignPayload
-)
+) {
+    override fun toString(): String = ident
+}
 
 /**
  * Identifier in read position, e.g. `foo` in `[foo.bar]`.
@@ -250,7 +264,9 @@ data class AssignIdentP<P : AstPayload>(
 data class IdentP<P : AstPayload>(
     val ident: String,
     val payload: Any?, // P::IdentPayload
-)
+) {
+    override fun toString(): String = ident
+}
 
 /** Argument of `load` statement. */
 class LoadArgP<P : AstPayload>(
@@ -279,11 +295,15 @@ class LoadP<P : AstPayload>(
 class ForClauseP<P : AstPayload>(
     val variable: AstAssignTargetP<P>,
     val over: AstExprP<P>,
-)
+) {
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
+}
 
 sealed class ClauseP<P : AstPayload> {
     class For<P : AstPayload>(val clause: ForClauseP<P>) : ClauseP<P>()
     class If<P : AstPayload>(val cond: AstExprP<P>) : ClauseP<P>()
+
+    override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 enum class BinOp {
@@ -422,6 +442,9 @@ sealed class StmtP<P : AstPayload> {
     class For<P : AstPayload>(val forStmt: ForP<P>) : StmtP<P>()
     class Def<P : AstPayload>(val def: DefP<P>) : StmtP<P>()
     class Load<P : AstPayload>(val load: LoadP<P>) : StmtP<P>()
+
+    override fun toString(): String =
+        StringBuilder().also { fmtWithTab(it, this, "") }.toString()
 }
 
 private fun <I> commaSeparatedFmt(
@@ -842,43 +865,4 @@ private fun <P : AstPayload> fmtWithTab(out: StringBuilder, self: StmtP<P>, tab:
     }
 }
 
-/** Render an expression to its Starlark surface syntax. */
-fun <P : AstPayload> ExprP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
 
-/** Render a type expression to its Starlark surface syntax. */
-fun <P : AstPayload> TypeExprP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
-
-/** Render an assign target to its Starlark surface syntax. */
-fun <P : AstPayload> AssignTargetP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
-
-/** Render an assign-position identifier. */
-fun <P : AstPayload> AssignIdentP<P>.surface(): String = ident
-
-/** Render a read-position identifier. */
-fun <P : AstPayload> IdentP<P>.surface(): String = ident
-
-/** Render an argument. */
-fun <P : AstPayload> ArgumentP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
-
-/** Render a parameter. */
-fun <P : AstPayload> ParameterP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
-
-/** Render a `for` clause. */
-fun <P : AstPayload> ForClauseP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
-
-/** Render a clause (`for` or `if`). */
-fun <P : AstPayload> ClauseP<P>.surface(): String =
-    StringBuilder().also { fmt(it, this) }.toString()
-
-/** Render a statement using the given tab string for indentation. */
-fun <P : AstPayload> StmtP<P>.surfaceWithTab(tab: String): String =
-    StringBuilder().also { fmtWithTab(it, this, tab) }.toString()
-
-/** Render a statement using empty initial indentation. */
-fun <P : AstPayload> StmtP<P>.surface(): String = surfaceWithTab("")

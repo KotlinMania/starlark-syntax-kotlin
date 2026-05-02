@@ -35,16 +35,10 @@ class CursorBytes(private val source: String) {
     fun pos(): Int = index
 }
 
-class CursorChars private constructor(
+class CursorChars(
     private val source: String,
     private var offset: Int,
 ) {
-    companion object {
-        fun newOffset(x: String, offset: Int): CursorChars {
-            return CursorChars(x, offset)
-        }
-    }
-
     fun next(): Char? {
         if (offset >= source.length) return null
         val c = source[offset]

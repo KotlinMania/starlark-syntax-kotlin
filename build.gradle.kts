@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.kotlinmania"
-version = "0.1.0"
+version = "0.1.1"
 
 val androidSdkDir: String? =
     providers.environmentVariable("ANDROID_SDK_ROOT").orNull
@@ -114,10 +114,10 @@ mavenPublishing {
     publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
     signAllPublications()
 
-    coordinates(group.toString(), "starlark-syntax", version.toString())
+    coordinates(group.toString(), "starlark-syntax-kotlin", version.toString())
 
     pom {
-        name.set("starlark-syntax")
+        name.set("starlark-syntax-kotlin")
         description.set("Kotlin Multiplatform port of facebook/starlark-rust starlark_syntax crate - Starlark language AST, lexer, and parser")
         inceptionYear.set("2026")
         url.set("https://github.com/KotlinMania/starlark-syntax-kotlin")

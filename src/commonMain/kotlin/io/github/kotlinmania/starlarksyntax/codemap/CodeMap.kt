@@ -25,7 +25,7 @@ package io.github.kotlinmania.starlarksyntax.codemap
 //! source code will not exceed 4GiB. The [CodeMap] can look up the source file, line, and column
 //! of a [Pos] or [Span], as well as provide source code snippets for error reporting.
 
-import io.github.kotlinmania.starlarksyntax.faststring.fastStringLen
+import io.github.kotlinmania.starlarksyntax.faststring.len
 
 /** A small, copy, value representing a position in a [CodeMap]'s file. */
 data class Pos(val value: Int) : Comparable<Pos> {
@@ -222,7 +222,7 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
                 val line = findLine(pos)
                 val lineSpan = lineSpan(line)
                 val byteCol = pos.value - lineSpan.begin().value
-                val column = fastStringLen(sourceSpan(lineSpan).substring(0, byteCol)).value
+                val column = len(sourceSpan(lineSpan).substring(0, byteCol)).value
                 ResolvedPos(line, column)
             }
             is CodeMapImpl.Native -> ResolvedPos(
