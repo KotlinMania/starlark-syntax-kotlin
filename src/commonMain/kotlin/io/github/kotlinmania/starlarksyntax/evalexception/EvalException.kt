@@ -31,7 +31,7 @@ import io.github.kotlinmania.starlarksyntax.error.internalError
 class EvalException internal constructor(
     /** Error is guaranteed to have a diagnostic. */
     internal val error: Error,
-) {
+) : Exception() {
     companion object {
         fun new(error: Error, span: Span, codemap: CodeMap): EvalException {
             error.setSpan(span, codemap)
