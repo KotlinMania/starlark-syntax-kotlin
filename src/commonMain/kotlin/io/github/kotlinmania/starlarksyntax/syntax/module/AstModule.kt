@@ -23,7 +23,7 @@ import io.github.kotlinmania.starlarksyntax.codemap.FileSpan
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
 import io.github.kotlinmania.starlarksyntax.dialect.Dialect
-import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.Lexer
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP

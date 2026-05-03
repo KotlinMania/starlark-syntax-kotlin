@@ -22,7 +22,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
 
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
-import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.grammar.StarlarkParser

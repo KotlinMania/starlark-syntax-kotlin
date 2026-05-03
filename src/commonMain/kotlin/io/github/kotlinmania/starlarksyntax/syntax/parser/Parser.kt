@@ -24,7 +24,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
 //! Today the only impl is `LalrpopParser` (in `parser_lalrpop`); additional
 //! impls (e.g. recursive descent) plug in here.
 
-import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.parseerror.ParseError

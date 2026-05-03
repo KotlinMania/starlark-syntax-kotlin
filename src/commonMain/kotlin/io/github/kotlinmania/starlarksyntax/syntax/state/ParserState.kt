@@ -21,7 +21,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.state
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.dialect.Dialect
-import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.EvalException
 
 internal class ParserState(
     val dialect: Dialect,

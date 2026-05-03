@@ -28,7 +28,7 @@ import io.github.kotlinmania.starlarksyntax.dialect.DialectTypes
 import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatConv
 import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatParser
 import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatToken
-import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.TokenFString
 import io.github.kotlinmania.starlarksyntax.lexer.lexExactlyOneIdentifier
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP

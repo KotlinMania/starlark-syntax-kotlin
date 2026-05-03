@@ -59,7 +59,7 @@ internal fun checkCall(
 
     val unpackResult = CallArgsUnpack.unpack(callArgs, parserState.codemap)
     unpackResult.exceptionOrNull()?.let { e ->
-        if (e is io.github.kotlinmania.starlarksyntax.evalexception.EvalException) {
+        if (e is io.github.kotlinmania.starlarksyntax.EvalException) {
             parserState.errors.add(e)
         }
     }
@@ -92,7 +92,7 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
         }
         val unpackResult = DefParams.unpack(params, parserState.codemap)
         unpackResult.exceptionOrNull()?.let { e ->
-            if (e is io.github.kotlinmania.starlarksyntax.evalexception.EvalException) {
+            if (e is io.github.kotlinmania.starlarksyntax.EvalException) {
                 parserState.errors.add(e)
             }
         }

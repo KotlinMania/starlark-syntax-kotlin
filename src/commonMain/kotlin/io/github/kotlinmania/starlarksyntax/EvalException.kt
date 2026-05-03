@@ -1,5 +1,5 @@
 // port-lint: source src/eval_exception.rs
-package io.github.kotlinmania.starlarksyntax.evalexception
+package io.github.kotlinmania.starlarksyntax
 
 /*
  * Copyright 2019 The Starlark in Rust Authors.
@@ -29,9 +29,11 @@ import io.github.kotlinmania.starlarksyntax.error.internalError
 
 /** Error with location. */
 class EvalException internal constructor(
-    /** Error is guaranteed to have a diagnostic. */
-    internal val error: Error,
-) : Exception() {
+    /**
+     * Error is guaranteed to have a diagnostic.
+     */
+    private val error: Error,
+) : Exception(error.toString()) {
     companion object {
         fun new(error: Error, span: Span, codemap: CodeMap): EvalException {
             error.setSpan(span, codemap)
@@ -92,10 +94,8 @@ class EvalException internal constructor(
         }
 
         fun from(e: WithDiagnostic<Error>): EvalException {
-            // The Rust impl is `impl<T: Into<crate::Error>> From<WithDiagnostic<T>> for EvalException`,
-            // i.e. given a WithDiagnostic<T> where T can be turned into Error, build an EvalException
-            // that holds the resulting Error with the same diagnostic.
-            return EvalException(e.intoInner())
+            val into = e.intoInner()
+            return EvalException(into)
         }
     }
 
@@ -105,5 +105,4 @@ class EvalException internal constructor(
         return EvalException(error.intoInternalError())
     }
 
-    override fun toString(): String = error.toString()
 }
