@@ -18,12 +18,14 @@ package io.github.kotlinmania.starlarksyntax.codemap
  * limitations under the License.
  */
 
-//! A data structure for tracking source positions in language implementations
-//! The [CodeMap] tracks all source files and maps positions within them to linear indexes as if all
-//! source files were concatenated. This allows a source position to be represented by a small
-//! 32-bit [Pos] indexing into the [CodeMap], under the assumption that the total amount of parsed
-//! source code will not exceed 4GiB. The [CodeMap] can look up the source file, line, and column
-//! of a [Pos] or [Span], as well as provide source code snippets for error reporting.
+/**
+ * A data structure for tracking source positions in language implementations
+ * The [CodeMap] tracks all source files and maps positions within them to linear indexes as if all
+ * source files were concatenated. This allows a source position to be represented by a small
+ * 32-bit [Pos] indexing into the [CodeMap], under the assumption that the total amount of parsed
+ * source code will not exceed 4GiB. The [CodeMap] can look up the source file, line, and column
+ * of a [Pos] or [Span], as well as provide source code snippets for error reporting.
+ */
 
 import io.github.kotlinmania.starlarksyntax.faststring.len
 
@@ -125,9 +127,9 @@ class CodeMapId internal constructor(internal val ref: Any?) {
         return other is CodeMapId && this.ref === other.ref
     }
 
-    override fun hashCode(): Int = ref?.let { System_identityHashCode(it) } ?: 0
+    override fun hashCode(): Int = ref?.let { systemIdentityHashCode(it) } ?: 0
 
-    override fun toString(): String = "CodeMapId(${ref?.let { "@" + System_identityHashCode(it).toString(16) } ?: "EMPTY"})"
+    override fun toString(): String = "CodeMapId(${ref?.let { "@" + systemIdentityHashCode(it).toString(16) } ?: "EMPTY"})"
 }
 
 internal sealed class CodeMapImpl {
@@ -142,19 +144,19 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
 
         /** Creates an new [CodeMap]. */
         fun new(filename: String, source: String): CodeMap {
+            val sourceBytes = source.encodeToByteArray()
             val lines = mutableListOf(Pos(0))
-            var idx = 0
-            while (idx < source.length) {
-                val n = source.indexOf('\n', idx)
-                if (n < 0) break
-                lines.add(Pos(n + 1))
-                idx = n + 1
+            for (i in sourceBytes.indices) {
+                if (sourceBytes[i] == '\n'.code.toByte()) {
+                    lines.add(Pos(i + 1))
+                }
             }
             return CodeMap(
                 CodeMapImpl.Real(
                     CodeMapData(
                         filename = filename,
                         source = source,
+                        sourceBytes = sourceBytes,
                         lines = lines,
                     )
                 )
@@ -173,8 +175,7 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
     }
 
     fun fullSpan(): Span {
-        val source = source()
-        return Span.new(Pos(0), Pos(source.length))
+        return Span.new(Pos(0), Pos(sourceBytes().size))
     }
 
     /** Gets the file and its line and column ranges represented by a [Span]. */
@@ -187,8 +188,7 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
     }
 
     fun byteAt(pos: Pos): Byte {
-        val src = source()
-        return src.encodeToByteArray()[pos.value]
+        return sourceBytes()[pos.value]
     }
 
     /**
@@ -222,7 +222,12 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
                 val line = findLine(pos)
                 val lineSpan = lineSpan(line)
                 val byteCol = pos.value - lineSpan.begin().value
-                val column = len(sourceSpan(lineSpan).substring(0, byteCol)).value
+                val lineBegin = lineSpan.begin().value
+                val prefixEnd = lineBegin + byteCol
+                val bytes = sourceBytes()
+                checkUtf8Boundary(bytes, prefixEnd)
+                val prefixStr = bytes.decodeToString(lineBegin, prefixEnd)
+                val column = len(prefixStr).value
                 ResolvedPos(line, column)
             }
             is CodeMapImpl.Native -> ResolvedPos(
@@ -238,13 +243,26 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
         is CodeMapImpl.Native -> NativeCodeMap.SOURCE
     }
 
+    private fun sourceBytes(): ByteArray = when (val i = impl) {
+        is CodeMapImpl.Real -> i.data.sourceBytes
+        is CodeMapImpl.Native -> NativeCodeMap.SOURCE_BYTES
+    }
+
     /**
      * Gets the source text of a Span.
      *
      * Panics if `span` is not entirely within this file.
      */
-    fun sourceSpan(span: Span): String =
-        source().substring(span.begin().value, span.end().value)
+    fun sourceSpan(span: Span): String {
+        val bytes = sourceBytes()
+        val begin = span.begin().value
+        val end = span.end().value
+        check(begin <= end)
+        check(end <= bytes.size)
+        checkUtf8Boundary(bytes, begin)
+        checkUtf8Boundary(bytes, end)
+        return bytes.decodeToString(begin, end)
+    }
 
     /** Like [lineSpanOpt] but panics if the line number is out of range. */
     fun lineSpan(line: Int): Span {
@@ -342,17 +360,19 @@ internal class CodeMapData(
     val filename: String,
     /** Contents of the file. */
     val source: String,
+    val sourceBytes: ByteArray,
     /** Byte positions of line beginnings. */
     val lines: List<Pos>,
 )
 
-/** "Codemap" for native files. */
+/** "Codemap" for `.rs` files. */
 class NativeCodeMap(
     val filename: String,
     val start: ResolvedPos,
 ) : Comparable<NativeCodeMap> {
     companion object {
         const val SOURCE: String = "<native>"
+        val SOURCE_BYTES: ByteArray = SOURCE.encodeToByteArray()
         val FULL_SPAN: Span = Span.new(Pos(0), Pos(SOURCE.length))
 
         fun new(filename: String, line: Int, column: Int): NativeCodeMap =
@@ -416,7 +436,7 @@ data class FileSpanRef(
     fun sourceSpan(): String = file.sourceSpan(span)
 
     /**
-     * Formats the span as `filename:start_line:start_column: end_line:end_column`,
+     * Formats the span as `filename:startLine:startColumn: endLine:endColumn`,
      * or if the span is zero-length, `filename:line:column`, with a 1-indexed line and column.
      */
     override fun toString(): String = "${file.filename()}:${resolveSpan()}"
@@ -455,7 +475,7 @@ data class FileSpan(
     )
 
     /**
-     * Formats the span as `filename:start_line:start_column: end_line:end_column`,
+     * Formats the span as `filename:startLine:startColumn: endLine:endColumn`,
      * or if the span is zero-length, `filename:line:column`, with a 1-indexed line and column.
      */
     override fun toString(): String = asRef().toString()
@@ -465,7 +485,7 @@ data class FileSpan(
         if (c1 != 0) return c1
         val c2 = span.compareTo(other.span)
         if (c2 != 0) return c2
-        return System_identityHashCode(file).compareTo(System_identityHashCode(other.file))
+        return systemIdentityHashCode(file).compareTo(systemIdentityHashCode(other.file))
     }
 }
 
@@ -571,6 +591,12 @@ data class ResolvedFileSpan(
     }
 }
 
-// Identity-hash helper for KMP. Using the platform's default Object.hashCode for non-overriding
-// classes preserves identity-based hashing on every supported target.
-private fun System_identityHashCode(value: Any): Int = value.hashCode()
+// Identity-hash helper for KMP. Using `Any.hashCode()` on classes which do not override it yields
+// identity-based hashing on every supported target.
+private fun systemIdentityHashCode(value: Any): Int = value.hashCode()
+
+private fun checkUtf8Boundary(bytes: ByteArray, index: Int) {
+    if (index == 0 || index == bytes.size) return
+    val b = bytes[index].toInt() and 0xff
+    check((b and 0b1100_0000) != 0b1000_0000)
+}
