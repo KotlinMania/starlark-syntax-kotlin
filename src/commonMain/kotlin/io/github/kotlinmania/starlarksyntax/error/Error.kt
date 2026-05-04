@@ -177,7 +177,9 @@ sealed class ErrorKind {
     data class Scope(val error: Throwable) : ErrorKind()
 
     /** Syntax error. */
-    data class Parser(val error: Throwable) : ErrorKind()
+    data class Parser(val error: Throwable) : ErrorKind() {
+        override fun toString(): String = error.message ?: error.toString()
+    }
 
     /** Freeze errors. Should have no metadata attached. */
     data class Freeze(val error: Throwable) : ErrorKind()
