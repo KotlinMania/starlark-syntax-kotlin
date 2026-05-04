@@ -22,7 +22,7 @@ package io.github.kotlinmania.starlarksyntax.lexer
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
-import io.github.kotlinmania.starlarksyntax.dialect.Dialect
+import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.error.Error
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 

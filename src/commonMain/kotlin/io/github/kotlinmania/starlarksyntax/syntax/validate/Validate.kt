@@ -33,7 +33,7 @@ import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitExpr
 import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitStmt
 import io.github.kotlinmania.starlarksyntax.syntax.call.CallArgsUnpack
 import io.github.kotlinmania.starlarksyntax.syntax.def.DefParams
-import io.github.kotlinmania.starlarksyntax.dialect.DialectTypes
+import io.github.kotlinmania.starlarksyntax.DialectTypes
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 
 /**
@@ -59,7 +59,7 @@ internal fun checkCall(
 
     val unpackResult = CallArgsUnpack.unpack(callArgs, parserState.codemap)
     unpackResult.exceptionOrNull()?.let { e ->
-        if (e is io.github.kotlinmania.starlarksyntax.EvalException) {
+        if (e is io.github.kotlinmania.starlarksyntax.evalexception.EvalException) {
             parserState.errors.add(e)
         }
     }
@@ -92,7 +92,7 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
         }
         val unpackResult = DefParams.unpack(params, parserState.codemap)
         unpackResult.exceptionOrNull()?.let { e ->
-            if (e is io.github.kotlinmania.starlarksyntax.EvalException) {
+            if (e is io.github.kotlinmania.starlarksyntax.evalexception.EvalException) {
                 parserState.errors.add(e)
             }
         }

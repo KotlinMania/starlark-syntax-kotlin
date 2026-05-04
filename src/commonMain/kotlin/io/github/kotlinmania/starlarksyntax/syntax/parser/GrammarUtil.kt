@@ -24,11 +24,11 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
-import io.github.kotlinmania.starlarksyntax.dialect.DialectTypes
+import io.github.kotlinmania.starlarksyntax.DialectTypes
 import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatConv
 import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatParser
 import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatToken
-import io.github.kotlinmania.starlarksyntax.EvalException
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.TokenFString
 import io.github.kotlinmania.starlarksyntax.lexer.lexExactlyOneIdentifier
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
