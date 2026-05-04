@@ -18,9 +18,11 @@ package io.github.kotlinmania.starlarksyntax.faststring
  * limitations under the License.
  */
 
-//! Our string operations (indexing) are O(n) because of our current representation.
-//! There are plans afoot to change that, but in the meantime let's use fast algorithms
-//! to make up some of the difference.
+/**
+ * Our string operations (indexing) are O(n) because of our current representation.
+ * There are plans afoot to change that, but in the meantime let's use fast algorithms
+ * to make up some of the difference.
+ */
 
 import io.github.kotlinmania.starlarksyntax.convertindices.convertIndices
 
@@ -62,8 +64,7 @@ fun at(x: String, i: CharIndex): Char? {
 }
 
 /**
- * Find the length of the string in characters (Unicode codepoints, matching Rust's
- * `str::chars().count()`).
+ * Find the length of the string in characters (Unicode codepoints).
  *
  * If the length matches the length in bytes, the string must be 7bit ASCII.
  */
@@ -79,8 +80,9 @@ fun len(x: String): CharIndex {
 
 /**
  * Count Unicode codepoints in a string, treating each surrogate pair as one codepoint.
- * Equivalent to Rust's `str::chars().count()`. Kotlin's [String.length] / [String.count] count
- * UTF-16 code units, which double-counts characters in supplementary planes (e.g. emoji).
+ *
+ * Kotlin's [String.length] and [String.count] return UTF-16 code units, which double-counts
+ * characters in supplementary planes (e.g. emoji). This walk yields one increment per codepoint.
  */
 private fun codepointCount(s: String): Int {
     var i = 0
