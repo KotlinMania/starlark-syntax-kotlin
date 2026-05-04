@@ -24,7 +24,7 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.error.Error
 import io.github.kotlinmania.starlarksyntax.error.ErrorKind
-import io.github.kotlinmania.starlarksyntax.EvalException
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 
 /**
  * A parse error with a message and source span.

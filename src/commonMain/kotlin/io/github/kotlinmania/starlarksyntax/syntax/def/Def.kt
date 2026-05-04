@@ -21,7 +21,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.def
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
-import io.github.kotlinmania.starlarksyntax.EvalException
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdentP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExprP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstParameterP

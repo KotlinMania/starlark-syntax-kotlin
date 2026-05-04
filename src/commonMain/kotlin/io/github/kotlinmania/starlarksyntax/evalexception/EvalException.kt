@@ -1,5 +1,5 @@
 // port-lint: source src/eval_exception.rs
-package io.github.kotlinmania.starlarksyntax
+package io.github.kotlinmania.starlarksyntax.evalexception
 
 /*
  * Copyright 2019 The Starlark in Rust Authors.

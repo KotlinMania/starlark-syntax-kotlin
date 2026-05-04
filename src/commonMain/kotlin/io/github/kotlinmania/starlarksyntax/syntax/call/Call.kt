@@ -20,7 +20,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.call
 
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
-import io.github.kotlinmania.starlarksyntax.EvalException
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgumentP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
