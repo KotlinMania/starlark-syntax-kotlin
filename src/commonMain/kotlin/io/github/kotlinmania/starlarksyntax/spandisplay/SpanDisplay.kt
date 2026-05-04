@@ -21,7 +21,7 @@ package io.github.kotlinmania.starlarksyntax.spandisplay
 import io.github.kotlinmania.starlarksyntax.codemap.FileSpanRef
 import io.github.kotlinmania.starlarksyntax.faststring.len
 
-/** Annotation type matching the upstream `annotate_snippets::AnnotationType`. */
+/** Annotation type matching the upstream's snippet annotation type. */
 internal enum class AnnotationType {
     Error,
     Warning,
@@ -75,8 +75,8 @@ fun spanDisplay(
     fun convertSpanToSlice(span: FileSpanRef): Slice {
         val region = span.resolveSpan()
 
-        // we want the source_span to capture any whitespace ahead of the diagnostic span to
-        // get the column numbers correct in the DisplayList, and any trailing source code
+        // we want the source span to capture any whitespace ahead of the diagnostic span to
+        // get the column numbers correct in the rendered output, and any trailing source code
         // on the last line for context.
         val firstLineSpan = span.file.lineSpan(region.begin.line)
         val lastLineSpan = span.file.lineSpan(region.end.line)
@@ -121,8 +121,8 @@ fun spanDisplay(
 }
 
 /**
- * Render a [Snippet] as a string. This is a Kotlin-side rendering of what the Rust upstream
- * delegates to `annotate_snippets::DisplayList`. The shape mirrors the upstream layout:
+ * Render a [Snippet] as a string. The shape mirrors the layout produced by upstream's
+ * snippet display library:
  *
  * ```
  * error: <title>
