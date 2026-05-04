@@ -18,7 +18,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.validate
  * limitations under the License.
  */
 
-//! AST validation for parsed starlark files.
+/** AST validation for parsed starlark files. */
 
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
