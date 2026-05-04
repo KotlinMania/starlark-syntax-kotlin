@@ -62,7 +62,9 @@ fun at(x: String, i: CharIndex): Char? {
 }
 
 /**
- * Find the length of the string in characters.
+ * Find the length of the string in characters (Unicode codepoints, matching Rust's
+ * `str::chars().count()`).
+ *
  * If the length matches the length in bytes, the string must be 7bit ASCII.
  */
 fun len(x: String): CharIndex {
@@ -71,8 +73,24 @@ fun len(x: String): CharIndex {
     return if (n == bytes.size) {
         CharIndex(n) // All 1 byte
     } else {
-        CharIndex(bytes.decodeToString(n, bytes.size).count() + n)
+        CharIndex(codepointCount(bytes.decodeToString(n, bytes.size)) + n)
     }
+}
+
+/**
+ * Count Unicode codepoints in a string, treating each surrogate pair as one codepoint.
+ * Equivalent to Rust's `str::chars().count()`. Kotlin's [String.length] / [String.count] count
+ * UTF-16 code units, which double-counts characters in supplementary planes (e.g. emoji).
+ */
+private fun codepointCount(s: String): Int {
+    var i = 0
+    var count = 0
+    while (i < s.length) {
+        val ch = s[i]
+        i += if (ch.isHighSurrogate() && i + 1 < s.length && s[i + 1].isLowSurrogate()) 2 else 1
+        count++
+    }
+    return count
 }
 
 /**
