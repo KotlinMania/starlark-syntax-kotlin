@@ -39,6 +39,11 @@ data class Pos(val value: Int) : Comparable<Pos> {
     /** Get the value. */
     fun get(): Int = value
 
+    fun add(other: Int): Pos = this + other
+    fun sub(other: Int): Pos = this - other
+
+    fun addAssign(other: Int): Pos = Pos(value + other)
+
     operator fun plus(other: Int): Pos = Pos(value + other)
     operator fun minus(other: Int): Pos = Pos(value - other)
     override fun compareTo(other: Pos): Int = value.compareTo(other.value)
@@ -111,6 +116,10 @@ data class Spanned<T>(
     fun <U> map(f: (T) -> U): Spanned<U> = Spanned(f(node), span)
 
     fun asRef(): Spanned<T> = this
+
+    fun deref(): T = node
+
+    fun derefMut(): T = node
 }
 
 /**
@@ -328,6 +337,10 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
 
     override fun hashCode(): Int = id().hashCode()
 
+    fun eq(other: CodeMap): Boolean = this == other
+
+    fun hash(): Int = hashCode()
+
     override fun toString(): String = "CodeMap(${filename()})"
 }
 
@@ -487,6 +500,10 @@ data class FileSpan(
         if (c2 != 0) return c2
         return systemIdentityHashCode(file).compareTo(systemIdentityHashCode(other.file))
     }
+
+    fun partialCmp(other: FileSpan): Int? = compareTo(other)
+
+    fun cmp(other: FileSpan): Int = compareTo(other)
 }
 
 /**
