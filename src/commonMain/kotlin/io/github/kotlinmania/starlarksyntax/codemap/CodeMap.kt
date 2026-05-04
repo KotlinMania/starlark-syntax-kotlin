@@ -425,6 +425,10 @@ data class ResolvedPos(
 
     override fun toString(): String = "${line + 1}:${column + 1}"
 
+    fun fmt(f: StringBuilder) {
+        f.append(line + 1).append(':').append(column + 1)
+    }
+
     override fun compareTo(other: ResolvedPos): Int {
         val c = line.compareTo(other.line)
         return if (c != 0) c else column.compareTo(other.column)
@@ -453,6 +457,11 @@ data class FileSpanRef(
      * or if the span is zero-length, `filename:line:column`, with a 1-indexed line and column.
      */
     override fun toString(): String = "${file.filename()}:${resolveSpan()}"
+
+    fun fmt(f: StringBuilder) {
+        f.append(file.filename()).append(':')
+        resolveSpan().fmt(f)
+    }
 }
 
 /** A file, and a line and column range within it. */
@@ -492,6 +501,10 @@ data class FileSpan(
      * or if the span is zero-length, `filename:line:column`, with a 1-indexed line and column.
      */
     override fun toString(): String = asRef().toString()
+
+    fun fmt(f: StringBuilder) {
+        asRef().fmt(f)
+    }
 
     override fun compareTo(other: FileSpan): Int {
         val c1 = filename().compareTo(other.filename())
@@ -550,6 +563,22 @@ data class ResolvedSpan(
         }
     }
 
+    fun fmt(f: StringBuilder) {
+        val singleLine = begin.line == end.line
+        val isEmpty = singleLine && begin.column == end.column
+
+        if (isEmpty) {
+            f.append(begin.line + 1).append(':').append(begin.column + 1)
+        } else if (singleLine) {
+            begin.fmt(f)
+            f.append('-').append(end.column + 1)
+        } else {
+            begin.fmt(f)
+            f.append('-')
+            end.fmt(f)
+        }
+    }
+
     /**
      * Check that the given position is contained within this span.
      * Includes positions both at the beginning and the end of the range.
@@ -575,6 +604,10 @@ data class ResolvedFileLine(
     val line: Int,
 ) {
     override fun toString(): String = "$file:${line + 1}"
+
+    fun fmt(f: StringBuilder) {
+        f.append(file).append(':').append(line + 1)
+    }
 }
 
 /** File name and line and column pairs for a span. */
@@ -601,6 +634,11 @@ data class ResolvedFileSpan(
     )
 
     override fun toString(): String = "$file:$span"
+
+    fun fmt(f: StringBuilder) {
+        f.append(file).append(':')
+        span.fmt(f)
+    }
 
     override fun compareTo(other: ResolvedFileSpan): Int {
         val c = file.compareTo(other.file)
