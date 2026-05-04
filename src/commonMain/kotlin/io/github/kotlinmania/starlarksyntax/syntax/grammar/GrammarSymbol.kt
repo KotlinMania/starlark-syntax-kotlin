@@ -27,39 +27,38 @@ import io.github.kotlinmania.starlarksyntax.lexer.TokenInt
  * parser. Each unique stack-element kind in the grammar is a [Variant`N`] data class
  * carrying its typed value.
  *
- * Variant ordering follows lalrpop-kotlin's `KotlinSymbolEmit` convention: terminals
- * first in declaration order from the grammar's `extern { enum Token { ... } }` block,
+ * Variant ordering follows the convention used by lalrpop-kotlin's symbol emitter:
+ * terminals first in declaration order from the grammar's typed-terminal block,
  * deduplicated by type kind, then nonterminals in declaration order.
  *
- * For Starlark's grammar (see `tmp/starlark_syntax/src/syntax/grammar.lalrpop`,
- * `extern { enum lexer::Token }`), the typed-terminal mapping is:
+ * For Starlark's grammar, the typed-terminal mapping is:
  *
- * | Variant   | Source recipe                                         |
- * |-----------|-------------------------------------------------------|
- * | Variant0  | `lexer::Token` (untyped terminals — keywords, symbols, brackets, INDENT/DEDENT/NEWLINE) |
- * | Variant1  | `String` (`IDENTIFIER` and `STRING`)                  |
- * | Variant2  | `lexer::TokenInt` (`INTEGER`)                         |
- * | Variant3  | `f64` (`FLOAT`)                                       |
- * | Variant4  | `lexer::TokenFString` (`FSTRING`)                     |
+ * | Variant   | Source recipe                                                          |
+ * |-----------|------------------------------------------------------------------------|
+ * | Variant0  | [Token] (untyped terminals — keywords, symbols, brackets, INDENT/DEDENT/NEWLINE) |
+ * | Variant1  | [String] (matches `IDENTIFIER` and `STRING` terminals)                 |
+ * | Variant2  | [TokenInt] (matches `INTEGER` terminal)                                |
+ * | Variant3  | [Double] (matches `FLOAT` terminal)                                    |
+ * | Variant4  | [TokenFString] (matches `FSTRING` terminal)                            |
  *
  * Variants for Starlark's nonterminals (statements, expressions, suites, …) are
- * appended by the lalrpop-kotlin codegen pass when it emits [StarlarkParser]; they
+ * appended by the codegen pass when it emits [StarlarkParser]; they
  * are not declared here because the productions table that pushes them is itself
  * codegen-emitted.
  */
 sealed class GrammarSymbol {
-    /** Source recipe: `lexer::Token` (untyped terminals) */
+    /** Source recipe: [Token] (untyped terminals). */
     data class Variant0(val value: Token) : GrammarSymbol()
 
-    /** Source recipe: `String` (matches `IDENTIFIER` and `STRING` terminals) */
+    /** Source recipe: [String] (matches `IDENTIFIER` and `STRING` terminals). */
     data class Variant1(val value: String) : GrammarSymbol()
 
-    /** Source recipe: `lexer::TokenInt` (matches `INTEGER` terminal) */
+    /** Source recipe: [TokenInt] (matches `INTEGER` terminal). */
     data class Variant2(val value: TokenInt) : GrammarSymbol()
 
-    /** Source recipe: `f64` (matches `FLOAT` terminal) */
+    /** Source recipe: [Double] (matches `FLOAT` terminal). */
     data class Variant3(val value: Double) : GrammarSymbol()
 
-    /** Source recipe: `lexer::TokenFString` (matches `FSTRING` terminal) */
+    /** Source recipe: [TokenFString] (matches `FSTRING` terminal). */
     data class Variant4(val value: TokenFString) : GrammarSymbol()
 }
