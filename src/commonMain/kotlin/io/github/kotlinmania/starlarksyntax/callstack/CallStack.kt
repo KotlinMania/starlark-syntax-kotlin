@@ -18,9 +18,16 @@ package io.github.kotlinmania.starlarksyntax.callstack
  * limitations under the License.
  */
 
-//! Starlark call stack.
+/** Starlark call stack. */
 
 import io.github.kotlinmania.starlarksyntax.frame.Frame
+
+// FIXME: I think we should rewrite the CallStack stuff entirely:
+// * Do not keep a call stack, just a call stack depth.
+// * When people did StackGuard.inc just do CallStack.inc, we need less info
+// once it is an int so can reuse.
+// * When an exception happens, decorate it with the call stack on the way back
+//   up, in evalCall.
 
 const val CALL_STACK_TRACEBACK_PREFIX: String = "Traceback (most recent call last):"
 
@@ -39,19 +46,23 @@ data class CallStack(
         return frames
     }
 
-    override fun toString(): String {
+    fun fmt(f: StringBuilder) {
         if (frames.isEmpty()) {
-            return ""
+            return
         }
         // Match Python output.
-        val out = StringBuilder()
-        out.append(CALL_STACK_TRACEBACK_PREFIX).append('\n')
+        f.append(CALL_STACK_TRACEBACK_PREFIX).append('\n')
         // TODO(nga): use real module name.
         var prev = "<module>"
         for (x in frames) {
-            x.writeTwoLines("  ", prev, out)
+            x.writeTwoLines("  ", prev, f)
             prev = x.name
         }
+    }
+
+    override fun toString(): String {
+        val out = StringBuilder()
+        fmt(out)
         return out.toString()
     }
 }
