@@ -18,7 +18,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.payloadmap
  * limitations under the License.
  */
 
-//! Map AST payload.
+/** Map AST payload. */
 
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
@@ -43,11 +43,11 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExprP
 
 /**
  * A function-bundle that maps payload values from payload-type [A] to payload-type [B] across an
- * AST. Mirrors upstream `AstPayloadFunction<A, B>`.
+ * AST.
  *
- * Upstream uses Rust associated types (`A::LoadPayload`, etc.) to type the payload values per
- * kind. Kotlin doesn't have associated types — this port carries each payload as `Any?` and the
- * concrete payload-bundle type provides the typed getters/setters.
+ * The upstream uses associated types on its payload trait to type the payload values per kind.
+ * Kotlin doesn't have associated types — this port carries each payload as `Any?` and the
+ * concrete payload-bundle type provides the typed getters and setters.
  */
 interface AstPayloadFunction<A : AstPayload, B : AstPayload> {
     fun mapLoad(importPath: String, a: Any?): Any?
@@ -312,13 +312,12 @@ fun <A : AstPayload, B : AstPayload> FStringP<A>.intoMapPayload(
     )
 }
 
-// The Rust upstream uses an `ast_payload_map_stub!` macro to emit `into_map_payload` adapters
-// for each `Spanned<X<P>>` wrapper. Kotlin can express the same with a single generic extension
-// for each AST type below — eight extensions, one per AST type.
+// The upstream uses a derive macro to emit per-wrapper payload-mapping adapters for each
+// Spanned<X<P>> AST node. Kotlin expresses the same with one generic extension per AST type.
 
 // Spanned<X<A>> wrappers: rename each by AST type to avoid JVM erasure clash on the
-// shared 'intoMapPayload' name. The Rust upstream's `ast_payload_map_stub!` macro
-// relies on Rust's monomorphization, which Kotlin doesn't get on JVM after erasure.
+// shared name. The upstream derive macro relies on Rust's monomorphization, which Kotlin
+// doesn't get on JVM after erasure.
 
 fun <A : AstPayload, B : AstPayload> Spanned<ExprP<A>>.intoMapPayloadExpr(
     f: AstPayloadFunction<A, B>,
