@@ -22,10 +22,8 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.FileSpan
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
-import io.github.kotlinmania.starlarksyntax.dialect.Dialect
-import io.github.kotlinmania.starlarksyntax.EvalException
-import io.github.kotlinmania.starlarksyntax.lexer.Lexer
-import io.github.kotlinmania.starlarksyntax.lexer.Token
+import io.github.kotlinmania.starlarksyntax.Dialect
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
@@ -40,9 +38,6 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.IdentP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArgP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
 import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressions
-import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressionsBuilder
-import io.github.kotlinmania.starlarksyntax.syntax.parser.LalrpopParser
-import io.github.kotlinmania.starlarksyntax.syntax.parser.Lexeme
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.starlarksyntax.syntax.validate.validateModule
 
@@ -63,8 +58,8 @@ data class AstModuleParts(
 /**
  * A representation of a Starlark module abstract syntax tree.
  *
- * Created with either [parse] or [parseFile],
- * and evaluated with `Evaluator.evalModule`.
+ * Constructed externally — the parser lives in the consuming project for now and
+ * supplies the constructor with the validated [AstStmt] root.
  *
  * The internal details (statements/expressions) are deliberately omitted, as they change
  * more regularly. A few methods to obtain information about the AST are provided.
@@ -88,7 +83,16 @@ class AstModule internal constructor(
         AstModuleParts(codemap, statement, dialect, typecheck)
 
     companion object {
-        private fun create(
+        /**
+         * Validate a parsed [AstStmt] root and wrap it in an [AstModule], or return the
+         * first validation error.
+         *
+         * The parser is provided by the consuming project (this artifact does not yet
+         * include grammar codegen). Once a Kotlin port of the LALRPOP parser is wired
+         * here, an `AstModule.parse(filename, content, dialect)` companion will call
+         * this helper with the parser output.
+         */
+        fun fromStatement(
             codemap: CodeMap,
             statement: AstStmt,
             dialect: Dialect,
@@ -100,7 +104,6 @@ class AstModule internal constructor(
                 statement,
                 ParserState(dialect, codemap, errors),
             )
-            // We need the first error, so we don't use `removeLast()`.
             val firstError = errors.firstOrNull()
             if (firstError != null) {
                 return Result.failure(firstError)
@@ -113,53 +116,6 @@ class AstModule internal constructor(
                     typecheck = typecheck,
                     lintSuppressions = lintSuppressions,
                 )
-            )
-        }
-
-        /**
-         * Parse a Starlark module to produce an [AstModule], or an error if there are syntax errors.
-         * The [filename] is for error messages only, and does not have to be a valid file.
-         * The [Dialect] selects which Starlark constructs are valid.
-         *
-         * The returned error may contain diagnostic information.
-         */
-        fun parse(filename: String, content: String, dialect: Dialect): Result<AstModule> {
-            val typecheck = content.contains("@starlark-rust: typecheck")
-            val codemap = CodeMap.new(filename, content)
-            val lexer = Lexer(content, dialect, codemap)
-            // Store lint suppressions found during parsing
-            val lintSuppressionsBuilder = LintSuppressionsBuilder()
-            // Keep track of block of comments, used for accumulating lint suppressions
-            var inCommentBlock = false
-            val errors: MutableList<EvalException> = mutableListOf()
-            val parserState = ParserState(dialect, codemap, errors)
-            val filteredTokens: Iterator<Lexeme> = lexer.asSequence()
-                .mapNotNull { triple ->
-                    val (start, token, end) = triple
-                    if (token is Token.Comment) {
-                        lintSuppressionsBuilder.parseComment(codemap, token.text, start, end)
-                        inCommentBlock = true
-                        null
-                    } else {
-                        if (inCommentBlock) {
-                            lintSuppressionsBuilder.endOfCommentBlock(codemap)
-                            inCommentBlock = false
-                        }
-                        Result.success(triple)
-                    }
-                }
-                .iterator()
-            val parsed = LalrpopParser.parseModule(parserState, filteredTokens, content.length)
-            return parsed.fold(
-                onSuccess = { v ->
-                    val firstError = errors.firstOrNull()
-                    if (firstError != null) {
-                        Result.failure(firstError)
-                    } else {
-                        create(codemap, v, dialect, typecheck, lintSuppressionsBuilder.build())
-                    }
-                },
-                onFailure = { e -> Result.failure(e) },
             )
         }
     }
