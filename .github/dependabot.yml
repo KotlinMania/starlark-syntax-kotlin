@@ -1,0 +1,31 @@
+version: 2
+updates:
+  # Gradle / Kotlin Multiplatform plugin and dependency updates.
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # GitHub Actions used in workflows under .github/workflows/.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # Kotlin/JS resolves transitive npm packages into kotlin-js-store/yarn.lock.
+  # Point Dependabot at that directory so it can evaluate the JS dependency
+  # graph; without this entry it complains that it cannot find a
+  # kotlin-js-store at the repository root even though the yarn.lock is
+  # present.
+  - package-ecosystem: "npm"
+    directory: "/kotlin-js-store"
+    schedule:
+      interval: "weekly"
+
+  # The wasmJs target maintains its own resolved yarn.lock alongside the JS
+  # one. Mirror the npm entry so the wasmJs dependency tree gets evaluated
+  # too.
+  - package-ecosystem: "npm"
+    directory: "/kotlin-js-store/wasm"
+    schedule:
+      interval: "weekly"
