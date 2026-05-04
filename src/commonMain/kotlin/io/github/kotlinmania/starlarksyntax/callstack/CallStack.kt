@@ -22,12 +22,10 @@ package io.github.kotlinmania.starlarksyntax.callstack
 
 import io.github.kotlinmania.starlarksyntax.frame.Frame
 
-// FIXME: I think we should rewrite the CallStack stuff entirely:
+// Note: this CallStack design likely wants a full rewrite:
 // * Do not keep a call stack, just a call stack depth.
-// * When people did StackGuard.inc just do CallStack.inc, we need less info
-// once it is an int so can reuse.
-// * When an exception happens, decorate it with the call stack on the way back
-//   up, in evalCall.
+// * When people did StackGuard.inc just do CallStack.inc; we need less info once it is an int, so it can be reused.
+// * When an exception happens, decorate it with the call stack on the way back up, in evalCall.
 
 const val CALL_STACK_TRACEBACK_PREFIX: String = "Traceback (most recent call last):"
 
@@ -52,7 +50,7 @@ data class CallStack(
         }
         // Match Python output.
         f.append(CALL_STACK_TRACEBACK_PREFIX).append('\n')
-        // TODO(nga): use real module name.
+        // Note (nga): use real module name.
         var prev = "<module>"
         for (x in frames) {
             x.writeTwoLines("  ", prev, f)
