@@ -54,76 +54,76 @@ sealed class Token {
     // LALRPOP indices: Newline=0, symbols 1-34, Dedent=35, literals 36-41,
     //                  brackets 42-43, operators 44-45, keywords 46-60,
     //                  OpeningCurly=61, Pipe=62, PipeEqual=63, ClosingCurly=64, Tilde=65
-    data object Newline : Token()                          // 0
-    data object BangEqual : Token()                        // 1
-    data object Percent : Token()                          // 2
-    data object PercentEqual : Token()                     // 3
-    data object Ampersand : Token()                        // 4
-    data object AmpersandEqual : Token()                   // 5
-    data object OpeningRound : Token()                     // 6
-    data object ClosingRound : Token()                     // 7
-    data object Star : Token()                             // 8
-    data object StarStar : Token()                         // 9
-    data object StarEqual : Token()                        // 10
-    data object Plus : Token()                             // 11
-    data object PlusEqual : Token()                        // 12
-    data object Comma : Token()                            // 13
-    data object Minus : Token()                            // 14
-    data object MinusEqual : Token()                       // 15
-    data object MinusGreater : Token()                     // 16
-    data object Dot : Token()                              // 17
-    data object Ellipsis : Token()                         // 18
-    data object Slash : Token()                            // 19
-    data object SlashSlash : Token()                       // 20
-    data object SlashSlashEqual : Token()                  // 21
-    data object SlashEqual : Token()                       // 22
-    data object Colon : Token()                            // 23
-    data object Semicolon : Token()                        // 24
-    data object LessThan : Token()                         // 25
-    data object LessLess : Token()                         // 26
-    data object LessLessEqual : Token()                    // 27
-    data object LessEqual : Token()                        // 28
-    data object Equal : Token()                            // 29
-    data object EqualEqual : Token()                       // 30
-    data object GreaterThan : Token()                      // 31
-    data object GreaterEqual : Token()                     // 32
-    data object GreaterGreater : Token()                   // 33
-    data object GreaterGreaterEqual : Token()              // 34
-    data object Dedent : Token()                           // 35
+    object Newline : Token()                               // 0
+    object BangEqual : Token()                             // 1
+    object Percent : Token()                               // 2
+    object PercentEqual : Token()                          // 3
+    object Ampersand : Token()                             // 4
+    object AmpersandEqual : Token()                        // 5
+    object OpeningRound : Token()                          // 6
+    object ClosingRound : Token()                          // 7
+    object Star : Token()                                  // 8
+    object StarStar : Token()                              // 9
+    object StarEqual : Token()                             // 10
+    object Plus : Token()                                  // 11
+    object PlusEqual : Token()                             // 12
+    object Comma : Token()                                 // 13
+    object Minus : Token()                                 // 14
+    object MinusEqual : Token()                            // 15
+    object MinusGreater : Token()                          // 16
+    object Dot : Token()                                   // 17
+    object Ellipsis : Token()                              // 18
+    object Slash : Token()                                 // 19
+    object SlashSlash : Token()                            // 20
+    object SlashSlashEqual : Token()                       // 21
+    object SlashEqual : Token()                            // 22
+    object Colon : Token()                                 // 23
+    object Semicolon : Token()                             // 24
+    object LessThan : Token()                              // 25
+    object LessLess : Token()                              // 26
+    object LessLessEqual : Token()                         // 27
+    object LessEqual : Token()                             // 28
+    object Equal : Token()                                 // 29
+    object EqualEqual : Token()                            // 30
+    object GreaterThan : Token()                           // 31
+    object GreaterEqual : Token()                          // 32
+    object GreaterGreater : Token()                        // 33
+    object GreaterGreaterEqual : Token()                   // 34
+    object Dedent : Token()                                // 35
     data class FloatToken(val value: Double) : Token()     // 36
     data class FStringToken(val value: TokenFString) : Token() // 37
     data class Identifier(val name: String) : Token()      // 38
-    data object Indent : Token()                           // 39
+    object Indent : Token()                                // 39
     data class IntToken(val value: TokenInt) : Token()     // 40
     data class StringToken(val value: String) : Token()    // 41
-    data object OpeningSquare : Token()                    // 42
-    data object ClosingSquare : Token()                    // 43
-    data object Caret : Token()                            // 44
-    data object CaretEqual : Token()                       // 45
-    data object And : Token()                              // 46
-    data object Break : Token()                            // 47
-    data object Continue : Token()                         // 48
-    data object Def : Token()                              // 49
-    data object Elif : Token()                             // 50
-    data object Else : Token()                             // 51
-    data object For : Token()                              // 52
-    data object If : Token()                               // 53
-    data object In : Token()                               // 54
-    data object Lambda : Token()                           // 55
-    data object Load : Token()                             // 56
-    data object Not : Token()                              // 57
-    data object Or : Token()                               // 58
-    data object Pass : Token()                             // 59
-    data object Return : Token()                           // 60
-    data object OpeningCurly : Token()                     // 61
-    data object Pipe : Token()                             // 62
-    data object PipeEqual : Token()                        // 63
-    data object ClosingCurly : Token()                     // 64
-    data object Tilde : Token()                            // 65
+    object OpeningSquare : Token()                         // 42
+    object ClosingSquare : Token()                         // 43
+    object Caret : Token()                                 // 44
+    object CaretEqual : Token()                            // 45
+    object And : Token()                                   // 46
+    object Break : Token()                                 // 47
+    object Continue : Token()                              // 48
+    object Def : Token()                                   // 49
+    object Elif : Token()                                  // 50
+    object Else : Token()                                  // 51
+    object For : Token()                                   // 52
+    object If : Token()                                    // 53
+    object In : Token()                                    // 54
+    object Lambda : Token()                                // 55
+    object Load : Token()                                  // 56
+    object Not : Token()                                   // 57
+    object Or : Token()                                    // 58
+    object Pass : Token()                                  // 59
+    object Return : Token()                                // 60
+    object OpeningCurly : Token()                          // 61
+    object Pipe : Token()                                  // 62
+    object PipeEqual : Token()                             // 63
+    object ClosingCurly : Token()                          // 64
+    object Tilde : Token()                                 // 65
 
     // Non-grammar tokens (not in the LR tables, consumed by lexer internally)
     data class Comment(val text: String) : Token()
-    data object Reserved : Token()
+    object Reserved : Token()
 
     /** Convert this token to the integer index used by the LR parser tables.
      *  These indices MUST match the LALRPOP-generated __token_to_integer mapping
