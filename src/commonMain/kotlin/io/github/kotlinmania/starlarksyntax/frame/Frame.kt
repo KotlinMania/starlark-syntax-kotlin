@@ -63,7 +63,7 @@ data class Frame(
     }
 }
 
-private fun truncateSnippet(snippet: String, maxLen: Int): Pair<String, String> {
+internal fun truncateSnippet(snippet: String, maxLen: Int): Pair<String, String> {
     val ddd = "..."
     check(maxLen >= ddd.length)
     val split = splitAt(snippet, CharIndex(maxLen - ddd.length))
