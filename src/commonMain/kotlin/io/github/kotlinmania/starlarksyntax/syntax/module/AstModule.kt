@@ -87,12 +87,10 @@ class AstModule internal constructor(
          * Validate a parsed [AstStmt] root and wrap it in an [AstModule], or return the
          * first validation error.
          *
-         * The parser is provided by the consuming project (this artifact does not yet
-         * include grammar codegen). Once a Kotlin port of the LALRPOP parser is wired
-         * here, an `AstModule.parse(filename, content, dialect)` companion will call
-         * this helper with the parser output.
+         * Internal until the LALRPOP parser is ported here — at that point a public
+         * `parse(filename, content, dialect)` companion will call this helper.
          */
-        fun fromStatement(
+        internal fun fromStatement(
             codemap: CodeMap,
             statement: AstStmt,
             dialect: Dialect,
