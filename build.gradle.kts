@@ -99,7 +99,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
-                implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.8")
+                implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
                 implementation("com.ionspin.kotlin:bignum:0.3.10")
                 implementation("io.github.kotlinmania:starlarkmap-kotlin:0.1.2")
             }
