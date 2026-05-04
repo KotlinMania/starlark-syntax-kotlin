@@ -1,0 +1,13 @@
+version: 2
+updates:
+  # Gradle / Kotlin Multiplatform plugin and dependency updates.
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+
+  # GitHub Actions used in workflows under .github/workflows/.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
