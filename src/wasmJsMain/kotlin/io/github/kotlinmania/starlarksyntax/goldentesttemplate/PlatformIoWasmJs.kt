@@ -1,4 +1,5 @@
 // port-lint: source src/golden_test_template.rs
+@file:OptIn(kotlin.js.ExperimentalWasmJsInterop::class)
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 /*
