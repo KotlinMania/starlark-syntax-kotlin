@@ -95,12 +95,13 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.8.0")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:1.11.0")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.7.1")
                 implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
                 implementation("com.ionspin.kotlin:bignum:0.3.10")
                 implementation("io.github.kotlinmania:starlarkmap-kotlin:0.1.2")
+                implementation("io.github.kotlinmania:lalrpop-kotlin:0.1.6")
             }
         }
 
