@@ -18,11 +18,10 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  * limitations under the License.
  */
 
-internal actual fun platformGetEnv(name: String): String? = kotlin.system.getenv(name)
+internal actual fun platformGetEnv(name: String): String? = System.getenv(name)
 
 internal actual fun platformReadUtf8File(path: String): String {
     return java.io.File(path).readText()
 }
 
 internal actual fun platformIsWindows(): Boolean = false
-

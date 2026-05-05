@@ -1,4 +1,5 @@
 // port-lint: source src/golden_test_template.rs
+@file:OptIn(kotlin.js.ExperimentalWasmJsInterop::class)
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 /*
@@ -18,26 +19,17 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  * limitations under the License.
  */
 
-private fun nodeRequire(name: String): dynamic = js("require")(name)
+private fun getEnvVar(name: String): String? =
+    js("(typeof process !== 'undefined' && process.env && process.env[name] !== undefined ? String(process.env[name]) : null)")
 
-internal actual fun platformGetEnv(name: String): String? {
-    val process: dynamic = js("process")
-    val env: dynamic = process?.env
-    val v: dynamic =
-        if (env == null || jsTypeOf(env) == "undefined") {
-            null
-        } else {
-            env[name]
-        }
-    return if (v == null || jsTypeOf(v) == "undefined") null else v.toString()
-}
+private fun readFileSyncUtf8(path: String): String =
+    js("require('fs').readFileSync(path, 'utf8')")
 
-internal actual fun platformReadUtf8File(path: String): String {
-    val fs: dynamic = nodeRequire("fs")
-    return fs.readFileSync(path, "utf8").toString()
-}
+private fun checkIsWindows(): Boolean =
+    js("typeof process !== 'undefined' && process.platform === 'win32'")
 
-internal actual fun platformIsWindows(): Boolean {
-    val process: dynamic = js("process")
-    return (process?.platform as String?) == "win32"
-}
+internal actual fun platformGetEnv(name: String): String? = getEnvVar(name)
+
+internal actual fun platformReadUtf8File(path: String): String = readFileSyncUtf8(path)
+
+internal actual fun platformIsWindows(): Boolean = checkIsWindows()
