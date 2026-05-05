@@ -45,6 +45,12 @@ kotlin {
             xcf.add(this)
         }
     }
+    macosX64 {
+        binaries.framework {
+            baseName = "StarlarkSyntax"
+            xcf.add(this)
+        }
+    }
     linuxX64()
     mingwX64()
     iosArm64 {
@@ -73,6 +79,11 @@ kotlin {
     wasmJs {
         browser()
         nodejs()
+    }
+
+    swiftExport {
+        moduleName = "StarlarkSyntax"
+        flattenPackage = "io.github.kotlinmania.starlarksyntax"
     }
 
     android {
