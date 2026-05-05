@@ -4,28 +4,28 @@ Based on AST analysis, here are the concrete next steps.
 
 ## Summary
 
-- **Files Present:** 27/37 (73.0%)
-- **Function parity:** 223/387 matched (target 394) — 57.6%
-- **Class/type parity:** 121/142 matched (target 294) — 85.2%
-- **Combined symbol parity:** 344/529 matched (target 688) — 65.0%
-- **Average inline-code cosine:** 0.49 (function body across 24 matched files)
-- **Average documentation cosine:** 0.84 (doc text across 24 matched files)
-- **Cheat-zeroed Files:** 10
-- **Critical Issues:** 16 files with <0.60 function similarity
+- **Files Present:** 32/37 (86.5%)
+- **Function parity:** 240/387 matched (target 458) — 62.0%
+- **Class/type parity:** 125/142 matched (target 320) — 88.0%
+- **Combined symbol parity:** 365/529 matched (target 778) — 69.0%
+- **Average inline-code cosine:** 0.51 (function body across 27 matched files)
+- **Average documentation cosine:** 0.84 (doc text across 27 matched files)
+- **Cheat-zeroed Files:** 12
+- **Critical Issues:** 19 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
 ### 1. codemap
-- **Similarity:** 0.70 (needs 15% improvement)
+- **Similarity:** 0.75 (needs 10% improvement)
 - **Dependencies:** 14
-- **Priority Score:** 14057303.0
-- **Functions:** 53/56 matched (target 97)
-- **Missing functions:** `len`, `fmt`, `from`
+- **Priority Score:** 14047302.0
+- **Functions:** 54/56 matched (target 103)
+- **Missing functions:** `len`, `from`
 - **Types:** 15/17 matched (target 18)
 - **Missing types:** `Output`, `Target`
-- **Symbol Deficit:** 5 (functions: 3, types: 2)
+- **Symbol Deficit:** 4 (functions: 2, types: 2)
 - **Missing Tests:** 1 of 10 `#[test]` functions have no Kotlin counterpart
-- **Action:** Review and complete missing sections
+- **Action:** Minor refinements needed
 
 ## Priority 2: Port Missing High-Value Files
 
@@ -40,11 +40,11 @@ Every matched file is listed below with function and type symbol parity.
 ### 1. codemap
 
 - **Target:** `codemap.CodeMap`
-- **Similarity:** 0.70
+- **Similarity:** 0.75
 - **Dependents:** 14
-- **Priority Score:** 14057303.0
-- **Functions:** 53/56 matched (target 97)
-- **Missing functions:** `len`, `fmt`, `from`
+- **Priority Score:** 14047302.0
+- **Functions:** 54/56 matched (target 103)
+- **Missing functions:** `len`, `from`
 - **Types:** 15/17 matched (target 18)
 - **Missing types:** `Output`, `Target`
 - **Tests:** 9/10 matched
@@ -97,33 +97,55 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched
 - **Missing types:** _none_
 
-### 6. lexer
+### 6. golden_test_template
+
+- **Target:** `goldentesttemplate.PlatformIoJs [STUB]`
+- **Similarity:** 0.00
+- **Dependents:** 3
+- **Priority Score:** 3000210.0
+- **Functions:** 2/2 matched (target 17)
+- **Missing functions:** _none_
+- **Types:** 0/0 matched
+- **Missing types:** _none_
+
+### 7. lexer
 
 - **Target:** `lexer.Lexer [ZERO] [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.00
 - **Dependents:** 2
-- **Priority Score:** 2152910.0
-- **Functions:** 9/21 matched (target 32)
-- **Missing functions:** `from`, `map_lexeme_t`, `new`, `err_now`, `make_comment`, `wrap`, `string`, `int`, `parse_double_quoted_string`, `parse_single_quoted_string`, `unlex`, `fmt`
-- **Types:** 5/8 matched (target 88)
-- **Missing types:** `LexemeT`, `Lexeme`, `Item`
+- **Priority Score:** 2052910.0
+- **Functions:** 17/21 matched (target 58)
+- **Missing functions:** `from`, `new`, `unlex`, `fmt`
+- **Types:** 7/8 matched (target 102)
+- **Missing types:** `Item`
 - **Tests:** 1/2 matched
 - **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:lexer.rs` vs expected `lexer.rs`
 - **Proposed provenance header:** `// port-lint: tests lexer.rs` (current: `// port-lint: tests lexer.rs`)
-- **Lint issues:** 2
+- **Lint issues:** 1
 
-### 7. error
+### 8. error
 
 - **Target:** `error.Error`
 - **Similarity:** 0.52
 - **Dependents:** 2
 - **Priority Score:** 2022904.8
-- **Functions:** 24/25 matched (target 32)
+- **Functions:** 24/25 matched (target 33)
 - **Missing functions:** `fmt`
 - **Types:** 3/4 matched (target 14)
 - **Missing types:** `Wrapped`
 
-### 8. syntax.parse_error
+### 9. syntax.parser
+
+- **Target:** `parser.Parser`
+- **Similarity:** 1.00
+- **Dependents:** 2
+- **Priority Score:** 2010200.0
+- **Functions:** 0/0 matched
+- **Missing functions:** _none_
+- **Types:** 1/2 matched (target 4)
+- **Missing types:** `Parser`
+
+### 10. syntax.parse_error
 
 - **Target:** `parseerror.ParseError`
 - **Similarity:** 0.87
@@ -134,7 +156,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched (target 3)
 - **Missing types:** _none_
 
-### 9. syntax.ast_load
+### 11. syntax.ast_load
 
 - **Target:** `astload.AstLoad`
 - **Similarity:** 1.00
@@ -145,7 +167,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched
 - **Missing types:** _none_
 
-### 10. syntax.lint_suppressions
+### 12. syntax.lint_suppressions
 
 - **Target:** `lintsuppressions.LintSuppressions [ZERO]`
 - **Similarity:** 0.00
@@ -156,7 +178,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 4/4 matched
 - **Missing types:** _none_
 
-### 11. syntax.type_expr
+### 13. syntax.type_expr
 
 - **Target:** `typeexpr.TypeExpr [STUB]`
 - **Similarity:** 0.00
@@ -168,7 +190,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** _none_
 - **TODOs:** 2
 
-### 12. frame
+### 14. frame
 
 - **Target:** `frame.Frame [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.54
@@ -183,7 +205,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Proposed provenance header:** `// port-lint: tests frame.rs` (current: `// port-lint: tests frame.rs`)
 - **Lint issues:** 1
 
-### 13. convert_indices
+### 15. convert_indices
 
 - **Target:** `convertindices.ConvertIndices`
 - **Similarity:** 0.75
@@ -194,7 +216,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched
 - **Missing types:** _none_
 
-### 14. span_display
+### 16. span_display
 
 - **Target:** `spandisplay.SpanDisplay [ZERO]`
 - **Similarity:** 0.00
@@ -205,7 +227,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched (target 6)
 - **Missing types:** _none_
 
-### 15. syntax.def
+### 17. syntax.def
 
 - **Target:** `def.Def`
 - **Similarity:** 0.18
@@ -217,7 +239,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** _none_
 - **Tests:** 0/15 matched
 
-### 16. syntax.module
+### 18. syntax.module
 
 - **Target:** `module.AstModule [ZERO]`
 - **Similarity:** 0.00
@@ -229,7 +251,18 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** `AstModuleFields`
 - **Tests:** 0/2 matched
 
-### 17. syntax.ast
+### 19. slice_vec_ext
+
+- **Target:** `slicevecext.SliceVecExt [ZERO]`
+- **Similarity:** 0.00
+- **Dependents:** 0
+- **Priority Score:** 70810.0
+- **Functions:** 1/5 matched (target 7)
+- **Missing functions:** `map`, `try_map`, `into_map`, `into_try_map`
+- **Types:** 0/3 matched (target 0)
+- **Missing types:** `SliceExt`, `Item`, `VecExt`
+
+### 20. syntax.ast
 
 - **Target:** `ast.Ast [STUB]`
 - **Similarity:** 0.00
@@ -241,7 +274,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** `LoadPayload`, `IdentPayload`, `IdentAssignPayload`, `DefPayload`, `TypeExprPayload`, `ToAst`
 - **TODOs:** 2
 
-### 18. dot_format_parser
+### 21. dot_format_parser
 
 - **Target:** `dotformatparser.DotFormatParser [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.54
@@ -256,7 +289,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Proposed provenance header:** `// port-lint: tests dot_format_parser.rs` (current: `// port-lint: tests dot_format_parser.rs`)
 - **Lint issues:** 1
 
-### 19. diagnostic
+### 22. diagnostic
 
 - **Target:** `diagnostic.Diagnostic`
 - **Similarity:** 0.56
@@ -267,18 +300,18 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 3/3 matched
 - **Missing types:** _none_
 
-### 20. cursors
+### 23. cursors
 
 - **Target:** `cursors.Cursors`
-- **Similarity:** 0.16
+- **Similarity:** 0.23
 - **Dependents:** 0
-- **Priority Score:** 20908.4
-- **Functions:** 5/7 matched
-- **Missing functions:** `new`, `new_offset`
+- **Priority Score:** 10907.7
+- **Functions:** 6/7 matched (target 9)
+- **Missing functions:** `new`
 - **Types:** 2/2 matched
 - **Missing types:** _none_
 
-### 21. syntax.uniplate
+### 24. syntax.uniplate
 
 - **Target:** `uniplate.Uniplate [ZERO]`
 - **Similarity:** 0.00
@@ -289,7 +322,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 2/2 matched (target 4)
 - **Missing types:** _none_
 
-### 22. syntax.grammar_util
+### 25. syntax.grammar_util
 
 - **Target:** `parser.GrammarUtil [STUB]`
 - **Similarity:** 0.00
@@ -301,7 +334,22 @@ Every matched file is listed below with function and type symbol parity.
 - **Missing types:** _none_
 - **TODOs:** 1
 
-### 23. syntax.validate
+### 26. syntax.parser_lalrpop
+
+- **Target:** `parser.ParserLalrpop [PROVENANCE-FALLBACK]`
+- **Similarity:** 0.79
+- **Dependents:** 0
+- **Priority Score:** 502.1
+- **Functions:** 4/4 matched (target 5)
+- **Missing functions:** _none_
+- **Types:** 1/1 matched (target 8)
+- **Missing types:** _none_
+- **Tests:** 1/1 matched
+- **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:syntax/parser_lalrpop.rs` vs expected `syntax/parser_lalrpop.rs`
+- **Proposed provenance header:** `// port-lint: tests syntax/parser_lalrpop.rs` (current: `// port-lint: tests syntax/parser_lalrpop.rs`)
+- **Lint issues:** 1
+
+### 27. syntax.validate
 
 - **Target:** `validate.Validate`
 - **Similarity:** 0.86
@@ -312,7 +360,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched
 - **Missing types:** _none_
 
-### 24. syntax.top_level_stmts
+### 28. syntax.top_level_stmts
 
 - **Target:** `toplevelstmts.TopLevelStmts`
 - **Similarity:** 0.84
@@ -323,7 +371,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 0/0 matched
 - **Missing types:** _none_
 
-### 25. syntax.call
+### 29. syntax.call
 
 - **Target:** `call.Call`
 - **Similarity:** 0.91
@@ -334,7 +382,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 2/2 matched
 - **Missing types:** _none_
 
-### 26. syntax.payload_map
+### 30. syntax.payload_map
 
 - **Target:** `payloadmap.PayloadMap [ZERO]`
 - **Similarity:** 0.00
@@ -345,7 +393,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched
 - **Missing types:** _none_
 
-### 27. syntax.state
+### 31. syntax.state
 
 - **Target:** `state.ParserState`
 - **Similarity:** 0.85
@@ -354,6 +402,17 @@ Every matched file is listed below with function and type symbol parity.
 - **Functions:** 1/1 matched
 - **Missing functions:** _none_
 - **Types:** 1/1 matched
+- **Missing types:** _none_
+
+### 32. syntax
+
+- **Target:** `syntax.Syntax [STUB]`
+- **Similarity:** 1.00
+- **Dependents:** 0
+- **Priority Score:** 0.0
+- **Functions:** 0/0 matched
+- **Missing functions:** _none_
+- **Types:** 0/0 matched
 - **Missing types:** _none_
 
 ## Success Criteria
@@ -370,7 +429,7 @@ For each file to be considered "complete":
 ```bash
 # Initialize task queue for systematic porting
 cd tools/ast_distance
-./ast_distance --init-tasks ../../tmp/starlark_syntax rust ../../src/commonMain/kotlin/io/github/kotlinmania/starlarksyntax kotlin tasks.json ../../AGENTS.md
+./ast_distance --init-tasks ../../tmp/starlark_syntax rust ../../src kotlin tasks.json ../../AGENTS.md
 
 # Get next high-priority task
 ./ast_distance --assign tasks.json <agent-id>
