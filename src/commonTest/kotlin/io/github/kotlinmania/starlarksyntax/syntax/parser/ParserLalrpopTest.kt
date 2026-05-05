@@ -18,7 +18,9 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
  * limitations under the License.
  */
 
+import io.github.kotlinmania.lalrpop.runtime.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -30,7 +32,7 @@ class ParserLalrpopTest {
         val codemap = CodeMap.new("test.bzl", "pass")
 
         fun assertParseError(
-            parseError: LalrpopParseError,
+            parseError: LuParseError<Int, Token, EvalException>,
             eofPos: Int,
             wantMessage: String,
             wantSpan: String,
@@ -41,23 +43,22 @@ class ParserLalrpopTest {
         }
 
         assertParseError(
-            LalrpopParseError.InvalidToken(location = 2),
+            LuParseError.InvalidToken(location = 2),
             4,
             "Parse error: invalid token",
             "test.bzl:1:3",
         )
         assertParseError(
-            LalrpopParseError.UnrecognizedEof(location = 1, expected = emptyList()),
+            LuParseError.UnrecognizedEof(location = 1, expected = emptyList()),
             4,
             "Parse error: unexpected end of file",
             "test.bzl:1:5",
         )
         assertParseError(
-            LalrpopParseError.ExtraToken(token = Triple(1, Token.ClosingRound, 2)),
+            LuParseError.ExtraToken(token = Triple(1, Token.ClosingRound, 2)),
             4,
             "Parse error: extraneous token symbol ')'",
             "test.bzl:1:2-3",
         )
     }
 }
-
