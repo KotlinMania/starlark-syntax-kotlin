@@ -18,3 +18,17 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "starlark-syntax"
+
+// Until these sibling ports publish (or if Maven resolution is unavailable
+// locally), build them from adjacent checkouts and substitute them for the
+// Maven coordinates used in build.gradle.kts.
+includeBuild("../starlarkmap-kotlin") {
+    dependencySubstitution {
+        substitute(module("io.github.kotlinmania:starlarkmap-kotlin")).using(project(":"))
+    }
+}
+includeBuild("../lalrpop-kotlin") {
+    dependencySubstitution {
+        substitute(module("io.github.kotlinmania:lalrpop-kotlin")).using(project(":"))
+    }
+}
