@@ -147,17 +147,21 @@ private fun formatSnippet(snippet: Snippet): String {
     }
     for (slice in snippet.slices) {
         if (slice.origin != null) {
-            out.append("  --> ").append(slice.origin)
+            out.append(" --> ").append(slice.origin)
                 .append(':').append(slice.lineStart)
             if (slice.annotations.isNotEmpty()) {
                 out.append(':').append(slice.annotations[0].range.first + 1)
             }
             out.append('\n')
         }
-        val lines = slice.source.split('\n')
+        var lines = slice.source.split('\n')
+        if (lines.size > 1 && lines.last().isEmpty()) {
+            // Match annotate-snippets behavior: a trailing newline does not introduce an extra empty line.
+            lines = lines.dropLast(1)
+        }
         var lineNo = slice.lineStart
         val lineNoWidth = (lineNo + lines.size).toString().length
-        out.append(" ".repeat(lineNoWidth)).append(" |").append('\n')
+        out.append(" ".repeat(lineNoWidth + 1)).append('|').append('\n')
         for (line in lines) {
             out.append(lineNo.toString().padStart(lineNoWidth)).append(" | ").append(line).append('\n')
             lineNo += 1
@@ -165,7 +169,7 @@ private fun formatSnippet(snippet: Snippet): String {
         for (annotation in slice.annotations) {
             val (start, end) = annotation.range
             val caretCount = (end - start).coerceAtLeast(1)
-            out.append(" ".repeat(lineNoWidth)).append(" | ")
+            out.append(" ".repeat(lineNoWidth + 1)).append("| ")
                 .append(" ".repeat(start))
                 .append("^".repeat(caretCount))
             if (annotation.label.isNotEmpty()) {
@@ -173,6 +177,7 @@ private fun formatSnippet(snippet: Snippet): String {
             }
             out.append('\n')
         }
+        out.append(" ".repeat(lineNoWidth + 1)).append('|').append('\n')
     }
     for (footer in snippet.footer) {
         out.append(footer.annotationType.label())
@@ -180,6 +185,9 @@ private fun formatSnippet(snippet: Snippet): String {
             out.append(": ").append(footer.label)
         }
         out.append('\n')
+    }
+    if (out.isNotEmpty() && out.last() == '\n') {
+        out.setLength(out.length - 1)
     }
     return out.toString()
 }

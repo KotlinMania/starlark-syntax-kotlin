@@ -22,9 +22,13 @@ package io.github.kotlinmania.starlarksyntax.lexer
 import com.ionspin.kotlin.bignum.integer.BigInteger
 
 sealed class TokenInt {
-    data class I32(val value: Int) : TokenInt()
+    data class I32(val value: Int) : TokenInt() {
+        override fun toString(): String = super.toString()
+    }
     /** Only if larger than `i32`. */
-    data class BigInt(val value: BigInteger) : TokenInt()
+    data class BigInt(val value: BigInteger) : TokenInt() {
+        override fun toString(): String = super.toString()
+    }
 
     override fun toString(): String = when (this) {
         is I32 -> value.toString()
@@ -90,12 +94,25 @@ sealed class Token {
     object GreaterGreater : Token()                        // 33
     object GreaterGreaterEqual : Token()                   // 34
     object Dedent : Token()                                // 35
-    data class FloatToken(val value: Double) : Token()     // 36
-    data class FStringToken(val value: TokenFString) : Token() // 37
-    data class Identifier(val name: String) : Token()      // 38
+    data class FloatToken(val value: Double) : Token() {     // 36
+        override fun toString(): String = super.toString()
+    }
+
+    data class FStringToken(val value: TokenFString) : Token() { // 37
+        override fun toString(): String = super.toString()
+    }
+
+    data class Identifier(val name: String) : Token() {      // 38
+        override fun toString(): String = super.toString()
+    }
     object Indent : Token()                                // 39
-    data class IntToken(val value: TokenInt) : Token()     // 40
-    data class StringToken(val value: String) : Token()    // 41
+    data class IntToken(val value: TokenInt) : Token() {     // 40
+        override fun toString(): String = super.toString()
+    }
+
+    data class StringToken(val value: String) : Token() {    // 41
+        override fun toString(): String = super.toString()
+    }
     object OpeningSquare : Token()                         // 42
     object ClosingSquare : Token()                         // 43
     object Caret : Token()                                 // 44
@@ -122,7 +139,9 @@ sealed class Token {
     object Tilde : Token()                                 // 65
 
     // Non-grammar tokens (not in the LR tables, consumed by lexer internally)
-    data class Comment(val text: String) : Token()
+    data class Comment(val text: String) : Token() {
+        override fun toString(): String = super.toString()
+    }
     object Reserved : Token()
     object Tabs : Token()
     object RawSingleQuote : Token()
@@ -284,7 +303,7 @@ sealed class Token {
         is Identifier -> "identifier '$name'"
         is IntToken -> "integer literal '$value'"
         is FloatToken -> "float literal '$value'"
-        is StringToken -> "string literal \"$value\""
+        is StringToken -> "string literal ${rustDebugString(value)}"
         is RawSingleQuote -> "starting '"
         is RawDoubleQuote -> "starting \""
         is RawFStringDoubleQuote -> "starting f'"
@@ -293,10 +312,35 @@ sealed class Token {
         is RawHexInt -> "hexadecimal integer literal"
         is RawOctInt -> "octal integer literal"
         is RawBinInt -> "binary integer literal"
-        is FStringToken -> "f-string \"${value.content}\""
+        is FStringToken -> "f-string ${rustDebugString(value.content)}"
         is Comment -> "comment '$text'"
         is Tabs -> ""
     }
+}
+
+private fun rustDebugString(value: String): String {
+    val out = StringBuilder()
+    out.append('"')
+    for (ch in value) {
+        when (ch) {
+            '\\' -> out.append("\\\\")
+            '"' -> out.append("\\\"")
+            '\n' -> out.append("\\n")
+            '\r' -> out.append("\\r")
+            '\t' -> out.append("\\t")
+            '\u0000' -> out.append("\\0")
+            else -> {
+                val code = ch.code
+                if (code < 0x20 || code == 0x7f) {
+                    out.append("\\u{").append(code.toString(16)).append('}')
+                } else {
+                    out.append(ch)
+                }
+            }
+        }
+    }
+    out.append('"')
+    return out.toString()
 }
 
 /** The set of reserved keywords that cannot be used as identifiers. */

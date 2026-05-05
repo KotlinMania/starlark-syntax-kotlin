@@ -62,9 +62,40 @@ fun goldenTestTemplate(goldenRelPath: String, output: String) {
         // We could configure git, but it's more reliable to handle it in the test.
         expected = expected.replace("\r\n", "\n")
     }
-    check(expected == outputWithPrefix) {
-        "Golden file mismatch for `$goldenFilePath`.\n" +
-            "Set $REGENERATE_VAR_NAME in upstream Rust to regenerate."
+    if (expected != outputWithPrefix) {
+        fun snippet(label: String, text: String, startLine: Int, endLine: Int): String {
+            val lines = text.split('\n')
+            val lo = startLine.coerceAtLeast(1)
+            val hi = endLine.coerceAtMost(lines.size)
+            val out = StringBuilder()
+            out.appendLine("$label (lines $lo..$hi):")
+            for (i in lo..hi) {
+                out.appendLine("${i.toString().padStart(4, ' ')}|${lines[i - 1]}")
+            }
+            return out.toString()
+        }
+
+        val expectedLines = expected.split('\n')
+        val actualLines = outputWithPrefix.split('\n')
+        val max = maxOf(expectedLines.size, actualLines.size)
+        var firstDiff = 1
+        while (firstDiff <= max) {
+            val e = expectedLines.getOrNull(firstDiff - 1)
+            val a = actualLines.getOrNull(firstDiff - 1)
+            if (e != a) break
+            firstDiff++
+        }
+
+        val context = 6
+        val start = (firstDiff - context).coerceAtLeast(1)
+        val end = firstDiff + context
+        val message =
+            "Golden file mismatch for `$goldenFilePath` at line $firstDiff.\n" +
+                "Set $REGENERATE_VAR_NAME in upstream Rust to regenerate.\n\n" +
+                snippet("Expected", expected, start, end) +
+                "\n" +
+                snippet("Actual", outputWithPrefix, start, end)
+        throw IllegalStateException(message)
     }
 }
 
@@ -73,4 +104,3 @@ internal expect fun platformGetEnv(name: String): String?
 internal expect fun platformReadUtf8File(path: String): String
 
 internal expect fun platformIsWindows(): Boolean
-

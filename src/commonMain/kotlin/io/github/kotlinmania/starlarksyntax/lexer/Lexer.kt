@@ -320,6 +320,8 @@ internal class Lexer(
         triple: Boolean,
         raw: Boolean,
         stop: (Int) -> Boolean,
+        tripleQuoteState: IntArray? = null,
+        tripleQuoteChar: Int? = null,
     ): LexemeT<Pair<String, Int>> {
         // We have seen an opening quote, which is either ' or ".
         // If triple is true, it was a triple quote.
@@ -367,6 +369,15 @@ internal class Lexer(
         while (true) {
             val c = itSlow.next() ?: break
             if (stop(c)) {
+                if (tripleQuoteState != null && tripleQuoteChar != null && itSlow.peek() == tripleQuoteChar) {
+                    // More than three quotes in a row: treat the first N-3 quotes as content and the
+                    // last three as the terminator. On the third quote, if another quote follows,
+                    // emit one quote as content and keep scanning.
+                    if (out.isNotEmpty()) out.setLength(out.length - 1)
+                    out.appendCodePoint(tripleQuoteChar)
+                    tripleQuoteState[0] = 2
+                    continue
+                }
                 lexer.bump(itSlow.pos())
                 if (triple) {
                     if (out.length >= 2) {
@@ -553,19 +564,21 @@ internal class Lexer(
 
     private fun parseDoubleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? {
         return if (lexer.remainder().startsWith("\"\"")) {
-            var qs = 0
+            val qs = IntArray(1)
             string(
                 triple = true,
                 raw = raw,
                 stop = { c ->
                     if (c == '"'.code) {
-                        qs += 1
-                        qs == 3
+                        qs[0] += 1
+                        qs[0] == 3
                     } else {
-                        qs = 0
+                        qs[0] = 0
                         false
                     }
                 },
+                tripleQuoteState = qs,
+                tripleQuoteChar = '"'.code,
             )
         } else {
             string(triple = false, raw = raw, stop = { c -> c == '"'.code })
@@ -574,19 +587,21 @@ internal class Lexer(
 
     private fun parseSingleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? {
         return if (lexer.remainder().startsWith("''")) {
-            var qs = 0
+            val qs = IntArray(1)
             string(
                 triple = true,
                 raw = raw,
                 stop = { c ->
                     if (c == '\''.code) {
-                        qs += 1
-                        qs == 3
+                        qs[0] += 1
+                        qs[0] == 3
                     } else {
-                        qs = 0
+                        qs[0] = 0
                         false
                     }
                 },
+                tripleQuoteState = qs,
+                tripleQuoteChar = '\''.code,
             )
         } else {
             string(triple = false, raw = raw, stop = { c -> c == '\''.code })
@@ -849,11 +864,22 @@ private class TokenLexer(private val source: String) {
         val hasDot = pos < utf8.byteLen && utf8.byteAt(pos) == '.'.code
         val hasExp = pos < utf8.byteLen && (utf8.byteAt(pos) == 'e'.code || utf8.byteAt(pos) == 'E'.code)
         if (hasDot || hasExp) {
+            val intEnd = pos
             if (hasDot) {
                 pos += 1
                 while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
             }
+            val beforeExp = pos
             scanExponentIfPresent()
+
+            // If we only saw an exponent marker with no exponent digits (e.g., `2else`),
+            // then this is not a float literal.
+            if (!hasDot && hasExp && pos == beforeExp) {
+                pos = intEnd
+                finishSlice(start)
+                return Token.RawDecInt
+            }
+
             finishSlice(start)
             val value = slice.toDoubleOrNull() ?: return null
             return Token.FloatToken(value)
@@ -864,11 +890,20 @@ private class TokenLexer(private val source: String) {
     }
 
     private fun scanExponentIfPresent() {
-        if (pos < utf8.byteLen && (utf8.byteAt(pos) == 'e'.code || utf8.byteAt(pos) == 'E'.code)) {
-            pos += 1
-            if (pos < utf8.byteLen && (utf8.byteAt(pos) == '+'.code || utf8.byteAt(pos) == '-'.code)) pos += 1
-            while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
+        if (pos >= utf8.byteLen) return
+        val b0 = utf8.byteAt(pos)
+        if (b0 != 'e'.code && b0 != 'E'.code) return
+
+        var probe = pos + 1
+        if (probe < utf8.byteLen) {
+            val b1 = utf8.byteAt(probe)
+            if (b1 == '+'.code || b1 == '-'.code) probe += 1
         }
+        // Reject `2else`-style tokens: exponent requires at least one digit.
+        if (probe >= utf8.byteLen || utf8.byteAt(probe) !in '0'.code..'9'.code) return
+
+        pos = probe
+        while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
     }
 
     private fun finishSlice(start: Int) {
