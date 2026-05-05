@@ -36,32 +36,83 @@ class CursorBytes(private val source: String) {
 }
 
 class CursorChars(
-    private val source: String,
+    private val bytes: ByteArray,
     private var offset: Int,
 ) {
-    fun next(): Char? {
-        if (offset >= source.length) return null
-        val c = source[offset]
-        // Detect surrogate pair so positions advance the same number of UTF-16 units
-        // the underlying char occupies.
-        offset += if (c.isHighSurrogate() && offset + 1 < source.length && source[offset + 1].isLowSurrogate()) 2 else 1
-        return c
+    companion object {
+        fun newOffset(source: String, offset: Int): CursorChars {
+            return CursorChars(source.encodeToByteArray(), offset)
+        }
+    }
+
+    fun next(): Int? {
+        if (offset >= bytes.size) return null
+        val b0 = bytes[offset].toInt() and 0xff
+        val (codePoint, size) =
+            when {
+                b0 and 0b1000_0000 == 0 -> Pair(b0, 1)
+                b0 and 0b1110_0000 == 0b1100_0000 -> {
+                    if (offset + 1 >= bytes.size) return null
+                    val b1 = bytes[offset + 1].toInt() and 0xff
+                    Pair(((b0 and 0b0001_1111) shl 6) or (b1 and 0b0011_1111), 2)
+                }
+                b0 and 0b1111_0000 == 0b1110_0000 -> {
+                    if (offset + 2 >= bytes.size) return null
+                    val b1 = bytes[offset + 1].toInt() and 0xff
+                    val b2 = bytes[offset + 2].toInt() and 0xff
+                    Pair(
+                        ((b0 and 0b0000_1111) shl 12) or
+                            ((b1 and 0b0011_1111) shl 6) or
+                            (b2 and 0b0011_1111),
+                        3,
+                    )
+                }
+                b0 and 0b1111_1000 == 0b1111_0000 -> {
+                    if (offset + 3 >= bytes.size) return null
+                    val b1 = bytes[offset + 1].toInt() and 0xff
+                    val b2 = bytes[offset + 2].toInt() and 0xff
+                    val b3 = bytes[offset + 3].toInt() and 0xff
+                    Pair(
+                        ((b0 and 0b0000_0111) shl 18) or
+                            ((b1 and 0b0011_1111) shl 12) or
+                            ((b2 and 0b0011_1111) shl 6) or
+                            (b3 and 0b0011_1111),
+                        4,
+                    )
+                }
+                else -> return null
+            }
+
+        offset += size
+        return codePoint
     }
 
     /**
      * Call `unnext` to put back a character you grabbed with next.
      * It is an error if the character isn't what you declared.
      */
-    fun unnext(c: Char) {
-        val width = if (c.isHighSurrogate()) 2 else 1
+    fun unnext(c: Int) {
+        val width = utf8Len(c)
         offset -= width
         check(peek() == c)
     }
 
-    fun peek(): Char? {
-        if (offset >= source.length) return null
-        return source[offset]
+    fun peek(): Int? {
+        if (offset >= bytes.size) return null
+        val saved = offset
+        val next = next()
+        offset = saved
+        return next
     }
 
     fun pos(): Int = offset
+}
+
+private fun utf8Len(codePoint: Int): Int {
+    return when {
+        codePoint <= 0x7f -> 1
+        codePoint <= 0x7ff -> 2
+        codePoint <= 0xffff -> 3
+        else -> 4
+    }
 }

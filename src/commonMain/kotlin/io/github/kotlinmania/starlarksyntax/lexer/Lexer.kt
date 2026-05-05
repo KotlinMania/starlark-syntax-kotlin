@@ -4,10 +4,9 @@ package io.github.kotlinmania.starlarksyntax.lexer
 /*
  * Copyright 2018 The Starlark in Rust Authors.
  * Copyright (c) Facebook, Inc. and its affiliates.
- * Copyright (c) 2025 Sydney Renee, The Solace Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not import this file except in compliance with the License.
+ * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
  *     https://www.apache.org/licenses/LICENSE-2.0
@@ -22,658 +21,1009 @@ package io.github.kotlinmania.starlarksyntax.lexer
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
+import io.github.kotlinmania.starlarksyntax.cursors.CursorBytes
+import io.github.kotlinmania.starlarksyntax.cursors.CursorChars
 import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.error.Error
+import io.github.kotlinmania.starlarksyntax.error.ErrorKind
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParseResult
 
 sealed class LexemeError(val message: String) {
     data object Indentation : LexemeError("Parse error: incorrect indentation")
     data class InvalidInput(val input: String) : LexemeError("Parse error: invalid input `$input`")
     data object InvalidTab : LexemeError("Parse error: tabs are not allowed")
     data object UnfinishedStringLiteral : LexemeError("Parse error: unfinished string literal")
-    data class InvalidEscapeSequence(val seq: String) : LexemeError("Parse error: invalid string escape sequence `$seq`")
-    data object EmptyEscapeSequence : LexemeError("Parse error: missing string escape sequence, only saw `\\`")
-    data class ReservedKeyword(val keyword: String) : LexemeError("Parse error: cannot use reserved keyword `$keyword`")
-    data class StartsZero(val literal: String) : LexemeError("Parse error: integer cannot have leading 0, got `$literal`")
-    data class IntParse(val literal: String) : LexemeError("Parse error: failed to parse integer: `$literal`")
-    data class CannotParse(val literal: String, val base: Int) : LexemeError("Cannot parse `$literal` as an integer in base $base")
+    data class InvalidEscapeSequence(val seq: String) :
+        LexemeError("Parse error: invalid string escape sequence `$seq`")
+
+    data object EmptyEscapeSequence :
+        LexemeError("Parse error: missing string escape sequence, only saw `\\`")
+
+    data class ReservedKeyword(val keyword: String) :
+        LexemeError("Parse error: cannot use reserved keyword `$keyword`")
+
+    data class StartsZero(val literal: String) :
+        LexemeError("Parse error: integer cannot have leading 0, got `$literal`")
+
+    data class IntParse(val literal: String) :
+        LexemeError("Parse error: failed to parse integer: `$literal`")
+
+    data object CommentSpanComputedIncorrectly :
+        LexemeError("Comment span is computed incorrectly (internal error)")
+
+    data class CannotParse(val literal: String, val base: Int) :
+        LexemeError("Cannot parse `$literal` as an integer in base $base")
 }
 
-class Lexer(
+private class LexemeErrorException(private val err: LexemeError) : Exception(err.message) {
+    override fun toString(): String = err.message
+}
+
+private typealias LexemeT<T> = ParseResult<Triple<Int, T, Int>, EvalException>
+internal typealias Lexeme = LexemeT<Token>
+
+private fun <T1, T2> mapLexemeT(lexeme: LexemeT<T1>, f: (T1) -> T2): LexemeT<T2> {
+    return when (lexeme) {
+        is ParseResult.Ok -> {
+            val (l, t, r) = lexeme.value
+            ParseResult.Ok(Triple(l, f(t), r))
+        }
+        is ParseResult.Err -> ParseResult.Err(lexeme.error)
+    }
+}
+
+internal class Lexer(
     input: String,
-    dialect: Dialect,
-    val codemap: CodeMap,
-) : Iterator<Triple<Int, Token, Int>> {
-    private val source: String = input
-    private var pos: Int = 0
-    private val indentLevels: MutableList<Int> = mutableListOf()
-    private val buffer: ArrayDeque<Triple<Int, Token, Int>> = ArrayDeque()
+    _dialect: Dialect,
+    private val codemap: CodeMap,
+) : Iterator<Lexeme> {
+    private val indentLevels: MutableList<Int> = ArrayList(20)
+    private val buffer: ArrayDeque<Lexeme> = ArrayDeque(10)
     private var parens: Int = 0
+    private val lexer: TokenLexer = TokenLexer(input)
     private var done: Boolean = false
 
     init {
-        calculateIndent()
-    }
-
-    private fun errSpan(msg: LexemeError, start: Int, end: Int): EvalException {
-        return EvalException.new(
-            Error.newOther(Throwable(msg.message)),
-            Span(Pos(start), Pos(end)),
-            codemap
-        )
+        val e = calculateIndent()
+        if (e != null) {
+            buffer.addLast(ParseResult.Err(e))
+        }
     }
 
     private fun errPos(msg: LexemeError, pos: Int): EvalException {
         return errSpan(msg, pos, pos)
     }
 
-    // --- Character scanning helpers ---
-
-    private fun peek(): Char? = if (pos < source.length) source[pos] else null
-
-    private fun peekAt(offset: Int): Char? {
-        val i = pos + offset
-        return if (i < source.length) source[i] else null
+    private fun errSpan(msg: LexemeError, start: Int, end: Int): EvalException {
+        return EvalException.new(
+            Error.newKind(ErrorKind.Parser(LexemeErrorException(msg))),
+            Span.new(Pos.new(start), Pos.new(end)),
+            codemap,
+        )
     }
 
-    private fun advance(): Char? {
-        if (pos >= source.length) return null
-        val c = source[pos]
-        pos++
-        return c
+    private fun errNow(msg: (String) -> LexemeError): EvalException {
+        return errSpan(
+            msg(lexer.slice()),
+            lexer.spanStart(),
+            lexer.spanEnd(),
+        )
     }
 
-    private fun remaining(): String = source.substring(pos)
+    /// Comment tokens are produced by either the token lexer for comments after code,
+    /// or explicitly on lines which are only comments. This function is used in the latter case.
+    private fun makeComment(start: Int, end: Int): Lexeme {
+        val comment = lexer.sliceFromSource(start, end)
+        if (!comment.startsWith('#')) {
+            return ParseResult.Err(errPos(LexemeError.CommentSpanComputedIncorrectly, start))
+        }
+        // Remove the `#`.
+        var text = comment.substring(1)
+        // Remove the trailing `\r` if it exists.
+        // Note comments do not contain `\n`.
+        var actualEnd = end
+        if (text.endsWith('\r')) {
+            actualEnd -= 1
+            text = text.dropLast(1)
+        }
+        return ParseResult.Ok(Triple(start, Token.Comment(text), actualEnd))
+    }
 
-    private fun startsWith(prefix: String): Boolean = source.startsWith(prefix, pos)
-
-    // --- Indentation handling ---
-
-    private fun calculateIndent() {
+    /// We have just seen a newline, read how many indents we have
+    /// and then set self.indent properly.
+    private fun calculateIndent(): EvalException? {
+        // Consume tabs and spaces, output the indentation levels.
+        val it = CursorBytes(lexer.remainder())
         var spaces = 0
         var tabs = 0
-        var indentStart = pos
-        loop@ while (pos < source.length) {
-            when (source[pos]) {
-                ' ' -> { spaces++; pos++ }
-                '\t' -> { tabs++; pos++ }
+        var indentStart = lexer.spanEnd()
+
+        while (true) {
+            when (val c = it.nextChar()) {
+                null -> {
+                    lexer.bump(it.pos())
+                    return null
+                }
+                ' ' -> spaces += 1
+                '\t' -> tabs += 1
                 '\n' -> {
-                    // Blank line: don't consume the newline itself
-                    return
+                    // A line that is entirely blank gets emitted as a newline, and then
+                    // we don't consume the subsequent newline character.
+                    lexer.bump(it.pos() - 1)
+                    return null
                 }
-                '\r' -> { pos++ }
+                '\r' -> {
+                    // We just ignore these entirely.
+                }
                 '#' -> {
-                    // Comment-only line: skip to newline
-                    spaces = 0; tabs = 0
-                    val commentStart = pos
-                    pos++ // skip '#'
-                    while (pos < source.length && source[pos] != '\n') pos++
-                    // Comment token (content excludes leading '#')
-                    val commentText = source.substring(commentStart + 1, pos).trimEnd('\r')
-                    buffer.addLast(Triple(commentStart, Token.Comment(commentText), pos))
-                    if (pos < source.length && source[pos] == '\n') {
-                        // Don't consume the newline, let the main loop handle it
+                    // A line that is all comments, only emits comment tokens.
+                    // Skip until the next newline.
+                    // Remove skip now, so we can freely add it on later.
+                    spaces = 0
+                    tabs = 0
+                    val start = lexer.spanEnd() + it.pos() - 1
+                    while (true) {
+                        when (it.nextChar()) {
+                            null -> {
+                                val end = lexer.spanEnd() + it.pos()
+                                buffer.addLast(makeComment(start, end))
+                                lexer.bump(it.pos())
+                                return null
+                            }
+                            '\n' -> break
+                            else -> {}
+                        }
                     }
-                    indentStart = pos
-                    if (pos >= source.length) return
-                    if (source[pos] == '\n') return
-                    continue@loop
+                    val end = lexer.spanEnd() + it.pos() - 1
+                    buffer.addLast(makeComment(start, end))
+                    indentStart = lexer.spanEnd() + it.pos()
                 }
-                else -> break@loop
+                else -> break
             }
         }
-        if (pos >= source.length) return
 
+        lexer.bump(it.pos() - 1) // last character broke us out of the loop
         val indent = spaces + tabs * 8
         if (tabs > 0) {
-            buffer.addLast(Triple(pos, Token.Newline, pos)) // will become error
-            throw errPos(LexemeError.InvalidTab, pos)
+            return errPos(LexemeError.InvalidTab, lexer.spanStart())
         }
-        val now = indentLevels.lastOrNull() ?: 0
 
+        val now = indentLevels.lastOrNull() ?: 0
         if (indent > now) {
             indentLevels.add(indent)
-            buffer.addLast(Triple(indentStart, Token.Indent, pos))
+            buffer.addLast(ParseResult.Ok(Triple(indentStart, Token.Indent, lexer.spanEnd())))
         } else if (indent < now) {
             var dedents = 1
             indentLevels.removeLast()
             while (true) {
                 val current = indentLevels.lastOrNull() ?: 0
-                if (current == indent) break
-                else if (current > indent) {
-                    dedents++
+                if (current == indent) {
+                    break
+                } else if (current > indent) {
+                    dedents += 1
                     indentLevels.removeLast()
                 } else {
-                    throw errSpan(LexemeError.Indentation, indentStart, pos)
+                    return errSpan(LexemeError.Indentation, lexer.spanStart(), lexer.spanEnd())
                 }
             }
             for (i in 0 until dedents) {
-                buffer.addLast(Triple(indentStart, Token.Dedent, indentStart))
+                // We must declare each dedent is only a position, so multiple adjacent dedents don't overlap.
+                buffer.addLast(ParseResult.Ok(Triple(indentStart, Token.Dedent, indentStart)))
             }
         }
+        return null
     }
 
-    // --- String parsing ---
+    private fun wrap(token: Token): Lexeme {
+        return ParseResult.Ok(Triple(lexer.spanStart(), token, lexer.spanEnd()))
+    }
 
-    private fun escapeChar(chars: CharIteratorWithPos, min: Int, max: Int, radix: Int): Char? {
+    // We've potentially seen one character, now consume between min and max elements of iterator
+    // and treat it as an int in base radix.
+    private fun escapeChar(it: CursorChars, min: Int, max: Int, radix: Int): Int? {
         var value = 0
         var count = 0
         while (count < max) {
-            val c = chars.peek() ?: if (count >= min) break else return null
-            val digit = c.digitToIntOrNull(radix)
-            if (digit == null) {
-                if (count >= min) break
-                return null
+            val c = it.next()
+            if (c == null) {
+                if (count >= min) break else return null
+            } else {
+                val digit = digitToInt(c, radix)
+                if (digit == null) {
+                    if (count >= min) {
+                        it.unnext(c)
+                        break
+                    } else {
+                        return null
+                    }
+                } else {
+                    count += 1
+                    value = (value * radix) + digit
+                }
             }
-            chars.next()
-            count++
-            value = value * radix + digit
         }
-        return value.toChar()
+        return value
     }
 
-    private fun escape(chars: CharIteratorWithPos, res: StringBuilder): Boolean {
-        val c = chars.next() ?: return false
-        when (c) {
-            'n' -> res.append('\n')
-            'r' -> res.append('\r')
-            't' -> res.append('\t')
-            'a' -> res.append('\u0007')
-            'b' -> res.append('\u0008')
-            'f' -> res.append('\u000C')
-            'v' -> res.append('\u000B')
-            '\n' -> {} // line continuation
-            '\r' -> {
-                // Windows line ending
-                if (chars.peek() != '\n') return false
-                chars.next()
+    // We have seen a '\' character, now parse what comes next.
+    private fun escape(it: CursorChars, res: StringBuilder): Boolean {
+        return when (val c = it.next()) {
+            null -> false
+            'n'.code -> {
+                res.append('\n'); true
             }
-            'x' -> {
-                val ch = escapeChar(chars, 2, 2, 16) ?: return false
-                res.append(ch)
+            'r'.code -> {
+                res.append('\r'); true
             }
-            'u' -> {
-                val ch = escapeChar(chars, 4, 4, 16) ?: return false
-                res.append(ch)
+            't'.code -> {
+                res.append('\t'); true
             }
-            'U' -> {
-                val ch = escapeChar(chars, 8, 8, 16) ?: return false
-                res.append(ch)
+            'a'.code -> {
+                res.append('\u0007'); true
             }
-            in '0'..'7' -> {
-                chars.unnext(c)
-                val ch = escapeChar(chars, 1, 3, 8) ?: return false
-                res.append(ch)
+            'b'.code -> {
+                res.append('\u0008'); true
             }
-            '"', '\'', '\\' -> res.append(c)
+            'f'.code -> {
+                res.append('\u000c'); true
+            }
+            'v'.code -> {
+                res.append('\u000b'); true
+            }
+            '\n'.code -> true
+            '\r'.code -> {
+                // Windows newline incoming, we expect a \n next, which we can ignore.
+                it.next() == '\n'.code
+            }
+            'x'.code -> {
+                val ch = escapeChar(it, 2, 2, 16) ?: return false
+                res.appendCodePoint(ch)
+                true
+            }
+            'u'.code -> {
+                val ch = escapeChar(it, 4, 4, 16) ?: return false
+                res.appendCodePoint(ch)
+                true
+            }
+            'U'.code -> {
+                val ch = escapeChar(it, 8, 8, 16) ?: return false
+                res.appendCodePoint(ch)
+                true
+            }
             else -> {
-                res.append('\\')
-                res.append(c)
+                when (c) {
+                    in '0'.code..'7'.code -> {
+                        it.unnext(c)
+                        val ch = escapeChar(it, 1, 3, 8) ?: return false
+                        res.appendCodePoint(ch)
+                        true
+                    }
+                    '"'.code, '\''.code, '\\'.code -> {
+                        res.appendCodePoint(c)
+                        true
+                    }
+                    else -> {
+                        res.append('\\')
+                        res.appendCodePoint(c)
+                        true
+                    }
+                }
             }
         }
-        return true
     }
 
-    /**
-     * Parse a string literal. The opening quote(s) have been consumed already.
-     * Returns (content, contentStartOffset) relative to the token start.
-     */
-    private fun parseString(
-        stringStart: Int,
+    /// Parse a String. Return the String, and the offset where it starts.
+    /// String parsing is a hot-spot, so parameterise by a `stop` function which gets
+    /// specialised for each variant.
+    private fun string(
         triple: Boolean,
         raw: Boolean,
-        quoteChar: Char
-    ): Pair<String, Int> {
-        val afterQuote = pos
-        if (triple) {
-            // Skip the two additional quote chars (first was consumed before calling)
-            pos += 2
-        }
-        val contentsStart = pos
+        stop: (Int) -> Boolean,
+    ): LexemeT<Pair<String, Int>> {
+        // We have seen an opening quote, which is either ' or ".
+        // If triple is true, it was a triple quote.
+        // stop lets us know when a string ends.
 
-        // Fast path: scan for end without escape sequences
-        val fastStart = pos
-        while (pos < source.length) {
-            val c = source[pos]
-            if (c == quoteChar) {
-                if (triple) {
-                    if (pos + 2 < source.length && source[pos + 1] == quoteChar && source[pos + 2] == quoteChar) {
-                        val content = source.substring(contentsStart, pos)
-                        pos += 3
-                        return Pair(content, contentsStart - stringStart)
-                    }
-                    pos++
-                    continue
-                } else {
-                    val content = source.substring(contentsStart, pos)
-                    pos++
-                    return Pair(content, contentsStart - stringStart)
-                }
+        // Before the first quote character.
+        val stringStart = lexer.spanStart()
+        // After the first quote character, but before any contents or it tracked stuff.
+        var stringEnd = lexer.spanEnd()
+
+        val it = CursorBytes(lexer.remainder())
+        var it2: CursorChars? = null
+
+        if (triple) {
+            it.next()
+            it.next()
+        }
+        val contentsStart = it.pos()
+
+        // Take the fast path as long as the result is a slice of the original, with no changes.
+        var res: StringBuilder? = null
+        while (true) {
+            val c = it.nextChar()
+            if (c == null) {
+                return ParseResult.Err(
+                    errSpan(LexemeError.UnfinishedStringLiteral, stringStart, stringEnd + it.pos()),
+                )
+            } else if (stop(c.code)) {
+                val contentsEnd = it.pos() - if (triple) 3 else 1
+                val contents = lexer.remainderSlice(contentsStart, contentsEnd)
+                lexer.bump(it.pos())
+                return ParseResult.Ok(Triple(stringStart, Pair(contents, contentsStart), stringEnd + it.pos()))
             } else if (c == '\\' || c == '\r' || (c == '\n' && !triple)) {
-                // Need to fall to slow path
+                res = StringBuilder(it.pos() + 10)
+                res.append(lexer.remainderSlice(contentsStart, it.pos() - 1))
+                it2 = CursorChars.newOffset(lexer.remainder(), it.pos() - 1)
                 break
             }
-            pos++
         }
 
-        if (pos >= source.length && (pos == fastStart || source[pos - 1] != quoteChar)) {
-            throw errSpan(LexemeError.UnfinishedStringLiteral, stringStart, pos)
-        }
-
-        // Slow path: character by character with escape handling
-        val res = StringBuilder()
-        res.append(source.substring(contentsStart, pos))
-        val chars = CharIteratorWithPos(source, pos)
-        while (chars.hasNext()) {
-            val c = chars.next()!!
-            if (c == quoteChar) {
+        // We bailed out of the fast path, that means we now accumulate character by character,
+        // might have an error or be dealing with escape characters.
+        val out = checkNotNull(res)
+        val itSlow = checkNotNull(it2)
+        while (true) {
+            val c = itSlow.next() ?: break
+            if (stop(c)) {
+                lexer.bump(itSlow.pos())
                 if (triple) {
-                    if (chars.peek() == quoteChar && chars.peekAt(1) == quoteChar) {
-                        chars.next(); chars.next()
-                        // Remove the 2 extra quote chars we accumulated before matching triple
-                        if (res.length >= 2) {
-                            res.setLength(res.length - 2)
-                        }
-                        pos = chars.pos
-                        return Pair(res.toString(), contentsStart - stringStart)
+                    if (out.length >= 2) {
+                        out.setLength(out.length - 2)
                     }
-                    res.append(c)
-                    continue
-                } else {
-                    pos = chars.pos
-                    return Pair(res.toString(), contentsStart - stringStart)
                 }
+                return ParseResult.Ok(Triple(stringStart, Pair(out.toString(), contentsStart), stringEnd + itSlow.pos()))
             }
-            when {
-                c == '\n' && !triple -> {
-                    throw errSpan(LexemeError.UnfinishedStringLiteral, stringStart, chars.pos)
-                }
-                c == '\r' -> {} // ignore \r in all modes
-                c == '\\' -> {
-                    if (raw) {
-                        val next = chars.next() ?: break
-                        if (next != '\'' && next != '"') {
-                            res.append('\\')
-                        }
-                        res.append(next)
+            when (c) {
+                '\n'.code -> {
+                    if (!triple) {
+                        // Will raise an error about out of chars.
+                        // But don't include the final \n in the count.
+                        stringEnd -= 1
+                        break
                     } else {
-                        val escapeStart = chars.pos - 1
-                        if (!escape(chars, res)) {
-                            val bad = source.substring(escapeStart, chars.pos)
-                            throw errSpan(
-                                if (bad.isEmpty()) LexemeError.EmptyEscapeSequence
-                                else LexemeError.InvalidEscapeSequence(bad),
-                                stringStart + escapeStart,
-                                stringStart + chars.pos
-                            )
+                        out.append('\n')
+                    }
+                }
+                '\r'.code -> {
+                    // We just ignore these in all modes.
+                }
+                '\\'.code -> {
+                    if (raw) {
+                        val next = itSlow.next() ?: break
+                        if (next != '\''.code && next != '"'.code) {
+                            out.append('\\')
+                        }
+                        out.appendCodePoint(next)
+                    } else {
+                        val pos = itSlow.pos()
+                        if (!escape(itSlow, out)) {
+                            val bad = lexer.remainderSlice(pos, itSlow.pos())
+                            val err =
+                                if (bad.isEmpty()) LexemeError.EmptyEscapeSequence else LexemeError.InvalidEscapeSequence(bad)
+                            return ParseResult.Err(errSpan(err, stringEnd + pos - 1, stringEnd + itSlow.pos()))
                         }
                     }
                 }
-                else -> res.append(c)
+                else -> out.appendCodePoint(c)
             }
         }
-        throw errSpan(LexemeError.UnfinishedStringLiteral, stringStart, pos)
+
+        // We ran out of characters.
+        return ParseResult.Err(errSpan(LexemeError.UnfinishedStringLiteral, stringStart, stringEnd + itSlow.pos()))
     }
 
-    // --- Integer parsing ---
-
-    private fun parseInt(literal: String, start: Int, end: Int, radix: Int): Triple<Int, Token, Int> {
-        try {
-            val value = TokenInt.fromStrRadix(literal, radix)
-            return Triple(start, Token.IntToken(value), end)
+    private fun int(s: String, radix: Int): Lexeme {
+        return try {
+            val i = TokenInt.fromStrRadix(s, radix)
+            ParseResult.Ok(Triple(lexer.spanStart(), Token.IntToken(i), lexer.spanEnd()))
         } catch (e: Exception) {
-            throw errSpan(LexemeError.IntParse(literal), start, end)
+            ParseResult.Err(errNow { LexemeError.IntParse(it) })
         }
     }
-
-    // --- Main tokenization ---
-
-    private fun scanToken(): Triple<Int, Token, Int>? {
-        // Skip whitespace (spaces only - tabs are handled by indentation)
-        while (pos < source.length && source[pos] == ' ') pos++
-
-        // Skip escaped newlines
-        while (pos < source.length && startsWith("\\\n")) { pos += 2 }
-        while (pos < source.length && startsWith("\\\r\n")) { pos += 3 }
-
-        if (pos >= source.length) return null
-
-        val start = pos
-        val c = source[pos]
-
-        // Newline
-        if (c == '\n' || (c == '\r' && peekAt(1) == '\n')) {
-            if (c == '\r') pos++ // skip \r
-            pos++ // skip \n
-            if (parens == 0) {
-                val newlineEnd = pos
-                calculateIndent()
-                return Triple(start, Token.Newline, newlineEnd)
-            }
-            // Inside parens: skip newlines
-            return scanToken()
-        }
-
-        // Tab outside indentation context
-        if (c == '\t') {
-            pos++
-            while (pos < source.length && source[pos] == '\t') pos++
-            throw errSpan(LexemeError.InvalidTab, start, pos)
-        }
-
-        // Comment
-        if (c == '#') {
-            pos++
-            while (pos < source.length && source[pos] != '\n' && source[pos] != '\r') pos++
-            val text = source.substring(start + 1, pos).trimEnd('\r')
-            return Triple(start, Token.Comment(text), pos)
-        }
-
-        // String literals (check for triple-quoted by peeking ahead)
-        if (c == '\'' || c == '"') {
-            pos++ // skip opening quote
-            val triple = peek() == c && peekAt(1) == c
-            val (content, contentOffset) = parseString(start, triple, false, c)
-            return Triple(start, Token.StringToken(content), pos)
-        }
-        if (c == 'r' && (peekAt(1) == '\'' || peekAt(1) == '"')) {
-            pos++ // skip 'r'
-            val quote = source[pos]
-            pos++ // skip opening quote
-            val triple = peek() == quote && peekAt(1) == quote
-            val (content, _) = parseString(start, triple, true, quote)
-            return Triple(start, Token.StringToken(content), pos)
-        }
-        // F-strings
-        if (c == 'f' && (peekAt(1) == '\'' || peekAt(1) == '"')) {
-            pos++ // skip 'f'
-            val quote = source[pos]
-            pos++ // skip opening quote
-            val triple = peek() == quote && peekAt(1) == quote
-            val spanLen = if (triple) 4 else 2 // "f" + quote(s)
-            val (content, contentStartOffset) = parseString(start, triple, false, quote)
-            return Triple(start, Token.FStringToken(TokenFString(content, contentStartOffset + spanLen)), pos)
-        }
-        if (c == 'f' && peekAt(1) == 'r' && (peekAt(2) == '\'' || peekAt(2) == '"')) {
-            pos += 2 // skip 'fr'
-            val quote = source[pos]
-            pos++ // skip opening quote
-            val triple = peek() == quote && peekAt(1) == quote
-            val spanLen = if (triple) 5 else 3 // "fr" + quote(s)
-            val (content, contentStartOffset) = parseString(start, triple, true, quote)
-            return Triple(start, Token.FStringToken(TokenFString(content, contentStartOffset + spanLen)), pos)
-        }
-
-        // Numbers
-        if (c in '0'..'9') {
-            return scanNumber(start)
-        }
-        if (c == '.' && peekAt(1) != null && peekAt(1)!! in '0'..'9') {
-            return scanFloat(start)
-        }
-
-        // Identifiers and keywords (string prefix cases r/f/fr already handled above)
-        if (c.isLetter() || c == '_') {
-            pos++
-            while (pos < source.length && (source[pos].isLetterOrDigit() || source[pos] == '_')) pos++
-            val ident = source.substring(start, pos)
-            // Check for keywords
-            val kw = keywordToken(ident)
-            if (kw != null) return Triple(start, kw, pos)
-            // Check for reserved keywords
-            if (ident in RESERVED_KEYWORDS) {
-                throw errSpan(LexemeError.ReservedKeyword(ident), start, pos)
-            }
-            return Triple(start, Token.Identifier(ident), pos)
-        }
-
-        // Operators and symbols (multi-char first, then single-char)
-        pos++
-        return when (c) {
-            ',' -> Triple(start, Token.Comma, pos)
-            ';' -> Triple(start, Token.Semicolon, pos)
-            ':' -> Triple(start, Token.Colon, pos)
-            '~' -> Triple(start, Token.Tilde, pos)
-            '(' -> { parens++; Triple(start, Token.OpeningRound, pos) }
-            ')' -> { parens--; Triple(start, Token.ClosingRound, pos) }
-            '[' -> { parens++; Triple(start, Token.OpeningSquare, pos) }
-            ']' -> { parens--; Triple(start, Token.ClosingSquare, pos) }
-            '{' -> { parens++; Triple(start, Token.OpeningCurly, pos) }
-            '}' -> { parens--; Triple(start, Token.ClosingCurly, pos) }
-            '+' -> if (peek() == '=') { pos++; Triple(start, Token.PlusEqual, pos) }
-                   else Triple(start, Token.Plus, pos)
-            '-' -> when (peek()) {
-                '=' -> { pos++; Triple(start, Token.MinusEqual, pos) }
-                '>' -> { pos++; Triple(start, Token.MinusGreater, pos) }
-                else -> Triple(start, Token.Minus, pos)
-            }
-            '*' -> when (peek()) {
-                '*' -> { pos++; Triple(start, Token.StarStar, pos) }
-                '=' -> { pos++; Triple(start, Token.StarEqual, pos) }
-                else -> Triple(start, Token.Star, pos)
-            }
-            '/' -> when (peek()) {
-                '/' -> {
-                    pos++
-                    if (peek() == '=') { pos++; Triple(start, Token.SlashSlashEqual, pos) }
-                    else Triple(start, Token.SlashSlash, pos)
-                }
-                '=' -> { pos++; Triple(start, Token.SlashEqual, pos) }
-                else -> Triple(start, Token.Slash, pos)
-            }
-            '%' -> if (peek() == '=') { pos++; Triple(start, Token.PercentEqual, pos) }
-                   else Triple(start, Token.Percent, pos)
-            '=' -> if (peek() == '=') { pos++; Triple(start, Token.EqualEqual, pos) }
-                   else Triple(start, Token.Equal, pos)
-            '!' -> if (peek() == '=') { pos++; Triple(start, Token.BangEqual, pos) }
-                   else throw errSpan(LexemeError.InvalidInput("!"), start, pos)
-            '<' -> when (peek()) {
-                '=' -> { pos++; Triple(start, Token.LessEqual, pos) }
-                '<' -> {
-                    pos++
-                    if (peek() == '=') { pos++; Triple(start, Token.LessLessEqual, pos) }
-                    else Triple(start, Token.LessLess, pos)
-                }
-                else -> Triple(start, Token.LessThan, pos)
-            }
-            '>' -> when (peek()) {
-                '=' -> { pos++; Triple(start, Token.GreaterEqual, pos) }
-                '>' -> {
-                    pos++
-                    if (peek() == '=') { pos++; Triple(start, Token.GreaterGreaterEqual, pos) }
-                    else Triple(start, Token.GreaterGreater, pos)
-                }
-                else -> Triple(start, Token.GreaterThan, pos)
-            }
-            '&' -> if (peek() == '=') { pos++; Triple(start, Token.AmpersandEqual, pos) }
-                   else Triple(start, Token.Ampersand, pos)
-            '|' -> if (peek() == '=') { pos++; Triple(start, Token.PipeEqual, pos) }
-                   else Triple(start, Token.Pipe, pos)
-            '^' -> if (peek() == '=') { pos++; Triple(start, Token.CaretEqual, pos) }
-                   else Triple(start, Token.Caret, pos)
-            '.' -> {
-                if (peek() == '.' && peekAt(1) == '.') {
-                    pos += 2
-                    Triple(start, Token.Ellipsis, pos)
-                } else {
-                    Triple(start, Token.Dot, pos)
-                }
-            }
-            else -> throw errSpan(LexemeError.InvalidInput(c.toString()), start, pos)
-        }
-    }
-
-    private fun scanNumber(start: Int): Triple<Int, Token, Int> {
-        // Check for hex, octal, binary prefixes
-        if (source[pos] == '0' && pos + 1 < source.length) {
-            when (source[pos + 1]) {
-                'x', 'X' -> {
-                    pos += 2
-                    val digitStart = pos
-                    while (pos < source.length && source[pos].isHexDigit()) pos++
-                    if (pos == digitStart) throw errSpan(LexemeError.IntParse("0${source[pos-1]}"), start, pos)
-                    return parseInt(source.substring(digitStart, pos), start, pos, 16)
-                }
-                'o', 'O' -> {
-                    pos += 2
-                    val digitStart = pos
-                    while (pos < source.length && source[pos] in '0'..'7') pos++
-                    if (pos == digitStart) throw errSpan(LexemeError.IntParse("0${source[pos-1]}"), start, pos)
-                    return parseInt(source.substring(digitStart, pos), start, pos, 8)
-                }
-                'b', 'B' -> {
-                    pos += 2
-                    val digitStart = pos
-                    while (pos < source.length && source[pos] in '0'..'1') pos++
-                    if (pos == digitStart) throw errSpan(LexemeError.IntParse("0${source[pos-1]}"), start, pos)
-                    return parseInt(source.substring(digitStart, pos), start, pos, 2)
-                }
-            }
-        }
-
-        // Decimal integer or float
-        while (pos < source.length && source[pos] in '0'..'9') pos++
-
-        // Check for float
-        if (pos < source.length && (source[pos] == '.' || source[pos] == 'e' || source[pos] == 'E')) {
-            return scanFloatRest(start)
-        }
-
-        val literal = source.substring(start, pos)
-        if (literal.length > 1 && literal[0] == '0') {
-            throw errSpan(LexemeError.StartsZero(literal), start, pos)
-        }
-        return parseInt(literal, start, pos, 10)
-    }
-
-    private fun scanFloat(start: Int): Triple<Int, Token, Int> {
-        // Starts with '.', digits already checked
-        pos++ // skip '.'
-        while (pos < source.length && source[pos] in '0'..'9') pos++
-        // Optional exponent
-        if (pos < source.length && (source[pos] == 'e' || source[pos] == 'E')) {
-            pos++
-            if (pos < source.length && (source[pos] == '+' || source[pos] == '-')) pos++
-            while (pos < source.length && source[pos] in '0'..'9') pos++
-        }
-        val literal = source.substring(start, pos)
-        val value = literal.toDoubleOrNull() ?: throw errSpan(LexemeError.IntParse(literal), start, pos)
-        return Triple(start, Token.FloatToken(value), pos)
-    }
-
-    private fun scanFloatRest(start: Int): Triple<Int, Token, Int> {
-        // We've consumed digits, now handle '.', 'e'/'E'
-        if (pos < source.length && source[pos] == '.') {
-            pos++
-            while (pos < source.length && source[pos] in '0'..'9') pos++
-        }
-        if (pos < source.length && (source[pos] == 'e' || source[pos] == 'E')) {
-            pos++
-            if (pos < source.length && (source[pos] == '+' || source[pos] == '-')) pos++
-            while (pos < source.length && source[pos] in '0'..'9') pos++
-        }
-        val literal = source.substring(start, pos)
-        val value = literal.toDoubleOrNull() ?: throw errSpan(LexemeError.IntParse(literal), start, pos)
-        return Triple(start, Token.FloatToken(value), pos)
-    }
-
-    private fun Char.isHexDigit(): Boolean = this in '0'..'9' || this in 'a'..'f' || this in 'A'..'F'
-
-    // --- Iterator implementation ---
 
     override fun hasNext(): Boolean {
         if (buffer.isNotEmpty()) return true
         if (done) return false
-        // Try to produce the next token
-        try {
-            val next = produceNext()
-            if (next != null) {
-                buffer.addFirst(next)
-                return true
-            }
-        } catch (_: EvalException) {
-            // Error tokens terminate iteration
-        }
-        return false
+        // Do not eagerly lex in hasNext; next() drives state.
+        return true
     }
 
-    override fun next(): Triple<Int, Token, Int> {
+    override fun next(): Lexeme {
         while (true) {
-            if (buffer.isNotEmpty()) {
-                val item = buffer.removeFirst()
-                // Skip comment tokens - they don't go to the parser
-                if (item.second is Token.Comment) continue
-                return item
+            val buffered = buffer.removeFirstOrNull()
+            if (buffered != null) return buffered
+
+            if (done) {
+                throw NoSuchElementException("No more tokens")
             }
-            if (done) throw NoSuchElementException("No more tokens")
-            val next = produceNext() ?: throw NoSuchElementException("No more tokens")
-            // Skip comment tokens
-            if (next.second is Token.Comment) continue
-            return next
+
+            val next = lexer.nextToken()
+            when (next) {
+                null -> {
+                    done = true
+                    val pos = lexer.spanEnd()
+                    for (i in indentLevels.indices) {
+                        buffer.addLast(ParseResult.Ok(Triple(pos, Token.Dedent, pos)))
+                    }
+                    indentLevels.clear()
+                    return wrap(Token.Newline)
+                }
+                is ParseResult.Ok -> {
+                    val token = next.value
+                    when (token) {
+                        Token.Tabs -> {
+                            buffer.addLast(ParseResult.Err(errPos(LexemeError.InvalidTab, lexer.spanStart())))
+                            continue
+                        }
+                        Token.Newline -> {
+                            if (parens == 0) {
+                                val spanStart = lexer.spanStart()
+                                val spanEnd = lexer.spanEnd()
+                                val e = calculateIndent()
+                                if (e != null) {
+                                    return ParseResult.Err(e)
+                                }
+                                return ParseResult.Ok(Triple(spanStart, Token.Newline, spanEnd))
+                            } else {
+                                continue
+                            }
+                        }
+                        Token.Reserved -> return ParseResult.Err(errNow { LexemeError.ReservedKeyword(it) })
+                        Token.RawDecInt -> {
+                            val s = lexer.slice()
+                            if (s.length > 1 && s.startsWith("0")) {
+                                return ParseResult.Err(errNow { LexemeError.StartsZero(it) })
+                            }
+                            return int(s, 10)
+                        }
+                        Token.RawOctInt -> {
+                            val s = lexer.slice()
+                            return int(s.substring(2), 8)
+                        }
+                        Token.RawHexInt -> {
+                            val s = lexer.slice()
+                            return int(s.substring(2), 16)
+                        }
+                        Token.RawBinInt -> {
+                            val s = lexer.slice()
+                            return int(s.substring(2), 2)
+                        }
+                        is Token.IntToken -> error("Lexer does not produce Int tokens")
+                        Token.RawDoubleQuote -> {
+                            val raw = (lexer.spanEnd() - lexer.spanStart()) == 2
+                            val lex = parseDoubleQuotedString(raw)
+                            if (lex == null) continue
+                            return mapLexemeT(lex) { (s, _offset) -> Token.StringToken(s) }
+                        }
+                        Token.RawSingleQuote -> {
+                            val raw = (lexer.spanEnd() - lexer.spanStart()) == 2
+                            val lex = parseSingleQuotedString(raw)
+                            if (lex == null) continue
+                            return mapLexemeT(lex) { (s, _offset) -> Token.StringToken(s) }
+                        }
+                        is Token.StringToken -> error("The lexer does not produce String")
+                        Token.RawFStringDoubleQuote -> {
+                            val spanLen = lexer.spanEnd() - lexer.spanStart()
+                            val raw = spanLen == 3
+                            val lex = parseDoubleQuotedString(raw)
+                            if (lex == null) continue
+                            return mapLexemeT(lex) { (content, contentStartOffset) ->
+                                Token.FStringToken(
+                                    TokenFString(
+                                        content = content,
+                                        contentStartOffset = contentStartOffset + spanLen,
+                                    ),
+                                )
+                            }
+                        }
+                        Token.RawFStringSingleQuote -> {
+                            val spanLen = lexer.spanEnd() - lexer.spanStart()
+                            val raw = spanLen == 3
+                            val lex = parseSingleQuotedString(raw)
+                            if (lex == null) continue
+                            return mapLexemeT(lex) { (content, contentStartOffset) ->
+                                Token.FStringToken(
+                                    TokenFString(
+                                        content = content,
+                                        contentStartOffset = contentStartOffset + spanLen,
+                                    ),
+                                )
+                            }
+                        }
+                        is Token.FStringToken -> error("The lexer does not produce FString")
+                        Token.OpeningCurly, Token.OpeningRound, Token.OpeningSquare -> {
+                            parens += 1
+                            return wrap(token)
+                        }
+                        Token.ClosingCurly, Token.ClosingRound, Token.ClosingSquare -> {
+                            parens -= 1
+                            return wrap(token)
+                        }
+                        else -> return wrap(token)
+                    }
+                }
+                is ParseResult.Err -> {
+                    return ParseResult.Err(errNow { LexemeError.InvalidInput(it) })
+                }
+            }
         }
     }
 
-    /**
-     * Produce the next token or null if at EOF.
-     * May add additional tokens to the buffer (e.g. DEDENT at EOF).
-     * Throws EvalException on lexing errors.
-     */
-    private fun produceNext(): Triple<Int, Token, Int>? {
-        // Drain buffered tokens first
-        if (buffer.isNotEmpty()) return buffer.removeFirst()
-
-        if (done) return null
-
-        val token = scanToken()
-        if (token == null) {
-            // EOF: emit final newline + remaining dedents
-            done = true
-            val eofPos = source.length
-            for (i in indentLevels.indices) {
-                buffer.addLast(Triple(eofPos, Token.Dedent, eofPos))
-            }
-            indentLevels.clear()
-            return Triple(eofPos, Token.Newline, eofPos)
+    private fun parseDoubleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? {
+        return if (lexer.remainder().startsWith("\"\"")) {
+            var qs = 0
+            string(
+                triple = true,
+                raw = raw,
+                stop = { c ->
+                    if (c == '"'.code) {
+                        qs += 1
+                        qs == 3
+                    } else {
+                        qs = 0
+                        false
+                    }
+                },
+            )
+        } else {
+            string(triple = false, raw = raw, stop = { c -> c == '"'.code })
         }
-        return token
+    }
+
+    private fun parseSingleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? {
+        return if (lexer.remainder().startsWith("''")) {
+            var qs = 0
+            string(
+                triple = true,
+                raw = raw,
+                stop = { c ->
+                    if (c == '\''.code) {
+                        qs += 1
+                        qs == 3
+                    } else {
+                        qs = 0
+                        false
+                    }
+                },
+            )
+        } else {
+            string(triple = false, raw = raw, stop = { c -> c == '\''.code })
+        }
     }
 }
 
-/** Helper for character-by-character iteration with position tracking and unnext. */
-private class CharIteratorWithPos(private val source: String, startPos: Int) {
-    var pos: Int = startPos
-        private set
+private fun digitToInt(c: Int, radix: Int): Int? {
+    val v =
+        when (c) {
+            in '0'.code..'9'.code -> c - '0'.code
+            in 'a'.code..'f'.code -> 10 + (c - 'a'.code)
+            in 'A'.code..'F'.code -> 10 + (c - 'A'.code)
+            else -> return null
+        }
+    return if (v < radix) v else null
+}
 
-    fun hasNext(): Boolean = pos < source.length
+private fun StringBuilder.appendCodePoint(codePoint: Int) {
+    when {
+        codePoint <= 0xffff -> append(codePoint.toChar())
+        else -> {
+            val cp = codePoint - 0x1_0000
+            val high = 0xd800 + (cp ushr 10)
+            val low = 0xdc00 + (cp and 0x3ff)
+            append(high.toChar())
+            append(low.toChar())
+        }
+    }
+}
 
-    fun peek(): Char? = if (pos < source.length) source[pos] else null
+private class TokenLexer(private val source: String) {
+    private val utf8: Utf8Index = Utf8Index(source)
+    private var pos: Int = 0
+    private var spanStart: Int = 0
+    private var spanEnd: Int = 0
+    private var slice: String = ""
 
-    fun peekAt(offset: Int): Char? {
-        val i = pos + offset
-        return if (i < source.length) source[i] else null
+    fun spanStart(): Int = spanStart
+    fun spanEnd(): Int = spanEnd
+    fun slice(): String = slice
+
+    fun remainder(): String = utf8.substringFromByte(pos)
+
+    fun remainderSlice(start: Int, end: Int): String {
+        return utf8.substringFromByte(pos + start, pos + end)
     }
 
-    fun next(): Char? {
-        if (pos >= source.length) return null
-        val c = source[pos]
-        pos++
-        return c
+    fun sliceFromSource(start: Int, end: Int): String {
+        return utf8.substringFromByte(start, end)
     }
 
-    fun unnext(c: Char) {
-        pos--
+    fun bump(bytes: Int) {
+        pos += bytes
+        spanEnd = pos
+    }
+
+    fun nextToken(): ParseResult<Token, Unit>? {
+        // logos(skip r" +"): whitespace (spaces only)
+        while (pos < utf8.byteLen && utf8.byteAt(pos) == ' '.code) {
+            pos += 1
+        }
+        // logos(skip r"\\\n") and r"\\\r\n"
+        while (true) {
+            if (pos + 1 < utf8.byteLen && utf8.byteAt(pos) == '\\'.code && utf8.byteAt(pos + 1) == '\n'.code) {
+                pos += 2
+                continue
+            }
+            if (
+                pos + 2 < utf8.byteLen &&
+                    utf8.byteAt(pos) == '\\'.code &&
+                    utf8.byteAt(pos + 1) == '\r'.code &&
+                    utf8.byteAt(pos + 2) == '\n'.code
+            ) {
+                pos += 3
+                continue
+            }
+            break
+        }
+
+        if (pos >= utf8.byteLen) {
+            spanStart = pos
+            spanEnd = pos
+            slice = ""
+            return null
+        }
+
+        spanStart = pos
+        val b0 = utf8.byteAt(pos)
+
+        // Comment as token. Span includes the leading '#', but the content does not.
+        if (b0 == '#'.code) {
+            pos += 1
+            while (pos < utf8.byteLen) {
+                val b = utf8.byteAt(pos)
+                if (b == '\r'.code || b == '\n'.code) break
+                pos += 1
+            }
+            spanEnd = pos
+            slice = utf8.substringFromByte(spanStart, spanEnd)
+            val text = slice.substring(1)
+            return ParseResult.Ok(Token.Comment(text))
+        }
+
+        // Tabs (might be an error).
+        if (b0 == '\t'.code) {
+            pos += 1
+            while (pos < utf8.byteLen && utf8.byteAt(pos) == '\t'.code) pos += 1
+            spanEnd = pos
+            slice = utf8.substringFromByte(spanStart, spanEnd)
+            return ParseResult.Ok(Token.Tabs)
+        }
+
+        // Newline outside a string.
+        if (b0 == '\n'.code || (b0 == '\r'.code && pos + 1 < utf8.byteLen && utf8.byteAt(pos + 1) == '\n'.code)) {
+            pos += if (b0 == '\r'.code) 2 else 1
+            spanEnd = pos
+            slice = utf8.substringFromByte(spanStart, spanEnd)
+            return ParseResult.Ok(Token.Newline)
+        }
+
+        // Raw quote tokens.
+        if (b0 == '\''.code) {
+            pos += 1
+            spanEnd = pos
+            slice = "'"
+            return ParseResult.Ok(Token.RawSingleQuote)
+        }
+        if (b0 == '"'.code) {
+            pos += 1
+            spanEnd = pos
+            slice = "\""
+            return ParseResult.Ok(Token.RawDoubleQuote)
+        }
+        if (b0 == 'r'.code && pos + 1 < utf8.byteLen) {
+            val b1 = utf8.byteAt(pos + 1)
+            if (b1 == '\''.code) {
+                pos += 2
+                spanEnd = pos
+                slice = "r'"
+                return ParseResult.Ok(Token.RawSingleQuote)
+            }
+            if (b1 == '"'.code) {
+                pos += 2
+                spanEnd = pos
+                slice = "r\""
+                return ParseResult.Ok(Token.RawDoubleQuote)
+            }
+        }
+        if (b0 == 'f'.code && pos + 1 < utf8.byteLen) {
+            val b1 = utf8.byteAt(pos + 1)
+            if (b1 == '\''.code) {
+                pos += 2
+                spanEnd = pos
+                slice = "f'"
+                return ParseResult.Ok(Token.RawFStringSingleQuote)
+            }
+            if (b1 == '"'.code) {
+                pos += 2
+                spanEnd = pos
+                slice = "f\""
+                return ParseResult.Ok(Token.RawFStringDoubleQuote)
+            }
+            if (b1 == 'r'.code && pos + 2 < utf8.byteLen) {
+                val b2 = utf8.byteAt(pos + 2)
+                if (b2 == '\''.code) {
+                    pos += 3
+                    spanEnd = pos
+                    slice = "fr'"
+                    return ParseResult.Ok(Token.RawFStringSingleQuote)
+                }
+                if (b2 == '"'.code) {
+                    pos += 3
+                    spanEnd = pos
+                    slice = "fr\""
+                    return ParseResult.Ok(Token.RawFStringDoubleQuote)
+                }
+            }
+        }
+
+        // Identifier / keyword / reserved keyword.
+        if (isIdentStartByte(b0)) {
+            pos += 1
+            while (pos < utf8.byteLen && isIdentContByte(utf8.byteAt(pos))) {
+                pos += 1
+            }
+            spanEnd = pos
+            slice = utf8.substringFromByte(spanStart, spanEnd)
+            val keyword = keywordToken(slice)
+            if (keyword != null) return ParseResult.Ok(keyword)
+            if (slice in RESERVED_KEYWORDS) return ParseResult.Ok(Token.Reserved)
+            return ParseResult.Ok(Token.Identifier(slice))
+        }
+
+        // Numeric literals and floats.
+        if (b0 in '0'.code..'9'.code || b0 == '.'.code) {
+            val numeric = scanNumericOrFloat()
+            if (numeric != null) return ParseResult.Ok(numeric)
+        }
+
+        // Symbols, brackets, operators.
+        val symbol = scanSymbol()
+        if (symbol != null) return ParseResult.Ok(symbol)
+
+        // Invalid input.
+        pos += 1
+        spanEnd = pos
+        slice = utf8.substringFromByte(spanStart, spanEnd)
+        return ParseResult.Err(Unit)
+    }
+
+    private fun scanNumericOrFloat(): Token? {
+        val start = pos
+        val b0 = utf8.byteAt(pos)
+        if (b0 == '.'.code) {
+            if (pos + 1 < utf8.byteLen && utf8.byteAt(pos + 1) in '0'.code..'9'.code) {
+                pos += 1
+                while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
+                scanExponentIfPresent()
+                finishSlice(start)
+                val value = slice.toDoubleOrNull() ?: return null
+                return Token.FloatToken(value)
+            }
+            return null
+        }
+
+        // RawDecInt / RawHexInt / RawBinInt / RawOctInt are handled by Token::Raw* and converted later.
+        if (b0 == '0'.code && pos + 2 < utf8.byteLen) {
+            val b1 = utf8.byteAt(pos + 1)
+            if (b1 == 'x'.code || b1 == 'X'.code) {
+                pos += 2
+                val digitStart = pos
+                while (pos < utf8.byteLen && isHexByte(utf8.byteAt(pos))) pos += 1
+                if (pos == digitStart) return null
+                finishSlice(start)
+                return Token.RawHexInt
+            }
+            if (b1 == 'b'.code || b1 == 'B'.code) {
+                pos += 2
+                val digitStart = pos
+                while (pos < utf8.byteLen && (utf8.byteAt(pos) == '0'.code || utf8.byteAt(pos) == '1'.code)) pos += 1
+                if (pos == digitStart) return null
+                finishSlice(start)
+                return Token.RawBinInt
+            }
+            if (b1 == 'o'.code || b1 == 'O'.code) {
+                pos += 2
+                val digitStart = pos
+                while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'7'.code) pos += 1
+                if (pos == digitStart) return null
+                finishSlice(start)
+                return Token.RawOctInt
+            }
+        }
+
+        // Consume digits.
+        while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
+
+        // Float patterns.
+        val hasDot = pos < utf8.byteLen && utf8.byteAt(pos) == '.'.code
+        val hasExp = pos < utf8.byteLen && (utf8.byteAt(pos) == 'e'.code || utf8.byteAt(pos) == 'E'.code)
+        if (hasDot || hasExp) {
+            if (hasDot) {
+                pos += 1
+                while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
+            }
+            scanExponentIfPresent()
+            finishSlice(start)
+            val value = slice.toDoubleOrNull() ?: return null
+            return Token.FloatToken(value)
+        }
+
+        finishSlice(start)
+        return Token.RawDecInt
+    }
+
+    private fun scanExponentIfPresent() {
+        if (pos < utf8.byteLen && (utf8.byteAt(pos) == 'e'.code || utf8.byteAt(pos) == 'E'.code)) {
+            pos += 1
+            if (pos < utf8.byteLen && (utf8.byteAt(pos) == '+'.code || utf8.byteAt(pos) == '-'.code)) pos += 1
+            while (pos < utf8.byteLen && utf8.byteAt(pos) in '0'.code..'9'.code) pos += 1
+        }
+    }
+
+    private fun finishSlice(start: Int) {
+        spanEnd = pos
+        slice = utf8.substringFromByte(start, spanEnd)
+    }
+
+    private fun scanSymbol(): Token? {
+        fun match(s: String, token: Token): Token? {
+            if (utf8.startsWithAt(pos, s)) {
+                pos += s.length
+                spanEnd = pos
+                slice = s
+                return token
+            }
+            return null
+        }
+
+        return match("...", Token.Ellipsis)
+            ?: match("//=", Token.SlashSlashEqual)
+            ?: match("<<=", Token.LessLessEqual)
+            ?: match(">>=", Token.GreaterGreaterEqual)
+            ?: match("**", Token.StarStar)
+            ?: match("->", Token.MinusGreater)
+            ?: match("+=", Token.PlusEqual)
+            ?: match("-=", Token.MinusEqual)
+            ?: match("*=", Token.StarEqual)
+            ?: match("/=", Token.SlashEqual)
+            ?: match("//", Token.SlashSlash)
+            ?: match("%=", Token.PercentEqual)
+            ?: match("==", Token.EqualEqual)
+            ?: match("!=", Token.BangEqual)
+            ?: match("<=", Token.LessEqual)
+            ?: match(">=", Token.GreaterEqual)
+            ?: match("&=", Token.AmpersandEqual)
+            ?: match("|=", Token.PipeEqual)
+            ?: match("^=", Token.CaretEqual)
+            ?: match("<<", Token.LessLess)
+            ?: match(">>", Token.GreaterGreater)
+            ?: match(",", Token.Comma)
+            ?: match(";", Token.Semicolon)
+            ?: match(":", Token.Colon)
+            ?: match("=", Token.Equal)
+            ?: match("<", Token.LessThan)
+            ?: match(">", Token.GreaterThan)
+            ?: match("-", Token.Minus)
+            ?: match("+", Token.Plus)
+            ?: match("*", Token.Star)
+            ?: match("%", Token.Percent)
+            ?: match("/", Token.Slash)
+            ?: match(".", Token.Dot)
+            ?: match("&", Token.Ampersand)
+            ?: match("|", Token.Pipe)
+            ?: match("^", Token.Caret)
+            ?: match("~", Token.Tilde)
+            ?: match("[", Token.OpeningSquare)
+            ?: match("{", Token.OpeningCurly)
+            ?: match("(", Token.OpeningRound)
+            ?: match("]", Token.ClosingSquare)
+            ?: match("}", Token.ClosingCurly)
+            ?: match(")", Token.ClosingRound)
+    }
+
+    private fun isHexByte(b: Int): Boolean {
+        return b in '0'.code..'9'.code || b in 'a'.code..'f'.code || b in 'A'.code..'F'.code
+    }
+
+    private fun isIdentStartByte(b: Int): Boolean {
+        return b == '_'.code || b in 'a'.code..'z'.code || b in 'A'.code..'Z'.code
+    }
+
+    private fun isIdentContByte(b: Int): Boolean {
+        return isIdentStartByte(b) || b in '0'.code..'9'.code
+    }
+}
+
+private class Utf8Index(private val source: String) {
+    private val bytes: ByteArray = source.encodeToByteArray()
+    private val byteToChar: IntArray = buildByteToCharMap(source)
+
+    val byteLen: Int
+        get() = bytes.size
+
+    fun byteAt(i: Int): Int = bytes[i].toInt() and 0xff
+
+    fun startsWithAt(byteIndex: Int, ascii: String): Boolean {
+        if (byteIndex + ascii.length > bytes.size) return false
+        for (i in ascii.indices) {
+            if (byteAt(byteIndex + i) != ascii[i].code) return false
+        }
+        return true
+    }
+
+    fun substringFromByte(start: Int): String {
+        val charStart = byteToChar[start]
+        return source.substring(charStart)
+    }
+
+    fun substringFromByte(start: Int, end: Int): String {
+        val charStart = byteToChar[start]
+        val charEnd = byteToChar[end]
+        return source.substring(charStart, charEnd)
+    }
+
+    private fun buildByteToCharMap(s: String): IntArray {
+        val out = IntArray(bytes.size + 1) { -1 }
+        var bytePos = 0
+        var charPos = 0
+        out[0] = 0
+        while (charPos < s.length) {
+            val codePoint = s.codePointAt(charPos)
+            val utf16Len = if (codePoint > 0xffff) 2 else 1
+            val utf8Len = utf8Len(codePoint)
+            for (i in 0 until utf8Len) {
+                out[bytePos + i] = charPos
+            }
+            bytePos += utf8Len
+            charPos += utf16Len
+            out[bytePos] = charPos
+        }
+        out[bytes.size] = s.length
+        return out
+    }
+
+    private fun String.codePointAt(index: Int): Int {
+        val c1 = this[index].code
+        if (c1 in 0xd800..0xdbff && index + 1 < this.length) {
+            val c2 = this[index + 1].code
+            if (c2 in 0xdc00..0xdfff) {
+                return 0x1_0000 + ((c1 - 0xd800) shl 10) + (c2 - 0xdc00)
+            }
+        }
+        return c1
+    }
+
+    private fun utf8Len(codePoint: Int): Int {
+        return when {
+            codePoint <= 0x7f -> 1
+            codePoint <= 0x7ff -> 2
+            codePoint <= 0xffff -> 3
+            else -> 4
+        }
     }
 }
 
 fun lexExactlyOneIdentifier(s: String): String? {
-    val trimmed = s.trim()
-    if (trimmed.isEmpty()) return null
-    // Must start with letter or underscore
-    if (!trimmed[0].isLetter() && trimmed[0] != '_') return null
-    // Must be all identifier chars
-    if (!trimmed.all { it.isLetterOrDigit() || it == '_' }) return null
-    // Must not be a keyword or reserved word
-    if (keywordToken(trimmed) != null) return null
-    if (trimmed in RESERVED_KEYWORDS) return null
-    return trimmed
+    val lexer = TokenLexer(s)
+    val t1 = lexer.nextToken()
+    val t2 = lexer.nextToken()
+    return if (t1 is ParseResult.Ok && t2 == null) {
+        when (val tok = t1.value) {
+            is Token.Identifier -> tok.name
+            else -> null
+        }
+    } else {
+        null
+    }
 }

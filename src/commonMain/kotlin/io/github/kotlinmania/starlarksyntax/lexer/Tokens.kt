@@ -124,6 +124,15 @@ sealed class Token {
     // Non-grammar tokens (not in the LR tables, consumed by lexer internally)
     data class Comment(val text: String) : Token()
     object Reserved : Token()
+    object Tabs : Token()
+    object RawSingleQuote : Token()
+    object RawDoubleQuote : Token()
+    object RawFStringSingleQuote : Token()
+    object RawFStringDoubleQuote : Token()
+    object RawDecInt : Token()
+    object RawHexInt : Token()
+    object RawOctInt : Token()
+    object RawBinInt : Token()
 
     /** Convert this token to the integer index used by the LR parser tables.
      *  These indices MUST match the LALRPOP-generated __token_to_integer mapping
@@ -197,6 +206,15 @@ sealed class Token {
         is Tilde -> 65
         is Comment -> error("Comment tokens should not reach the parser")
         is Reserved -> error("Reserved tokens should not reach the parser")
+        is Tabs -> error("Tabs tokens should not reach the parser")
+        is RawSingleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawDoubleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawFStringSingleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawFStringDoubleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawDecInt -> error("Raw numeric tokens should not reach the parser")
+        is RawHexInt -> error("Raw numeric tokens should not reach the parser")
+        is RawOctInt -> error("Raw numeric tokens should not reach the parser")
+        is RawBinInt -> error("Raw numeric tokens should not reach the parser")
     }
 
 
@@ -267,8 +285,17 @@ sealed class Token {
         is IntToken -> "integer literal '$value'"
         is FloatToken -> "float literal '$value'"
         is StringToken -> "string literal \"$value\""
+        is RawSingleQuote -> "starting '"
+        is RawDoubleQuote -> "starting \""
+        is RawFStringDoubleQuote -> "starting f'"
+        is RawFStringSingleQuote -> "starting f\""
+        is RawDecInt -> "decimal integer literal"
+        is RawHexInt -> "hexadecimal integer literal"
+        is RawOctInt -> "octal integer literal"
+        is RawBinInt -> "binary integer literal"
         is FStringToken -> "f-string \"${value.content}\""
         is Comment -> "comment '$text'"
+        is Tabs -> ""
     }
 }
 
