@@ -15,6 +15,18 @@ Based on AST analysis, here are the concrete next steps.
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
+### 0. `syntax/parser/ParserLalrpop.kt` — blocked on `StarlarkParser` codegen
+
+**Status:** API-parity cleanup landed on branch `port/codemap` (commits 530eab4 + f9d6485). The phantom `LalrpopBackend` fun interface, the constructor parameter on `LalrpopParser`, and the local `LalrpopParseError` sealed class clone are gone; the file now imports `io.github.kotlinmania.lalrpop.runtime.ParseError` directly and `parseModule` calls `StarlarkParser().parse(state, tokens)` the way upstream `parser_lalrpop.rs` does.
+
+**Compile state:** one unresolved reference, `StarlarkParser`. This is the honest blocker, restored from the previous "green build behind a phantom interface" state.
+
+**Resolution path (out of scope for this branch):**
+
+1. Finish lalrpop-kotlin's Kotlin-emit codegen — ~2500 LOC of new code in `lalrpop-kotlin/src/commonMain/kotlin/io/github/kotlinmania/lalrpop/lr1/kotlintarget/`. The Rust-emit backend that already lives in `lalrpop-kotlin/src/commonMain/kotlin/io/github/kotlinmania/lalrpop/lr1/codegen/` (Ascent.kt 901 lines, ParseTable.kt 1328 lines, Base.kt 346 lines) is the silhouette to mirror — same inputs, idiomatic-Kotlin output strings instead of Rust output strings.
+2. Add a Gradle task in this repo that invokes `lalrpop-kotlin`'s `Configuration.new().processFile("tmp/starlark_syntax/src/syntax/grammar.lalrpop")` at build time and writes to `build/generated/source/lalrpop/syntax/grammar/StarlarkParser.kt`. Wire that path into the `commonMain` source set.
+3. The emitter must produce a class shape that matches what `ParserLalrpop.kt` already calls: `class StarlarkParser { fun parse(state: ParserState, tokens: Iterator<Lexeme>): Result<AstStmt, LuParseError<Int, Token, EvalException>> }`. The user has stated lalrpop-kotlin's *internal engine* (table-driven LR(1) driver) does not need to mirror Rust; only the *public API names* must match.
+
 ### 1. codemap
 - **Similarity:** 0.75 (needs 10% improvement)
 - **Dependencies:** 14
