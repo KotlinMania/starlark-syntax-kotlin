@@ -170,3 +170,18 @@ tasks.register("testClasses") {
             (n.endsWith("TestClasses") || n.startsWith("compileTestKotlin"))
     })
 }
+
+// Kotlin Multiplatform doesn't define a root `test` task by default, and calling
+// `./gradlew test` gets interpreted as an abbreviation for other tasks (e.g.
+// `testAndroid`). Provide an explicit aggregate `test` task so the repo's gate
+// is stable and matches AGENTS.md.
+tasks.register("test") {
+    description = "Aggregate test task for all supported targets."
+    group = "verification"
+    dependsOn(
+        "macosArm64Test",
+        "linuxX64Test",
+        "jsNodeTest",
+        "wasmJsNodeTest",
+    )
+}

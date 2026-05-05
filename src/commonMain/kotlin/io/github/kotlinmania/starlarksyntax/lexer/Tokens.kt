@@ -302,7 +302,7 @@ sealed class Token {
         is Reserved -> "reserved keyword"
         is Identifier -> "identifier '$name'"
         is IntToken -> "integer literal '$value'"
-        is FloatToken -> "float literal '$value'"
+        is FloatToken -> "float literal '${rustDisplayFloat(value)}'"
         is StringToken -> "string literal ${rustDebugString(value)}"
         is RawSingleQuote -> "starting '"
         is RawDoubleQuote -> "starting \""
@@ -341,6 +341,58 @@ private fun rustDebugString(value: String): String {
     }
     out.append('"')
     return out.toString()
+}
+
+private fun rustDisplayFloat(value: Double): String {
+    if (!value.isFinite()) return value.toString()
+
+    val s = value.toString()
+    val eIndex = s.indexOfFirst { it == 'e' || it == 'E' }
+    if (eIndex == -1) {
+        return if (s.endsWith(".0")) s.dropLast(2) else s
+    }
+
+    val mantissaRaw = s.substring(0, eIndex)
+    val exponent = s.substring(eIndex + 1).toInt()
+
+    val negative = mantissaRaw.startsWith('-')
+    val mantissa = if (negative) mantissaRaw.substring(1) else mantissaRaw
+
+    val dotIndex = mantissa.indexOf('.')
+    val intPart = if (dotIndex == -1) mantissa else mantissa.substring(0, dotIndex)
+    val fracPart = if (dotIndex == -1) "" else mantissa.substring(dotIndex + 1)
+    val digits = intPart + fracPart
+
+    // Preserve zero exactly.
+    if (digits.isEmpty() || digits.all { it == '0' }) {
+        return if (negative) "-0" else "0"
+    }
+
+    val decimalPos = intPart.length + exponent
+    val abs =
+        when {
+            decimalPos <= 0 -> {
+                val zeros = "0".repeat(-decimalPos)
+                "0.$zeros$digits"
+            }
+            decimalPos >= digits.length -> {
+                val zeros = "0".repeat(decimalPos - digits.length)
+                digits + zeros
+            }
+            else -> {
+                digits.substring(0, decimalPos) + "." + digits.substring(decimalPos)
+            }
+        }
+
+    val out =
+        if (abs.contains('.')) {
+            abs.trimEnd('0').let { trimmed ->
+                if (trimmed.endsWith('.')) trimmed.dropLast(1) else trimmed
+            }
+        } else {
+            abs
+        }
+    return if (negative) "-$out" else out
 }
 
 /** The set of reserved keywords that cannot be used as identifiers. */

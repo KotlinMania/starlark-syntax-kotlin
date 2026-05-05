@@ -20,6 +20,31 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 private fun nodeRequire(name: String): dynamic = js("require")(name)
 
+private fun resolvePathForNode(path: String): String {
+    val fs: dynamic = nodeRequire("fs")
+    if (fs.existsSync(path) as Boolean) {
+        return path
+    }
+
+    val pathMod: dynamic = nodeRequire("path")
+    val process: dynamic = js("process")
+    var dir: dynamic = process?.cwd?.call(process)
+
+    while (dir != null) {
+        val candidate: String = pathMod.join(dir, path) as String
+        if (fs.existsSync(candidate) as Boolean) {
+            return candidate
+        }
+        val parent: String = pathMod.dirname(dir) as String
+        if (parent == (dir as String)) {
+            break
+        }
+        dir = parent
+    }
+
+    return path
+}
+
 internal actual fun platformGetEnv(name: String): String? {
     val process: dynamic = js("process")
     val env: dynamic = process?.env
@@ -34,7 +59,8 @@ internal actual fun platformGetEnv(name: String): String? {
 
 internal actual fun platformReadUtf8File(path: String): String {
     val fs: dynamic = nodeRequire("fs")
-    return fs.readFileSync(path, "utf8").toString()
+    val resolved = resolvePathForNode(path)
+    return fs.readFileSync(resolved, "utf8").toString()
 }
 
 internal actual fun platformIsWindows(): Boolean {

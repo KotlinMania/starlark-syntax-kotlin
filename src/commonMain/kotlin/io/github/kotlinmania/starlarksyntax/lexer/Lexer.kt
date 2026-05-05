@@ -222,7 +222,7 @@ internal class Lexer(
     // We've potentially seen one character, now consume between min and max elements of iterator
     // and treat it as an int in base radix.
     private fun escapeChar(it: CursorChars, min: Int, max: Int, radix: Int): Int? {
-        var value = 0
+        var value = 0L
         var count = 0
         while (count < max) {
             val c = it.next()
@@ -243,7 +243,10 @@ internal class Lexer(
                 }
             }
         }
-        return value
+        // Reject overlong/overflowing escapes: Rust converts via `char::from_u32` which fails
+        // for values outside the Unicode scalar value range.
+        if (value > 0x10ffff) return null
+        return value.toInt()
     }
 
     // We have seen a '\' character, now parse what comes next.
@@ -277,6 +280,7 @@ internal class Lexer(
                 it.next() == '\n'.code
             }
             'x'.code -> {
+                // Rust uses `char::from_u32` for these escapes, so they must be valid Unicode scalar values.
                 val ch = escapeChar(it, 2, 2, 16) ?: return false
                 res.appendCodePoint(ch)
                 true

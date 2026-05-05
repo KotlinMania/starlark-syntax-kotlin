@@ -19,17 +19,46 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  * limitations under the License.
  */
 
-private fun getEnvVar(name: String): String? =
-    js("(typeof process !== 'undefined' && process.env && process.env[name] !== undefined ? String(process.env[name]) : null)")
+// Kotlin/Wasm does not support `dynamic`, and `js("...")` calls must appear as a single
+// expression in a top-level function body or property initializer. Define JS lambdas
+// in top-level initializers, then call them from the expect/actual surface.
 
-private fun readFileSyncUtf8(path: String): String =
-    js("require('fs').readFileSync(path, 'utf8')")
+private val platformGetEnvImpl: (String) -> String? =
+    js(
+        "(name) => (" +
+            "typeof process !== 'undefined' && process && process.env && process.env[name]" +
+            ") ? process.env[name] : null",
+    )
 
-private fun checkIsWindows(): Boolean =
-    js("typeof process !== 'undefined' && process.platform === 'win32'")
+private val platformReadUtf8FileImpl: (String) -> String =
+    js(
+        "(path) => {\n" +
+            "  const fs = require('fs');\n" +
+            "  const p = require('path');\n" +
+            "  if (fs.existsSync(path)) {\n" +
+            "    return fs.readFileSync(path, 'utf8').toString();\n" +
+            "  }\n" +
+            "  let dir = (typeof process !== 'undefined' && process && process.cwd) ? process.cwd() : null;\n" +
+            "  while (dir) {\n" +
+            "    const candidate = p.join(dir, path);\n" +
+            "    if (fs.existsSync(candidate)) {\n" +
+            "      return fs.readFileSync(candidate, 'utf8').toString();\n" +
+            "    }\n" +
+            "    const parent = p.dirname(dir);\n" +
+            "    if (parent === dir) {\n" +
+            "      break;\n" +
+            "    }\n" +
+            "    dir = parent;\n" +
+            "  }\n" +
+            "  return fs.readFileSync(path, 'utf8').toString();\n" +
+            "}",
+    )
 
-internal actual fun platformGetEnv(name: String): String? = getEnvVar(name)
+private val platformIsWindowsImpl: () -> Boolean =
+    js("() => (typeof process !== 'undefined' && process && process.platform === 'win32')")
 
-internal actual fun platformReadUtf8File(path: String): String = readFileSyncUtf8(path)
+internal actual fun platformGetEnv(name: String): String? = platformGetEnvImpl(name)
 
-internal actual fun platformIsWindows(): Boolean = checkIsWindows()
+internal actual fun platformReadUtf8File(path: String): String = platformReadUtf8FileImpl(path)
+
+internal actual fun platformIsWindows(): Boolean = platformIsWindowsImpl()

@@ -36,13 +36,13 @@ internal actual fun platformGetEnv(name: String): String? {
 internal actual fun platformReadUtf8File(path: String): String {
     val f = fopen(path, "rb") ?: error("Unable to open file: $path")
     try {
-        val out = StringBuilder()
+        val bytes = ArrayList<Byte>()
         while (true) {
             val c = fgetc(f)
             if (c == EOF) break
-            out.append(c.toChar())
+            bytes.add(c.toByte())
         }
-        return out.toString()
+        return bytes.toByteArray().decodeToString()
     } finally {
         fclose(f)
     }
