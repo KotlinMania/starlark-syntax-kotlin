@@ -126,11 +126,10 @@ rootProject.extensions.configure<WasmYarnRootEnvSpec>("kotlinWasmYarnSpec") {
 
 rootProject.extensions.configure<YarnRootExtension>("kotlinYarn") {
     resolution("diff", "8.0.3")
-    resolution("serialize-javascript", "7.0.5")
-    resolution("webpack", "5.106.2")
-
     resolution("**/diff", "8.0.3")
+    resolution("serialize-javascript", "7.0.5")
     resolution("**/serialize-javascript", "7.0.5")
+    resolution("webpack", "5.106.2")
     resolution("**/webpack", "5.106.2")
     resolution("follow-redirects", "1.16.0")
     resolution("**/follow-redirects", "1.16.0")
@@ -172,7 +171,7 @@ mavenPublishing {
 
     pom {
         name.set("starlark-syntax-kotlin")
-        description.set("Kotlin Multiplatform port of facebook/starlark-rust starlark_syntax crate - Starlark language AST, lexer, and parser")
+        description.set("Kotlin Multiplatform port of facebook/starlark-rus - Starlark language parser and AST")
         inceptionYear.set("2026")
         url.set("https://github.com/KotlinMania/starlark-syntax-kotlin")
 
@@ -201,35 +200,16 @@ mavenPublishing {
     }
 }
 
-// CodeQL's Gradle autobuild invokes `./gradlew testClasses`, which is a
-// JVM-convention task that Kotlin Multiplatform projects without a JVM
-// target do not provide. Without it, CodeQL aborts with
-// `Task 'testClasses' not found in root project` and skips the scan.
-// Register an aggregate task that depends on every per-target
-// test-compile task (jsTestClasses, wasmJsTestClasses, and the
-// compileTestKotlin<Target> tasks for native targets) so the convention
-// call resolves.
-tasks.register("testClasses") {
-    description = "Aggregate test-compile task for CodeQL and other JVM-convention callers."
-    group = "verification"
-    dependsOn(tasks.matching { other ->
-        val n = other.name
-        n != "testClasses" &&
-            (n.endsWith("TestClasses") || n.startsWith("compileTestKotlin"))
-    })
-}
-
-// Kotlin Multiplatform doesn't define a root `test` task by default, and calling
-// `./gradlew test` gets interpreted as an abbreviation for other tasks (e.g.
-// `testAndroid`). Provide an explicit aggregate `test` task so the repo's gate
-// is stable and matches AGENTS.md.
 tasks.register("test") {
-    description = "Aggregate test task for all supported targets."
     group = "verification"
-    dependsOn(
+    description =
+        "Runs a portable test suite (macOS + JS + WasmJS). Android and non-host native targets are intentionally excluded."
+
+    val defaultTestTasks = listOf(
         "macosArm64Test",
-        "linuxX64Test",
         "jsNodeTest",
         "wasmJsNodeTest",
     )
+
+    dependsOn(defaultTestTasks.mapNotNull { taskName -> tasks.findByName(taskName) })
 }

@@ -1,43 +1,57 @@
-# starlark-syntax-kotlin
+# starlark-syntax-kotlin in Kotlin
 
-Kotlin Multiplatform port of Facebook's [`starlark_syntax`](https://crates.io/crates/starlark_syntax) crate from [facebook/starlark-rust](https://github.com/facebook/starlark-rust).
+[![GitHub link](https://img.shields.io/badge/GitHub-KotlinMania%2Fstarlark--syntax--kotlin-blue.svg)](https://github.com/KotlinMania/starlark-syntax-kotlin)
+[![Maven Central](https://img.shields.io/maven-central/v/io.github.kotlinmania/starlark-syntax-kotlin)](https://central.sonatype.com/artifact/io.github.kotlinmania/starlark-syntax-kotlin)
+[![Build status](https://img.shields.io/github/actions/workflow/status/KotlinMania/starlark-syntax-kotlin/ci.yml?branch=main)](https://github.com/KotlinMania/starlark-syntax-kotlin/actions)
 
-This artifact owns the Starlark **language AST, lexer, parser, codemap, dialect, and error model** — everything you need to parse `.star` / `.bzl` source into a typed AST without bringing in the evaluator, value system, or heap. It is the parser-island half of the Starlark stack.
+This is a Kotlin Multiplatform line-by-line transliteration port of [`facebook/starlark-rus`](https://github.com/facebook/starlark-rust).
 
-## Maven coordinates
+**Original Project:** This port is based on [`facebook/starlark-rus`](https://github.com/facebook/starlark-rust). All design credit and project intent belong to the upstream authors; this repository is a faithful port to Kotlin Multiplatform with no behavioural changes intended.
+
+### Porting status
+
+This is an **in-progress port**. The goal is feature parity with the upstream Rust crate while providing a native Kotlin Multiplatform API. Every Kotlin file carries a `// port-lint: source <path>` header naming its upstream Rust counterpart so the AST-distance tool can track provenance.
+
+---
+
+## About this Kotlin port
+
+### Installation
 
 ```kotlin
 dependencies {
-    implementation("io.github.kotlinmania:starlark-syntax:0.1.0")
+    implementation("io.github.kotlinmania:starlark-syntax-kotlin:0.1.1")
 }
 ```
 
-## Why a separate artifact?
+### Building
 
-Upstream Rust splits `starlark_syntax` from `starlark` for the same reasons a Kotlin consumer would want the split:
+```bash
+./gradlew build
+./gradlew test
+```
 
-- **LSP, linters, and tooling** can consume just the parser without dragging in the evaluator's runtime cost or transitive deps.
-- **Build hygiene** — the lalrpop-generated grammar is heavy; isolating it keeps incremental compile cycles short for downstream code.
-- **Reuse** — both `starlark-kotlin` (the interpreter) and a future `starlark-lsp-kotlin` will consume this artifact.
+### Targets
 
-This mirrors the precedent set by `starlark_map → starlarkmap-kotlin`.
+- macOS arm64
+- Linux x64
+- Windows mingw-x64
+- iOS arm64 / simulator-arm64 (Swift export + XCFramework)
+- JS (browser + Node.js)
+- Wasm-JS (browser + Node.js)
+- Android (API 24+)
 
-## Targets
+### Porting guidelines
 
-Kotlin Multiplatform, no JVM-only target:
+See [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md) for translator discipline, port-lint header convention, and Rust → Kotlin idiom mapping.
 
-- `macosArm64`
-- `linuxX64`
-- `mingwX64`
-- `iosArm64`, `iosSimulatorArm64`
-- `js` (browser + nodejs)
-- `wasmJs` (browser + nodejs)
-- `androidLibrary`
+### License
 
-## Status
+This Kotlin port is distributed under the same Apache-2.0 license as the upstream [`facebook/starlark-rus`](https://github.com/facebook/starlark-rust). See [LICENSE](LICENSE) (and any sibling `LICENSE-*` / `NOTICE` files mirrored from upstream) for the full text.
 
-**Phase 1: scaffolding.** The repository is being stood up now; source files are being ported / extracted from `starlark-kotlin`. The upstream Rust source for translation reference lives under `tmp/starlark_syntax/` (a fresh checkout from `facebook/starlark-rust`).
+Original work copyrighted by the starlark-rus authors.  
+Kotlin port: Copyright (c) 2026 Sydney Renee and The Solace Project.
 
-## License
+### Acknowledgments
 
-Apache-2.0. See [LICENSE](./LICENSE).
+Thanks to the [`facebook/starlark-rus`](https://github.com/facebook/starlark-rust) maintainers and contributors for the original Rust implementation. This port reproduces their work in Kotlin Multiplatform; bug reports about upstream design or behavior should go to the upstream repository.
