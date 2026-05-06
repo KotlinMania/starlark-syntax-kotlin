@@ -236,6 +236,26 @@ sealed class Token {
         is RawBinInt -> error("Raw numeric tokens should not reach the parser")
     }
 
+    fun toSymbol(): io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol = when (this) {
+        is FloatToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant1(value)
+        is FStringToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant2(value)
+        is Identifier -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant3(name)
+        is IntToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant4(value)
+        is StringToken -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant3(value)
+        is Comment -> error("Comment tokens should not reach the parser")
+        is Reserved -> error("Reserved tokens should not reach the parser")
+        is Tabs -> error("Tabs tokens should not reach the parser")
+        is RawSingleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawDoubleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawFStringSingleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawFStringDoubleQuote -> error("Raw quote tokens should not reach the parser")
+        is RawDecInt -> error("Raw numeric tokens should not reach the parser")
+        is RawHexInt -> error("Raw numeric tokens should not reach the parser")
+        is RawOctInt -> error("Raw numeric tokens should not reach the parser")
+        is RawBinInt -> error("Raw numeric tokens should not reach the parser")
+        else -> io.github.kotlinmania.starlarksyntax.syntax.grammar.GrammarSymbol.Variant0(this)
+    }
+
 
     override fun toString(): String = when (this) {
         is Indent -> "new indentation block"

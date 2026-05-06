@@ -19,8 +19,8 @@ dependencyResolutionManagement {
 
 rootProject.name = "starlark-syntax"
 
-includeBuild("../starlarkmap-kotlin") {
+includeBuild("../lalrpop-kotlin") {
     dependencySubstitution {
-        substitute(module("io.github.kotlinmania:starlarkmap-kotlin")).using(project(":"))
+        substitute(module("io.github.kotlinmania:lalrpop-kotlin")).using(project(":"))
     }
 }

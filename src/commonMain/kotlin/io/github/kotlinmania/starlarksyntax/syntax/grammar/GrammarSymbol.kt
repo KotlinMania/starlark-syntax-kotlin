@@ -1,65 +1,128 @@
-// port-lint: source src/syntax/grammar.lalrpop
+// port-lint: source ../starlark_syntax/src/syntax/grammar.lalrpop
 package io.github.kotlinmania.starlarksyntax.syntax.grammar
 
-/*
- * Copyright 2018 The Starlark in Rust Authors.
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+import io.github.kotlinmania.starlarksyntax.codemap.Spanned as Spanned
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.lexer.TokenFString
 import io.github.kotlinmania.starlarksyntax.lexer.TokenInt
+import io.github.kotlinmania.starlarksyntax.syntax.ast.*
 
-/**
- * Per-grammar symbol-stack discriminator emitted alongside the LALRPOP-generated
- * parser. Each unique stack-element kind in the grammar is a [Variant`N`] data class
- * carrying its typed value.
- *
- * Variant ordering follows lalrpop-kotlin's `KotlinSymbolEmit` convention: terminals
- * first in declaration order from the grammar's `extern { enum Token { ... } }` block,
- * deduplicated by type kind, then nonterminals in declaration order.
- *
- * For Starlark's grammar (see `tmp/starlark_syntax/src/syntax/grammar.lalrpop`,
- * `extern { enum lexer::Token }`), the typed-terminal mapping is:
- *
- * | Variant   | Source recipe                                         |
- * |-----------|-------------------------------------------------------|
- * | Variant0  | `lexer::Token` (untyped terminals — keywords, symbols, brackets, INDENT/DEDENT/NEWLINE) |
- * | Variant1  | `String` (`IDENTIFIER` and `STRING`)                  |
- * | Variant2  | `lexer::TokenInt` (`INTEGER`)                         |
- * | Variant3  | `f64` (`FLOAT`)                                       |
- * | Variant4  | `lexer::TokenFString` (`FSTRING`)                     |
- *
- * Variants for Starlark's nonterminals (statements, expressions, suites, …) are
- * appended by the lalrpop-kotlin codegen pass when it emits [StarlarkParser]; they
- * are not declared here because the productions table that pushes them is itself
- * codegen-emitted.
- */
+class Comma
+sealed class NullableOption<out T> {
+    data object Absent : NullableOption<Nothing>()
+    data object Empty : NullableOption<Nothing>()
+    data class Present<T>(val value: T) : NullableOption<T>()
+
+    fun unwrapOrNull(): T? = when (this) {
+        Absent -> null
+        Empty -> null
+        is Present -> value
+    }
+}
+
 sealed class GrammarSymbol {
-    /** Source recipe: `lexer::Token` (untyped terminals) */
     data class Variant0(val value: Token) : GrammarSymbol()
-
-    /** Source recipe: `String` (matches `IDENTIFIER` and `STRING` terminals) */
-    data class Variant1(val value: String) : GrammarSymbol()
-
-    /** Source recipe: `lexer::TokenInt` (matches `INTEGER` terminal) */
-    data class Variant2(val value: TokenInt) : GrammarSymbol()
-
-    /** Source recipe: `f64` (matches `FLOAT` terminal) */
-    data class Variant3(val value: Double) : GrammarSymbol()
-
-    /** Source recipe: `lexer::TokenFString` (matches `FSTRING` terminal) */
-    data class Variant4(val value: TokenFString) : GrammarSymbol()
+    data class Variant1(val value: Double) : GrammarSymbol()
+    data class Variant2(val value: TokenFString) : GrammarSymbol()
+    data class Variant3(val value: String) : GrammarSymbol()
+    data class Variant4(val value: TokenInt) : GrammarSymbol()
+    data class Variant5(val value: Token?) : GrammarSymbol()
+    data class Variant6(val value: List<Token>) : GrammarSymbol()
+    data class Variant7(val value: Spanned<ExprP<AstNoPayload>>?) : GrammarSymbol()
+    data class Variant8(val value: NullableOption<Spanned<ExprP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant9(val value: Spanned<StmtP<AstNoPayload>>) : GrammarSymbol()
+    data class Variant10(val value: List<Spanned<StmtP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant11(val value: Spanned<ArgumentP<AstNoPayload>>) : GrammarSymbol()
+    data class Variant12(val value: List<Spanned<ArgumentP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant13(val value: Spanned<ParameterP<AstNoPayload>>) : GrammarSymbol()
+    data class Variant14(val value: List<Spanned<ParameterP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant15(val value: Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant16(val value: List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>>) : GrammarSymbol()
+    data class Variant17(val value: Spanned<ExprP<AstNoPayload>>) : GrammarSymbol()
+    data class Variant18(val value: List<Spanned<ExprP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant19(val value: Pair<Pair<Spanned<AssignIdentP<AstNoPayload, Unit>>, Spanned<String>>, Spanned<Comma>>) : GrammarSymbol()
+    data class Variant20(val value: List<Pair<Pair<Spanned<AssignIdentP<AstNoPayload, Unit>>, Spanned<String>>, Spanned<Comma>>>) : GrammarSymbol()
+    data class Variant21(val value: Pair<Spanned<AssignIdentP<AstNoPayload, Unit>>, Spanned<String>>) : GrammarSymbol()
+    data class Variant22(val value: Pair<Spanned<AssignIdentP<AstNoPayload, Unit>>, Spanned<String>>?) : GrammarSymbol()
+    data class Variant23(val value: Int) : GrammarSymbol()
+    data class Variant24(val value: Spanned<ArgumentP<AstNoPayload>>?) : GrammarSymbol()
+    data class Variant25(val value: ArgumentP<AstNoPayload>) : GrammarSymbol()
+    data class Variant26(val value: Spanned<AssignIdentP<AstNoPayload, Unit>>) : GrammarSymbol()
+    data class Variant27(val value: AssignOp?) : GrammarSymbol()
+    data class Variant28(val value: StmtP<AstNoPayload>) : GrammarSymbol()
+    data class Variant29(val value: List<Spanned<ArgumentP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant30(val value: List<Spanned<ParameterP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant31(val value: List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>>) : GrammarSymbol()
+    data class Variant32(val value: List<Spanned<ExprP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant33(val value: ClauseP<AstNoPayload>) : GrammarSymbol()
+    data class Variant34(val value: List<ClauseP<AstNoPayload>>) : GrammarSymbol()
+    data class Variant35(val value: Spanned<Comma>) : GrammarSymbol()
+    data class Variant36(val value: Pair<ForClauseP<AstNoPayload>, List<ClauseP<AstNoPayload>>>) : GrammarSymbol()
+    data class Variant37(val value: Spanned<ParameterP<AstNoPayload>>?) : GrammarSymbol()
+    data class Variant38(val value: ParameterP<AstNoPayload>) : GrammarSymbol()
+    data class Variant39(val value: ExprP<AstNoPayload>) : GrammarSymbol()
+    data class Variant40(val value: Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>?) : GrammarSymbol()
+    data class Variant41(val value: Spanned<StmtP<AstNoPayload>>?) : GrammarSymbol()
+    data class Variant42(val value: ForClauseP<AstNoPayload>) : GrammarSymbol()
+    data class Variant43(val value: Spanned<IdentP<AstNoPayload, Unit>>) : GrammarSymbol()
+    data class Variant44(val value: Spanned<String>) : GrammarSymbol()
+    data class Variant45(val value: Spanned<String>?) : GrammarSymbol()
+    data class Variant46(val value: Spanned<TypeExprP<AstNoPayload, Unit>>?) : GrammarSymbol()
+    data class Variant47(val value: Spanned<TypeExprP<AstNoPayload, Unit>>) : GrammarSymbol()
+    data class Variant48(val value: Spanned<Double>) : GrammarSymbol()
+    data class Variant49(val value: Spanned<FStringP<AstNoPayload>>) : GrammarSymbol()
+    data class Variant50(val value: Spanned<TokenInt>) : GrammarSymbol()
+    fun unwrap(): Any? = when (this) {
+        is Variant0 -> value
+        is Variant1 -> value
+        is Variant2 -> value
+        is Variant3 -> value
+        is Variant4 -> value
+        is Variant5 -> value
+        is Variant6 -> value
+        is Variant7 -> value
+        is Variant8 -> value
+        is Variant9 -> value
+        is Variant10 -> value
+        is Variant11 -> value
+        is Variant12 -> value
+        is Variant13 -> value
+        is Variant14 -> value
+        is Variant15 -> value
+        is Variant16 -> value
+        is Variant17 -> value
+        is Variant18 -> value
+        is Variant19 -> value
+        is Variant20 -> value
+        is Variant21 -> value
+        is Variant22 -> value
+        is Variant23 -> value
+        is Variant24 -> value
+        is Variant25 -> value
+        is Variant26 -> value
+        is Variant27 -> value
+        is Variant28 -> value
+        is Variant29 -> value
+        is Variant30 -> value
+        is Variant31 -> value
+        is Variant32 -> value
+        is Variant33 -> value
+        is Variant34 -> value
+        is Variant35 -> value
+        is Variant36 -> value
+        is Variant37 -> value
+        is Variant38 -> value
+        is Variant39 -> value
+        is Variant40 -> value
+        is Variant41 -> value
+        is Variant42 -> value
+        is Variant43 -> value
+        is Variant44 -> value
+        is Variant45 -> value
+        is Variant46 -> value
+        is Variant47 -> value
+        is Variant48 -> value
+        is Variant49 -> value
+        is Variant50 -> value
+    }
 }
