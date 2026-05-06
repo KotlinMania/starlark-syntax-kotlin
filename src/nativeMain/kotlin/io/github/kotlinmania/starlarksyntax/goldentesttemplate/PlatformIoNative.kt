@@ -20,12 +20,15 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  */
 
 import kotlinx.cinterop.toKString
+import kotlinx.cinterop.addressOf
+import kotlinx.cinterop.usePinned
 import kotlin.native.OsFamily
 import kotlin.native.Platform
 import platform.posix.EOF
 import platform.posix.fclose
 import platform.posix.fgetc
 import platform.posix.fopen
+import platform.posix.fwrite
 import platform.posix.getenv
 
 internal actual fun platformGetEnv(name: String): String? {
@@ -43,6 +46,19 @@ internal actual fun platformReadUtf8File(path: String): String {
             bytes.add(c.toByte())
         }
         return bytes.toByteArray().decodeToString()
+    } finally {
+        fclose(f)
+    }
+}
+
+internal actual fun platformWriteUtf8File(path: String, content: String) {
+    val f = fopen(path, "wb") ?: error("Unable to open file: $path")
+    try {
+        val bytes = content.encodeToByteArray()
+        bytes.usePinned { pinned ->
+            val written = fwrite(pinned.addressOf(0), 1UL, bytes.size.toULong(), f)
+            check(written == bytes.size.toULong()) { "Unable to write file: $path" }
+        }
     } finally {
         fclose(f)
     }

@@ -63,6 +63,11 @@ internal actual fun platformReadUtf8File(path: String): String {
     return fs.readFileSync(resolved, "utf8").toString()
 }
 
+internal actual fun platformWriteUtf8File(path: String, content: String) {
+    val fs: dynamic = nodeRequire("fs")
+    fs.writeFileSync(path, content, "utf8")
+}
+
 internal actual fun platformIsWindows(): Boolean {
     val process: dynamic = js("process")
     return (process?.platform as String?) == "win32"

@@ -1,11 +1,13 @@
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.nodejs.NodeJsRootExtension
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 import org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.wasm.yarn.WasmYarnRootEnvSpec
+import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 
 plugins {
     kotlin("multiplatform") version "2.3.21"
@@ -212,4 +214,15 @@ tasks.register("test") {
     )
 
     dependsOn(defaultTestTasks.mapNotNull { taskName -> tasks.findByName(taskName) })
+}
+
+val cargoManifestDir: String = rootProject.projectDir.absolutePath.replace("\\", "/")
+
+tasks.withType<KotlinNativeTest>().configureEach {
+    environment("CARGO_MANIFEST_DIR", cargoManifestDir)
+    environment("SIMCTL_CHILD_CARGO_MANIFEST_DIR", cargoManifestDir)
+}
+
+tasks.withType<KotlinJsTest>().configureEach {
+    environment("CARGO_MANIFEST_DIR", cargoManifestDir)
 }

@@ -107,13 +107,13 @@ data class Span(
 }
 
 /** Associate a Span with a value of arbitrary type (e.g. an AST node). */
-data class Spanned<T>(
+data class Spanned<out T>(
     /** Data in the node. */
     val node: T,
     val span: Span,
 ) {
     /** Apply the function to the node, keep the span. */
-    fun <U> map(f: (T) -> U): Spanned<U> = Spanned(f(node), span)
+    fun <U> map(f: (@UnsafeVariance T) -> U): Spanned<U> = Spanned(f(node), span)
 
     fun asRef(): Spanned<T> = this
 

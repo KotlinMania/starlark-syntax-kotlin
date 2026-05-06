@@ -5335,7 +5335,7 @@ internal fun __action272(
     )
 }
 
-internal fun __action273(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>, sym9: Triple<Int, GrammarSymbol, Int>): NullableOption<Spanned<ExprP<AstNoPayload>>> {
+internal fun __action273(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>, sym9: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
     val __0 = sym0.asIntValueTriple()
     val __1 = sym1.asExprSpannedTriple()
     val __2 = sym2.asTokenTriple()
@@ -8225,7 +8225,7 @@ internal fun __action391(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     __ret
 }
 
-internal fun __action392(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): NullableOption<Spanned<ExprP<AstNoPayload>>> {
+internal fun __action392(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
     val __0 = sym0.asExprSpannedTriple()
     val __1 = sym1.asTokenTriple()
     val __2 = sym2.asExprSpannedTriple()

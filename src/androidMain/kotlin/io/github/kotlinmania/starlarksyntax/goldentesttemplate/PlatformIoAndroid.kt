@@ -24,4 +24,8 @@ internal actual fun platformReadUtf8File(path: String): String {
     return java.io.File(path).readText()
 }
 
+internal actual fun platformWriteUtf8File(path: String, content: String) {
+    java.io.File(path).writeText(content)
+}
+
 internal actual fun platformIsWindows(): Boolean = false
