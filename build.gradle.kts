@@ -99,7 +99,7 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
                 implementation("com.ionspin.kotlin:bignum:0.3.10")
                 implementation("io.github.kotlinmania:starlarkmap-kotlin:0.1.2")
-                implementation("io.github.kotlinmania:lalrpop-kotlin:0.1.6")
+                implementation("io.github.kotlinmania:lalrpop-util-kotlin:0.1.0")
             }
         }
 
