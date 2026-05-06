@@ -2994,73 +2994,73 @@ internal object GrammarReducers {
         error("Unknown rule ID: $ruleId")
     }
 
-internal fun __action0(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action0(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
 }
 
-internal fun __action1(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asTokenInt()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action1(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asTokenInt()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action2(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asDoubleValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action2(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asDoubleValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action3(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStringValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action3(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStringValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action4(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asTokenFString()
-    val r = sym2.second.asIntValue()
-    val __ret = fstring(e, l, r, state)
-    return __ret
+internal fun __action4(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asTokenFString()
+        val r = sym2.second.asIntValue()
+        val __ret = fstring(e, l, r, state)
+    __ret
 }
 
-internal fun __action5(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStringValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action5(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStringValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action6(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val id = sym0.second.asStringSpanned()
-    val __ret = Spanned(span = id.span, __nt = IdentP<AstNoPayload>(ident = id.__nt, payload = Unit))
-    return __ret
+internal fun __action6(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val id = sym0.second.asStringSpanned()
+        val __ret = Spanned(span = id.span, node = IdentP<AstNoPayload>(ident = id.node, payload = Unit))
+    __ret
 }
 
-internal fun __action7(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val id = sym0.second.asStringSpanned()
-    val __ret = Spanned(span = id.span, __nt = AssignIdentP<AstNoPayload>(ident = id.__nt, payload = Unit))
-    return __ret
+internal fun __action7(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val id = sym0.second.asStringSpanned()
+        val __ret = Spanned(span = id.span, node = AssignIdentP<AstNoPayload>(ident = id.node, payload = Unit))
+    __ret
 }
 
-internal fun __action8(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym1.second.asIntValue()
-    val s = sym2.second.asStmtSpannedList()
-    val r = sym3.second.asIntValue()
-    val __ret = statements(s, l, r)
-    return __ret
+internal fun __action8(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym1.second.asIntValue()
+        val s = sym2.second.asStmtSpannedList()
+        val r = sym3.second.asIntValue()
+        val __ret = statements(s, l, r)
+    __ret
 }
 
-internal fun __action9(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action9(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
@@ -3086,7 +3086,7 @@ internal fun __action12(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action13(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action13(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ParameterP<AstNoPayload>> {
     val __0 = sym0.second.asParameterSpanned()
     val __ret = __0
     return __ret
@@ -3129,7 +3129,7 @@ internal fun __action19(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action20(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action20(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ParameterP<AstNoPayload>> {
     val __0 = sym0.second.asParameterSpanned()
     val __ret = __0
     return __ret
@@ -3199,12 +3199,12 @@ internal fun __action30(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action31(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym2.second.asIntValue()
-    val v = sym4.second.asStmtSpannedList()
-    val r = sym5.second.asIntValue()
-    val __ret = statements(v, l, r)
-    return __ret
+internal fun __action31(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym2.second.asIntValue()
+        val v = sym4.second.asStmtSpannedList()
+        val r = sym5.second.asIntValue()
+        val __ret = statements(v, l, r)
+    __ret
 }
 
 internal fun __action32(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
@@ -3231,23 +3231,23 @@ internal fun __action35(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action36(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action36(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
 }
 
-internal fun __action37(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val c = sym0.second.asExprSpanned()
-    val s = sym2.second.asStmtSpanned()
-    val el = sym3.second.asNullableStmtSpanned()
-    val __ret = run {
-    if (el == null) StmtP.If<AstNoPayload>(c, s) else StmtP.IfElse<AstNoPayload>(c, s, el)
-    }
-    return __ret
+internal fun __action37(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val c = sym0.second.asExprSpanned()
+        val s = sym2.second.asStmtSpanned()
+        val el = sym3.second.asNullableStmtSpanned()
+        val __ret = run {
+        if (el == null) StmtP.If<AstNoPayload>(c, s) else StmtP.IfElse<AstNoPayload>(c, s, el)
+        }
+    __ret
 }
 
-internal fun __action38(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action38(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
@@ -3271,7 +3271,7 @@ internal fun __action41(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action42(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action42(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
@@ -3285,33 +3285,33 @@ internal fun __action43(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action44(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asNullableExprSpanned()
-    val r = sym3.second.asIntValue()
-    val __ret = StmtP.Return<AstNoPayload>(e).ast(l, r)
-    return __ret
+internal fun __action44(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asNullableExprSpanned()
+        val r = sym3.second.asIntValue()
+        val __ret = StmtP.Return<AstNoPayload>(e).ast(l, r)
+    __ret
 }
 
-internal fun __action45(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.second.asIntValue()
-    val __1 = sym2.second.asIntValue()
-    val __ret = StmtP.Break<AstNoPayload>().ast(__0, __1)
-    return __ret
+internal fun __action45(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.second.asIntValue()
+        val __1 = sym2.second.asIntValue()
+        val __ret = StmtP.Break<AstNoPayload>().ast(__0, __1)
+    __ret
 }
 
-internal fun __action46(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.second.asIntValue()
-    val __1 = sym2.second.asIntValue()
-    val __ret = StmtP.Continue<AstNoPayload>().ast(__0, __1)
-    return __ret
+internal fun __action46(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.second.asIntValue()
+        val __1 = sym2.second.asIntValue()
+        val __ret = StmtP.Continue<AstNoPayload>().ast(__0, __1)
+    __ret
 }
 
-internal fun __action47(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.second.asIntValue()
-    val __1 = sym2.second.asIntValue()
-    val __ret = StmtP.Pass<AstNoPayload>().ast(__0, __1)
-    return __ret
+internal fun __action47(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.second.asIntValue()
+        val __1 = sym2.second.asIntValue()
+        val __ret = StmtP.Pass<AstNoPayload>().ast(__0, __1)
+    __ret
 }
 
 internal fun __action48(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
@@ -3404,7 +3404,7 @@ internal fun __action62(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action63(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action63(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
@@ -3419,7 +3419,7 @@ internal fun __action64(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action65(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action65(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
@@ -3431,47 +3431,47 @@ internal fun __action66(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action67(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.second.asIntValue()
-    val __1 = sym2.second.asIntValue()
-    val __ret = Comma().ast(__0, __1)
-    return __ret
+internal fun __action67(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.second.asIntValue()
+        val __1 = sym2.second.asIntValue()
+        val __ret = Comma().ast(__0, __1)
+    __ret
 }
 
-internal fun __action68(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action68(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
 }
 
-internal fun __action69(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val module = sym2.second.asStringSpanned()
-    val __ret = checkLoad0(module, state)
-    return __ret
+internal fun __action69(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val module = sym2.second.asStringSpanned()
+        val __ret = checkLoad0(module, state)
+    __ret
 }
 
-internal fun __action70(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val module = sym2.second.asStringSpanned()
-    val args = sym4.second.asLoadPairList()
-    val last = sym5.second.asNullableAssignIdentStringPair()
-    val __ret = checkLoad(module, args, last, state)
-    return __ret
+internal fun __action70(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val module = sym2.second.asStringSpanned()
+        val args = sym4.second.asLoadPairList()
+        val last = sym5.second.asNullableAssignIdentStringPair()
+        val __ret = checkLoad(module, args, last, state)
+    __ret
 }
 
-internal fun __action71(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action71(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Spanned<String> {
     val __0 = sym0.second.asStringSpanned()
     val __ret = __0
     return __ret
 }
 
-internal fun __action72(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val id = sym0.second.asNullableStringSpanned()
-    val n = sym1.second.asStringSpanned()
-    val __ret = run {
-    val id = id ?: n;
-    Pair(Spanned(span = id.span, __nt = AssignIdentP<AstNoPayload>(ident = id.__nt, payload = Unit)), n)
-    }
-    return __ret
+internal fun __action72(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val id = sym0.second.asNullableStringSpanned()
+        val n = sym1.second.asStringSpanned()
+        val __ret = run {
+        val id = id ?: n;
+        Pair(Spanned(span = id.span, node = AssignIdentP<AstNoPayload>(ident = id.node, payload = Unit)), n)
+        }
+    __ret
 }
 
 internal fun __action73(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3486,60 +3486,60 @@ internal fun __action74(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action75(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprSpanned()
-    val i = sym3.second.asStringSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Dot(e, i).ast(l, r)
-    return __ret
+internal fun __action75(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprSpanned()
+        val i = sym3.second.asStringSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Dot(e, i).ast(l, r)
+    __ret
 }
 
-internal fun __action76(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprSpanned()
-    val a = sym3.second.asArgumentSpannedList()
-    val r = sym5.second.asIntValue()
-    val __ret = checkCall(e, a, state).ast(l, r)
-    return __ret
+internal fun __action76(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprSpanned()
+        val a = sym3.second.asArgumentSpannedList()
+        val r = sym5.second.asIntValue()
+        val __ret = checkCall(e, a, state).ast(l, r)
+    __ret
 }
 
-internal fun __action77(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprSpanned()
-    val i1 = sym3.second.asNullableExprSpanned()
-    val i2 = sym5.second.asNullableExprSpanned()
-    // sym6 is the `(":" <Test?>)?` slot. The Rust action body for this production is
-    // `i3.unwrap_or(None).map(|x| Box::new(x))` — collapse the outer Option by treating
-    // None and Some(None) both as "no third slice argument," and Some(Some(v)) as v.
-    // [NullableOption.unwrapOrNull] is the matching Kotlin idiom.
-    val i3Wrapped = sym6.second.asNullableOptionExprSpanned()
-    val i3 = i3Wrapped.unwrapOrNull()
-    val r = sym8.second.asIntValue()
-    val __ret = run {
-          ExprP.Slice<AstNoPayload>(e, i1, i2, i3)
-              .ast(l, r)
-    }
-    return __ret
+internal fun __action77(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprSpanned()
+        val i1 = sym3.second.asNullableExprSpanned()
+        val i2 = sym5.second.asNullableExprSpanned()
+        // sym6 is the `(":" <Test?>)?` slot. The Rust action body for this production is
+        // `i3.unwrap_or(None).map(|x| Box::new(x))` — collapse the outer Option by treating
+        // None and Some(None) both as "no third slice argument," and Some(Some(v)) as v.
+        // [NullableOption.unwrapOrNull] is the matching Kotlin idiom.
+        val i3Wrapped = sym6.second.asNullableOptionExprSpanned()
+        val i3 = i3Wrapped.unwrapOrNull()
+        val r = sym8.second.asIntValue()
+        val __ret = run {
+              ExprP.Slice<AstNoPayload>(e, i1, i2, i3)
+                  .ast(l, r)
+        }
+    __ret
 }
 
-internal fun __action78(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprSpanned()
-    val i = sym3.second.asExprSpanned()
-    val r = sym5.second.asIntValue()
-    val __ret = ExprP.Index(e, i).ast(l, r)
-    return __ret
+internal fun __action78(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprSpanned()
+        val i = sym3.second.asExprSpanned()
+        val r = sym5.second.asIntValue()
+        val __ret = ExprP.Index(e, i).ast(l, r)
+    __ret
 }
 
-internal fun __action79(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprSpanned()
-    val i0 = sym3.second.asExprSpanned()
-    val i1 = sym5.second.asExprSpanned()
-    val r = sym7.second.asIntValue()
-    val __ret = ExprP.Index2(e, i0, i1).ast(l, r)
-    return __ret
+internal fun __action79(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprSpanned()
+        val i0 = sym3.second.asExprSpanned()
+        val i1 = sym5.second.asExprSpanned()
+        val r = sym7.second.asIntValue()
+        val __ret = ExprP.Index2(e, i0, i1).ast(l, r)
+    __ret
 }
 
 internal fun __action80(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3554,7 +3554,7 @@ internal fun __action81(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action82(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action82(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ArgumentP<AstNoPayload>> {
     val __0 = sym0.second.asArgumentSpanned()
     val __ret = __0
     return __ret
@@ -3566,11 +3566,11 @@ internal fun __action83(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action84(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.second.asStringSpanned()
-    val __1 = sym2.second.asExprSpanned()
-    val __ret = ArgumentP.Named<AstNoPayload>(__0, __1)
-    return __ret
+internal fun __action84(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.second.asStringSpanned()
+        val __1 = sym2.second.asExprSpanned()
+        val __ret = ArgumentP.Named<AstNoPayload>(__0, __1)
+    __ret
 }
 
 internal fun __action85(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): ArgumentP<AstNoPayload> {
@@ -3585,51 +3585,51 @@ internal fun __action86(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action87(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val i = sym1.second.asIdentSpanned()
-    val r = sym2.second.asIntValue()
-    val __ret = ExprP.Identifier<AstNoPayload>(i).ast(l, r)
-    return __ret
+internal fun __action87(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val i = sym1.second.asIdentSpanned()
+        val r = sym2.second.asIntValue()
+        val __ret = ExprP.Identifier<AstNoPayload>(i).ast(l, r)
+    __ret
 }
 
-internal fun __action88(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val i = sym1.second.asTokenIntSpanned()
-    val r = sym2.second.asIntValue()
-    val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.Int(i)).ast(l, r)
-    return __ret
+internal fun __action88(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val i = sym1.second.asTokenIntSpanned()
+        val r = sym2.second.asIntValue()
+        val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.Int(i)).ast(l, r)
+    __ret
 }
 
-internal fun __action89(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val f = sym1.second.asDoubleSpanned()
-    val r = sym2.second.asIntValue()
-    val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.Float(f)).ast(l, r)
-    return __ret
+internal fun __action89(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val f = sym1.second.asDoubleSpanned()
+        val r = sym2.second.asIntValue()
+        val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.Float(f)).ast(l, r)
+    __ret
 }
 
-internal fun __action90(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val s = sym1.second.asStringSpanned()
-    val r = sym2.second.asIntValue()
-    val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.String(s)).ast(l, r)
-    return __ret
+internal fun __action90(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val s = sym1.second.asStringSpanned()
+        val r = sym2.second.asIntValue()
+        val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.String(s)).ast(l, r)
+    __ret
 }
 
-internal fun __action91(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val r = sym2.second.asIntValue()
-    val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.Ellipsis()).ast(l, r)
-    return __ret
+internal fun __action91(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val r = sym2.second.asIntValue()
+        val __ret = ExprP.Literal<AstNoPayload>(AstLiteral.Ellipsis()).ast(l, r)
+    __ret
 }
 
-internal fun __action92(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asExprSpannedList()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.List<AstNoPayload>(e).ast(l, r)
-    return __ret
+internal fun __action92(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asExprSpannedList()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.List<AstNoPayload>(e).ast(l, r)
+    __ret
 }
 
 internal fun __action93(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3638,12 +3638,12 @@ internal fun __action93(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action94(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asExprPairList()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Dict<AstNoPayload>(e).ast(l, r)
-    return __ret
+internal fun __action94(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asExprPairList()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Dict<AstNoPayload>(e).ast(l, r)
+    __ret
 }
 
 internal fun __action95(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3652,20 +3652,20 @@ internal fun __action95(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action96(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asNullableExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = e ?: ExprP.Tuple<AstNoPayload>(emptyList<Nothing>()).ast(l, r)
-    return __ret
+internal fun __action96(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asNullableExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = e ?: ExprP.Tuple<AstNoPayload>(emptyList<Nothing>()).ast(l, r)
+    __ret
 }
 
-internal fun __action97(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val f = sym1.second.asFStringSpanned()
-    val r = sym2.second.asIntValue()
-    val __ret = ExprP.FString<AstNoPayload>(f).ast(l, r)
-    return __ret
+internal fun __action97(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val f = sym1.second.asFStringSpanned()
+        val r = sym2.second.asIntValue()
+        val __ret = ExprP.FString<AstNoPayload>(f).ast(l, r)
+    __ret
 }
 
 internal fun __action98(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>> {
@@ -3675,7 +3675,7 @@ internal fun __action98(state: io.github.kotlinmania.starlarksyntax.syntax.state
     return __ret
 }
 
-internal fun __action99(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action99(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
     val __0 = sym0.second.asExprSpanned()
     val __ret = __0
     return __ret
@@ -3688,7 +3688,7 @@ internal fun __action100(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action101(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action101(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
     val __0 = sym0.second.asExprSpanned()
     val __ret = __0
     return __ret
@@ -3701,11 +3701,11 @@ internal fun __action102(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action103(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val x = sym0.second.asForClauseValue()
-    val xs = sym1.second.asClauseList()
-    val __ret = Pair(x, xs)
-    return __ret
+internal fun __action103(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val x = sym0.second.asForClauseValue()
+        val xs = sym1.second.asClauseList()
+        val __ret = Pair(x, xs)
+    __ret
 }
 
 internal fun __action104(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): ClauseP<AstNoPayload> {
@@ -3727,14 +3727,14 @@ internal fun __action106(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action107(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val t = sym3.second.asExprSpanned()
-    val e2 = sym5.second.asExprSpanned()
-    val r = sym6.second.asIntValue()
-    val __ret = ExprP.If<AstNoPayload>(t, e1, e2).ast(l, r)
-    return __ret
+internal fun __action107(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val t = sym3.second.asExprSpanned()
+        val e2 = sym5.second.asExprSpanned()
+        val r = sym6.second.asIntValue()
+        val __ret = ExprP.If<AstNoPayload>(t, e1, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action108(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3749,7 +3749,7 @@ internal fun __action109(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action110(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action110(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
     val __0 = sym0.second.asExprSpanned()
     val __ret = __0
     return __ret
@@ -3764,13 +3764,13 @@ internal fun __action111(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action112(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Or, e2).ast(l, r)
-    return __ret
+internal fun __action112(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Or, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action113(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3779,13 +3779,13 @@ internal fun __action113(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action114(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.And, e2).ast(l, r)
-    return __ret
+internal fun __action114(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.And, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action115(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3794,12 +3794,12 @@ internal fun __action115(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action116(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asExprSpanned()
-    val r = sym3.second.asIntValue()
-    val __ret = ExprP.Not(e).ast(l, r)
-    return __ret
+internal fun __action116(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asExprSpanned()
+        val r = sym3.second.asIntValue()
+        val __ret = ExprP.Not(e).ast(l, r)
+    __ret
 }
 
 internal fun __action117(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3808,79 +3808,79 @@ internal fun __action117(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action118(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Equal, e2).ast(l, r)
-    return __ret
+internal fun __action118(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Equal, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action119(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.NotEqual, e2).ast(l, r)
-    return __ret
+internal fun __action119(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.NotEqual, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action120(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Less, e2).ast(l, r)
-    return __ret
+internal fun __action120(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Less, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action121(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Greater, e2).ast(l, r)
-    return __ret
+internal fun __action121(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Greater, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action122(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.LessOrEqual, e2).ast(l, r)
-    return __ret
+internal fun __action122(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.LessOrEqual, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action123(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = run {
-ExprP.Op(e1, BinOp.GreaterOrEqual, e2)
-                      .ast(l, r)
-    }
-    return __ret
+internal fun __action123(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = run {
+    ExprP.Op(e1, BinOp.GreaterOrEqual, e2)
+                          .ast(l, r)
+        }
+    __ret
 }
 
-internal fun __action124(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.In, e2).ast(l, r)
-    return __ret
+internal fun __action124(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.In, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action125(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym4.second.asExprSpanned()
-    val r = sym5.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.NotIn, e2).ast(l, r)
-    return __ret
+internal fun __action125(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym4.second.asExprSpanned()
+        val r = sym5.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.NotIn, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action126(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3895,13 +3895,13 @@ internal fun __action127(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action128(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.BitOr, e2).ast(l, r)
-    return __ret
+internal fun __action128(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.BitOr, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action129(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3910,13 +3910,13 @@ internal fun __action129(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action130(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.BitXor, e2).ast(l, r)
-    return __ret
+internal fun __action130(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.BitXor, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action131(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3925,13 +3925,13 @@ internal fun __action131(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action132(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.BitAnd, e2).ast(l, r)
-    return __ret
+internal fun __action132(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.BitAnd, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action133(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3940,22 +3940,22 @@ internal fun __action133(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action134(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.LeftShift, e2).ast(l, r)
-    return __ret
+internal fun __action134(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.LeftShift, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action135(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.RightShift, e2).ast(l, r)
-    return __ret
+internal fun __action135(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.RightShift, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action136(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3964,22 +3964,22 @@ internal fun __action136(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action137(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Add, e2).ast(l, r)
-    return __ret
+internal fun __action137(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Add, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action138(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Subtract, e2).ast(l, r)
-    return __ret
+internal fun __action138(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Subtract, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action139(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -3988,43 +3988,43 @@ internal fun __action139(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action140(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = run {
-ExprP.Op(e1, BinOp.Multiply, e2)
-            .ast(l, r)
-    }
-    return __ret
+internal fun __action140(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = run {
+    ExprP.Op(e1, BinOp.Multiply, e2)
+                .ast(l, r)
+        }
+    __ret
 }
 
-internal fun __action141(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Percent, e2).ast(l, r)
-    return __ret
+internal fun __action141(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Percent, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action142(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.Divide, e2).ast(l, r)
-    return __ret
+internal fun __action142(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.Divide, e2).ast(l, r)
+    __ret
 }
 
-internal fun __action143(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e1 = sym1.second.asExprSpanned()
-    val e2 = sym3.second.asExprSpanned()
-    val r = sym4.second.asIntValue()
-    val __ret = ExprP.Op(e1, BinOp.FloorDivide, e2).ast(l, r)
-    return __ret
+internal fun __action143(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e1 = sym1.second.asExprSpanned()
+        val e2 = sym3.second.asExprSpanned()
+        val r = sym4.second.asIntValue()
+        val __ret = ExprP.Op(e1, BinOp.FloorDivide, e2).ast(l, r)
+    __ret
 }
 
 internal fun __action144(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -4033,28 +4033,28 @@ internal fun __action144(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action145(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asExprSpanned()
-    val r = sym3.second.asIntValue()
-    val __ret = ExprP.Plus(e).ast(l, r)
-    return __ret
+internal fun __action145(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asExprSpanned()
+        val r = sym3.second.asIntValue()
+        val __ret = ExprP.Plus(e).ast(l, r)
+    __ret
 }
 
-internal fun __action146(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asExprSpanned()
-    val r = sym3.second.asIntValue()
-    val __ret = ExprP.Minus(e).ast(l, r)
-    return __ret
+internal fun __action146(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asExprSpanned()
+        val r = sym3.second.asIntValue()
+        val __ret = ExprP.Minus(e).ast(l, r)
+    __ret
 }
 
-internal fun __action147(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym2.second.asExprSpanned()
-    val r = sym3.second.asIntValue()
-    val __ret = ExprP.BitNot(e).ast(l, r)
-    return __ret
+internal fun __action147(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym2.second.asExprSpanned()
+        val r = sym3.second.asIntValue()
+        val __ret = ExprP.BitNot(e).ast(l, r)
+    __ret
 }
 
 internal fun __action148(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -4063,19 +4063,19 @@ internal fun __action148(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action149(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action149(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val v0 = sym0.second.asParameterSpannedList()
     val e1 = sym1.second.asNullableParameterSpanned()
     val __ret = v0 + listOfNotNull(e1)
     return __ret
 }
 
-internal fun __action150(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action150(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
 internal fun __action151(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, __lookbehind: Int, __lookahead: Int): List<ClauseP<AstNoPayload>> {
@@ -4089,42 +4089,42 @@ internal fun __action152(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action153(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action153(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action154(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asExprValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action154(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asExprValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action155(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action155(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>> {
     val v0 = sym0.second.asExprPairList()
     val e1 = sym1.second.asNullableExprPair()
     val __ret = v0 + listOfNotNull(e1)
     return __ret
 }
 
-internal fun __action156(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action156(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val v0 = sym0.second.asExprSpannedList()
     val e1 = sym1.second.asNullableExprSpanned()
     val __ret = v0 + listOfNotNull(e1)
     return __ret
 }
 
-internal fun __action157(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asArgumentValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action157(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asArgumentValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
 internal fun __action158(
@@ -4152,7 +4152,7 @@ internal fun __action159(
     return NullableOption.Absent
 }
 
-internal fun __action160(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action160(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>>? {
     val __0 = sym1.second.asNullableExprSpanned()
     val __ret = __0
     return __ret
@@ -4169,45 +4169,45 @@ internal fun __action162(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action163(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action163(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ArgumentP<AstNoPayload>>> {
     val v0 = sym0.second.asArgumentSpannedList()
     val e1 = sym1.second.asNullableArgumentSpanned()
     val __ret = v0 + listOfNotNull(e1)
     return __ret
 }
 
-internal fun __action164(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val v = sym1.second.asExprSpannedList()
-    val e = sym2.second.asExprSpanned()
-    val f = sym3.second.asNullableToken()
-    val r = sym4.second.asIntValue()
-    val __ret = run {
-        if ((f != null) || !v.isEmpty()) {
-            ExprP.Tuple<AstNoPayload>(v + e)
-                .ast(l, r)
-        } else {
-            e
+internal fun __action164(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val v = sym1.second.asExprSpannedList()
+        val e = sym2.second.asExprSpanned()
+        val f = sym3.second.asNullableToken()
+        val r = sym4.second.asIntValue()
+        val __ret = run {
+            if ((f != null) || !v.isEmpty()) {
+                ExprP.Tuple<AstNoPayload>(v + e)
+                    .ast(l, r)
+            } else {
+                e
+            }
         }
-    }
-    return __ret
+    __ret
 }
 
-internal fun __action165(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val v = sym1.second.asExprSpannedList()
-    val e = sym2.second.asExprSpanned()
-    val f = sym3.second.asNullableToken()
-    val r = sym4.second.asIntValue()
-    val __ret = run {
-        if ((f != null) || !v.isEmpty()) {
-            ExprP.Tuple<AstNoPayload>(v + e)
-                .ast(l, r)
-        } else {
-            e
+internal fun __action165(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val v = sym1.second.asExprSpannedList()
+        val e = sym2.second.asExprSpanned()
+        val f = sym3.second.asNullableToken()
+        val r = sym4.second.asIntValue()
+        val __ret = run {
+            if ((f != null) || !v.isEmpty()) {
+                ExprP.Tuple<AstNoPayload>(v + e)
+                    .ast(l, r)
+            } else {
+                e
+            }
         }
-    }
-    return __ret
+    __ret
 }
 
 internal fun __action166(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<String>? {
@@ -4221,7 +4221,7 @@ internal fun __action167(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action168(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action168(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>> {
     val __0 = sym0.second.asAssignIdentStringPair()
     val __ret = (__0)
     return __ret
@@ -4256,28 +4256,28 @@ internal fun __action173(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action174(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action174(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action175(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action175(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action176(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action176(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
 internal fun __action177(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>>? {
@@ -4291,20 +4291,20 @@ internal fun __action178(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action179(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action179(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action180(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action180(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
 internal fun __action181(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>>? {
@@ -4318,21 +4318,21 @@ internal fun __action182(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action183(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action183(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action184(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action184(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<StmtP<AstNoPayload>>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action185(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action185(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<StmtP<AstNoPayload>>> {
     val v = sym0.second.asStmtSpannedList()
     val e = sym1.second.asStmtSpanned()
     val __ret = (v + e)
@@ -4352,51 +4352,51 @@ internal fun __action187(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action188(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtSpanned()
-    val v = sym2.second.asStmtSpannedList()
-    val r = sym4.second.asIntValue()
-    val __ret = run {
-        if (v.isEmpty()) {
-            e
-        } else {
-            StmtP.Statements<AstNoPayload>((listOf(e) + v))
-                .ast(l, r)
+internal fun __action188(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtSpanned()
+        val v = sym2.second.asStmtSpannedList()
+        val r = sym4.second.asIntValue()
+        val __ret = run {
+            if (v.isEmpty()) {
+                e
+            } else {
+                StmtP.Statements<AstNoPayload>((listOf(e) + v))
+                    .ast(l, r)
+            }
         }
-    }
-    return __ret
+    __ret
 }
 
-internal fun __action189(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asParameterValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action189(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asParameterValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action190(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asParameterValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action190(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asParameterValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
-internal fun __action191(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action191(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val v0 = sym0.second.asParameterSpannedList()
     val e1 = sym1.second.asNullableParameterSpanned()
     val __ret = v0 + listOfNotNull(e1)
     return __ret
 }
 
-internal fun __action192(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val l = sym0.second.asIntValue()
-    val e = sym1.second.asStmtValue()
-    val r = sym2.second.asIntValue()
-    val __ret = e.ast(l, r)
-    return __ret
+internal fun __action192(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val l = sym0.second.asIntValue()
+        val e = sym1.second.asStmtValue()
+        val r = sym2.second.asIntValue()
+        val __ret = e.ast(l, r)
+    __ret
 }
 
 internal fun __action193(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, __lookbehind: Int, __lookahead: Int): List<Spanned<StmtP<AstNoPayload>>> {
@@ -4410,7 +4410,7 @@ internal fun __action194(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action195(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action195(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = __0
     return __ret
@@ -4493,13 +4493,13 @@ internal fun __action209(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action210(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action210(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Pair<Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Spanned<Comma>>> {
     val __0 = sym0.second.asLoadPair()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action211(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action211(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Pair<Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Spanned<Comma>>> {
     val v = sym0.second.asLoadPairList()
     val e = sym1.second.asLoadPair()
     val __ret = (v + e)
@@ -4648,255 +4648,255 @@ internal fun __action236(state: io.github.kotlinmania.starlarksyntax.syntax.stat
     return __ret
 }
 
-internal fun __action237(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action237(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val __0 = sym0.second.asParameterSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action238(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action238(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val v = sym0.second.asParameterSpannedList()
     val e = sym1.second.asParameterSpanned()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action239(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action239(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>> {
     val __0 = sym0.second.asExprPair()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action240(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action240(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>> {
     val v = sym0.second.asExprPairList()
     val e = sym1.second.asExprPair()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action241(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action241(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val __0 = sym0.second.asExprSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action242(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action242(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val v = sym0.second.asExprSpannedList()
     val e = sym1.second.asExprSpanned()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action243(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action243(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ArgumentP<AstNoPayload>>> {
     val __0 = sym0.second.asArgumentSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action244(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action244(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ArgumentP<AstNoPayload>>> {
     val v = sym0.second.asArgumentSpannedList()
     val e = sym1.second.asArgumentSpanned()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action245(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action245(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val __0 = sym0.second.asExprSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action246(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action246(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val v = sym0.second.asExprSpannedList()
     val e = sym1.second.asExprSpanned()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action247(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action247(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<StmtP<AstNoPayload>>> {
     val __0 = sym0.second.asStmtSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action248(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action248(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<StmtP<AstNoPayload>>> {
     val v = sym0.second.asStmtSpannedList()
     val e = sym1.second.asStmtSpanned()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action249(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action249(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val __0 = sym0.second.asParameterSpanned()
     val __ret = listOf(__0)
     return __ret
 }
 
-internal fun __action250(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action250(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val v = sym0.second.asParameterSpannedList()
     val e = sym1.second.asParameterSpanned()
     val __ret = (v + e)
     return __ret
 }
 
-internal fun __action251(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __3.first;
-    val end0 = __3.third;
-    val __temp0 = __action215(
-        state,
-        __3,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action165(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action251(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __3.first;
+        val end0 = __3.third;
+        val __temp0 = __action215(
+            state,
+            __3,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant5(__temp0), end0)
+        __action165(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action252(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __3.first;
-    val __temp0 = __action216(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action165(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action252(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __3.first;
+        val __temp0 = __action216(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant5(__temp0), end0)
+        __action165(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action253(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __3.first;
-    val end0 = __3.third;
-    val __temp0 = __action215(
-        state,
-        __3,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action164(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action253(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __3.first;
+        val end0 = __3.third;
+        val __temp0 = __action215(
+            state,
+            __3,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant5(__temp0), end0)
+        __action164(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action254(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __3.first;
-    val __temp0 = __action216(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action164(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action254(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __3.first;
+        val __temp0 = __action216(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant5(__temp0), end0)
+        __action164(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action255(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __3.first;
-    val end0 = __3.third;
-    val __temp0 = __action205(
-        state,
-        __3,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action188(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action255(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __3.first;
+        val end0 = __3.third;
+        val __temp0 = __action205(
+            state,
+            __3,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant5(__temp0), end0)
+        __action188(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action256(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __4 = sym4.asTokenTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __3.first;
-    val __temp0 = __action206(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action188(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action256(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __4 = sym4.asTokenTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __3.first;
+        val __temp0 = __action206(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant5(__temp0), end0)
+        __action188(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
 internal fun __action257(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
@@ -4909,7 +4909,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant6(__temp0), end0)
     __action195(
         state,
         __0,
@@ -4929,7 +4929,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant6(__temp0), end0)
     __action195(
         state,
         __0,
@@ -4939,112 +4939,112 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action259(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedListTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action196(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action8(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action259(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedListTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action196(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant6(__temp0), end0)
+        __action8(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action260(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.third;
-    val __temp0 = __action197(
-        state,
-        __0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action8(
-        state,
-        __temp0_triple,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action260(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.third;
+        val __temp0 = __action197(
+            state,
+            __0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant6(__temp0), end0)
+        __action8(
+            state,
+            __temp0_triple,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action261(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __3 = sym3.asStmtSpannedListTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __3.first;
-    val __temp0 = __action196(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action31(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action261(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __3 = sym3.asStmtSpannedListTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __3.first;
+        val __temp0 = __action196(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant6(__temp0), end0)
+        __action31(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action262(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __3 = sym3.asTokenListTriple()
-    val __4 = sym4.asStmtSpannedListTriple()
-    val __5 = sym5.asIntValueTriple()
-    val __6 = sym6.asTokenTriple()
-    val __ret = run {
-val start0 = __3.first;
-    val end0 = __3.third;
-    val __temp0 = __action197(
-        state,
-        __3,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action31(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action262(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __3 = sym3.asTokenListTriple()
+        val __4 = sym4.asStmtSpannedListTriple()
+        val __5 = sym5.asIntValueTriple()
+        val __6 = sym6.asTokenTriple()
+        val __ret = run {
+    val start0 = __3.first;
+        val end0 = __3.third;
+        val __temp0 = __action197(
+            state,
+            __3,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant6(__temp0), end0)
+        __action31(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
 internal fun __action263(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>>? {
@@ -5057,7 +5057,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action160(
         state,
         __0,
@@ -5077,7 +5077,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action160(
         state,
         __0,
@@ -5087,7 +5087,7 @@ val start0 = __0.third;
     return __ret
 }
 
-internal fun __action265(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action265(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val __0 = sym0.asExprSpannedListTriple()
     val __1 = sym1.asExprSpannedTriple()
     val __ret = run {
@@ -5097,7 +5097,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action156(
         state,
         __0,
@@ -5107,7 +5107,7 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action266(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action266(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
     val __0 = sym0.asExprSpannedListTriple()
     val __ret = run {
 val start0 = __0.third;
@@ -5117,7 +5117,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action156(
         state,
         __0,
@@ -5127,173 +5127,173 @@ val start0 = __0.third;
     return __ret
 }
 
-internal fun __action267(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asExprSpannedTriple()
-    // sym6 is the `(":" <Test?>)?` slot — Variant8 carries it as NullableOption to
-    // preserve the three-state distinction between "outer None", "Some(inner None)",
-    // and "Some(inner Some(value))" that the upstream Rust grammar expresses with
-    // Option<Option<AstExpr>>. Pulled through unchanged here; the consumer __action77
-    // does the unwrap_or(None) flatten that mirrors the Rust action body.
-    val __6 = sym6.asNullableOptionExprSpannedTriple()
-    val __7 = sym7.asTokenTriple()
-    val __8 = sym8.asIntValueTriple()
-    val __ret = run {
-val start0 = __3.first;
-    val end0 = __3.third;
-    val start1 = __5.first;
-    val end1 = __5.third;
-    val __temp0 = __action161(
-        state,
-        __3,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    val __temp1 = __action161(
-        state,
-        __5,
-    );
-    val __temp1_triple = Triple(start1, __temp1, end1)
-    __action77(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __4,
-        __temp1_triple,
-        __6,
-        __7,
-        __8,
-    )
-    }
-    return __ret
+internal fun __action267(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asExprSpannedTriple()
+        // sym6 is the `(":" <Test?>)?` slot — Variant8 carries it as NullableOption to
+        // preserve the three-state distinction between "outer None", "Some(inner None)",
+        // and "Some(inner Some(value))" that the upstream Rust grammar expresses with
+        // Option<Option<AstExpr>>. Pulled through unchanged here; the consumer __action77
+        // does the unwrap_or(None) flatten that mirrors the Rust action body.
+        val __6 = sym6.asNullableOptionExprSpannedTriple()
+        val __7 = sym7.asTokenTriple()
+        val __8 = sym8.asIntValueTriple()
+        val __ret = run {
+    val start0 = __3.first;
+        val end0 = __3.third;
+        val start1 = __5.first;
+        val end1 = __5.third;
+        val __temp0 = __action161(
+            state,
+            __3,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
+        val __temp1 = __action161(
+            state,
+            __5,
+        );
+        val __temp1_triple= Triple(start1, GrammarSymbol.Variant7(__temp1), end1)
+        __action77(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __4,
+            __temp1_triple,
+            __6,
+            __7,
+            __8,
+        )
+        }
+    __ret
 }
 
-internal fun __action268(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asNullableExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __3.first;
-    val end0 = __3.third;
-    val start1 = __4.third;
-    val end1 = __5.first;
-    val __temp0 = __action161(
-        state,
-        __3,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    val __temp1 = __action162(
-        state,
-        start1,
-        end1,
-    );
-    val __temp1_triple = Triple(start1, __temp1, end1)
-    __action77(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __4,
-        __temp1_triple,
-        __5,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action268(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asNullableExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __3.first;
+        val end0 = __3.third;
+        val start1 = __4.third;
+        val end1 = __5.first;
+        val __temp0 = __action161(
+            state,
+            __3,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
+        val __temp1 = __action162(
+            state,
+            start1,
+            end1,
+        );
+        val __temp1_triple= Triple(start1, GrammarSymbol.Variant7(__temp1), end1)
+        __action77(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __4,
+            __temp1_triple,
+            __5,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action269(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asNullableExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __3.first;
-    val start1 = __4.first;
-    val end1 = __4.third;
-    val __temp0 = __action162(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    val __temp1 = __action161(
-        state,
-        __4,
-    );
-    val __temp1_triple = Triple(start1, __temp1, end1)
-    __action77(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __3,
-        __temp1_triple,
-        __5,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action269(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asNullableExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __3.first;
+        val start1 = __4.first;
+        val end1 = __4.third;
+        val __temp0 = __action162(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
+        val __temp1 = __action161(
+            state,
+            __4,
+        );
+        val __temp1_triple= Triple(start1, GrammarSymbol.Variant7(__temp1), end1)
+        __action77(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __3,
+            __temp1_triple,
+            __5,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action270(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asNullableExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __3.first;
-    val start1 = __3.third;
-    val end1 = __4.first;
-    val __temp0 = __action162(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    val __temp1 = __action162(
-        state,
-        start1,
-        end1,
-    );
-    val __temp1_triple = Triple(start1, __temp1, end1)
-    __action77(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-        __3,
-        __temp1_triple,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action270(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asNullableExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __3.first;
+        val start1 = __3.third;
+        val end1 = __4.first;
+        val __temp0 = __action162(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
+        val __temp1 = __action162(
+            state,
+            start1,
+            end1,
+        );
+        val __temp1_triple= Triple(start1, GrammarSymbol.Variant7(__temp1), end1)
+        __action77(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+            __3,
+            __temp1_triple,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
 internal fun __action271(
@@ -5310,7 +5310,7 @@ internal fun __action271(
         __0,
         __1,
     )
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     return __action158(
         state,
         __temp0_triple,
@@ -5328,7 +5328,7 @@ internal fun __action272(
         state,
         __0,
     )
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     return __action158(
         state,
         __temp0_triple,
@@ -5354,7 +5354,7 @@ val start0 = __6.first;
         __6,
         __7,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
     __action267(
         state,
         __0,
@@ -5371,360 +5371,360 @@ val start0 = __6.first;
     return __ret
 }
 
-internal fun __action274(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asTokenTriple()
-    val __8 = sym8.asIntValueTriple()
-    val __ret = run {
-val start0 = __6.first;
-    val end0 = __6.third;
-    val __temp0 = __action272(
-        state,
-        __6,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action267(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __temp0_triple,
-        __7,
-        __8,
-    )
-    }
-    return __ret
+internal fun __action274(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asTokenTriple()
+        val __8 = sym8.asIntValueTriple()
+        val __ret = run {
+    val start0 = __6.first;
+        val end0 = __6.third;
+        val __temp0 = __action272(
+            state,
+            __6,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action267(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __temp0_triple,
+            __7,
+            __8,
+        )
+        }
+    __ret
 }
 
-internal fun __action275(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __5.third;
-    val end0 = __6.first;
-    val __temp0 = __action159(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action267(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __temp0_triple,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action275(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __5.third;
+        val end0 = __6.first;
+        val __temp0 = __action159(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action267(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __temp0_triple,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action276(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asExprSpannedTriple()
-    val __7 = sym7.asTokenTriple()
-    val __8 = sym8.asIntValueTriple()
-    val __ret = run {
-val start0 = __5.first;
-    val end0 = __6.third;
-    val __temp0 = __action271(
-        state,
-        __5,
-        __6,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action268(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __7,
-        __8,
-    )
-    }
-    return __ret
+internal fun __action276(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asExprSpannedTriple()
+        val __7 = sym7.asTokenTriple()
+        val __8 = sym8.asIntValueTriple()
+        val __ret = run {
+    val start0 = __5.first;
+        val end0 = __6.third;
+        val __temp0 = __action271(
+            state,
+            __5,
+            __6,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action268(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __7,
+            __8,
+        )
+        }
+    __ret
 }
 
-internal fun __action277(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __5.first;
-    val end0 = __5.third;
-    val __temp0 = __action272(
-        state,
-        __5,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action268(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action277(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __5.first;
+        val end0 = __5.third;
+        val __temp0 = __action272(
+            state,
+            __5,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action268(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action278(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __4.third;
-    val end0 = __5.first;
-    val __temp0 = __action159(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action268(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action278(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __4.third;
+        val end0 = __5.first;
+        val __temp0 = __action159(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action268(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action279(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asExprSpannedTriple()
-    val __7 = sym7.asTokenTriple()
-    val __8 = sym8.asIntValueTriple()
-    val __ret = run {
-val start0 = __5.first;
-    val end0 = __6.third;
-    val __temp0 = __action271(
-        state,
-        __5,
-        __6,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action269(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __7,
-        __8,
-    )
-    }
-    return __ret
+internal fun __action279(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asExprSpannedTriple()
+        val __7 = sym7.asTokenTriple()
+        val __8 = sym8.asIntValueTriple()
+        val __ret = run {
+    val start0 = __5.first;
+        val end0 = __6.third;
+        val __temp0 = __action271(
+            state,
+            __5,
+            __6,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action269(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __7,
+            __8,
+        )
+        }
+    __ret
 }
 
-internal fun __action280(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __5.first;
-    val end0 = __5.third;
-    val __temp0 = __action272(
-        state,
-        __5,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action269(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action280(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __5.first;
+        val end0 = __5.third;
+        val __temp0 = __action272(
+            state,
+            __5,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action269(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action281(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __4.third;
-    val end0 = __5.first;
-    val __temp0 = __action159(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action269(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action281(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __4.third;
+        val end0 = __5.first;
+        val __temp0 = __action159(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action269(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action282(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __4.first;
-    val end0 = __5.third;
-    val __temp0 = __action271(
-        state,
-        __4,
-        __5,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action270(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action282(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __4.first;
+        val end0 = __5.third;
+        val __temp0 = __action271(
+            state,
+            __4,
+            __5,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action270(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action283(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __4.first;
-    val end0 = __4.third;
-    val __temp0 = __action272(
-        state,
-        __4,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action270(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action283(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __4.first;
+        val end0 = __4.third;
+        val __temp0 = __action272(
+            state,
+            __4,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action270(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action284(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asIntValueTriple()
-    val __ret = run {
-val start0 = __3.third;
-    val end0 = __4.first;
-    val __temp0 = __action159(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action270(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action284(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asIntValueTriple()
+        val __ret = run {
+    val start0 = __3.third;
+        val end0 = __4.first;
+        val __temp0 = __action159(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple = Triple(start0, GrammarSymbol.Variant8(__temp0), end0)
+        __action270(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
 internal fun __action285(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<StmtP<AstNoPayload>>> {
@@ -5738,7 +5738,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action247(
         state,
         __temp0_triple,
@@ -5759,7 +5759,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action248(
         state,
         __0,
@@ -5769,112 +5769,112 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action287(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __4 = sym4.asTokenTriple()
-    val __ret = run {
-val start0 = __1.third;
-    val end0 = __2.first;
-    val __temp0 = __action207(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action255(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action287(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __4 = sym4.asTokenTriple()
+        val __ret = run {
+    val start0 = __1.third;
+        val end0 = __2.first;
+        val __temp0 = __action207(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action255(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action288(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __2.first;
-    val end0 = __2.third;
-    val __temp0 = __action208(
-        state,
-        __2,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action255(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action288(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __2.first;
+        val end0 = __2.third;
+        val __temp0 = __action208(
+            state,
+            __2,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action255(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action289(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __3 = sym3.asTokenTriple()
-    val __ret = run {
-val start0 = __1.third;
-    val end0 = __2.first;
-    val __temp0 = __action207(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action256(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action289(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __3 = sym3.asTokenTriple()
+        val __ret = run {
+    val start0 = __1.third;
+        val end0 = __2.first;
+        val __temp0 = __action207(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action256(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action290(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __4 = sym4.asTokenTriple()
-    val __ret = run {
-val start0 = __2.first;
-    val end0 = __2.third;
-    val __temp0 = __action208(
-        state,
-        __2,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action256(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action290(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __4 = sym4.asTokenTriple()
+        val __ret = run {
+    val start0 = __2.first;
+        val end0 = __2.third;
+        val __temp0 = __action208(
+            state,
+            __2,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action256(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
 internal fun __action291(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ArgumentP<AstNoPayload>>> {
@@ -5888,7 +5888,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant11(__temp0), end0)
     __action243(
         state,
         __temp0_triple,
@@ -5909,7 +5909,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant11(__temp0), end0)
     __action244(
         state,
         __0,
@@ -5919,7 +5919,7 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action293(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action293(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ArgumentP<AstNoPayload>>> {
     val __0 = sym0.asNullableArgumentSpannedTriple()
     val __ret = run {
 val start0 = __0.first;
@@ -5929,7 +5929,7 @@ val start0 = __0.first;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant12(__temp0), end0)
     __action163(
         state,
         __temp0_triple,
@@ -5939,7 +5939,7 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action294(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action294(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ArgumentP<AstNoPayload>>> {
     val __0 = sym0.asArgumentSpannedListTriple()
     val __1 = sym1.asNullableArgumentSpannedTriple()
     val __ret = run {
@@ -5949,7 +5949,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant12(__temp0), end0)
     __action163(
         state,
         __temp0_triple,
@@ -5970,7 +5970,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant13(__temp0), end0)
     __action249(
         state,
         __temp0_triple,
@@ -5991,7 +5991,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant13(__temp0), end0)
     __action250(
         state,
         __0,
@@ -6001,7 +6001,7 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action297(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action297(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val __0 = sym0.asNullableParameterSpannedTriple()
     val __ret = run {
 val start0 = __0.first;
@@ -6011,7 +6011,7 @@ val start0 = __0.first;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant14(__temp0), end0)
     __action191(
         state,
         __temp0_triple,
@@ -6021,7 +6021,7 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action298(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action298(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val __0 = sym0.asParameterSpannedListTriple()
     val __1 = sym1.asNullableParameterSpannedTriple()
     val __ret = run {
@@ -6031,7 +6031,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant14(__temp0), end0)
     __action191(
         state,
         __temp0_triple,
@@ -6052,7 +6052,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant15(__temp0), end0)
     __action239(
         state,
         __temp0_triple,
@@ -6073,7 +6073,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant15(__temp0), end0)
     __action240(
         state,
         __0,
@@ -6083,7 +6083,7 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action301(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action301(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>> {
     val __0 = sym0.asNullableExprPairTriple()
     val __ret = run {
 val start0 = __0.first;
@@ -6093,7 +6093,7 @@ val start0 = __0.first;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant16(__temp0), end0)
     __action155(
         state,
         __temp0_triple,
@@ -6103,7 +6103,7 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action302(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action302(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>> {
     val __0 = sym0.asExprPairListTriple()
     val __1 = sym1.asNullableExprPairTriple()
     val __ret = run {
@@ -6113,7 +6113,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant16(__temp0), end0)
     __action155(
         state,
         __temp0_triple,
@@ -6134,7 +6134,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action245(
         state,
         __temp0_triple,
@@ -6155,7 +6155,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action246(
         state,
         __0,
@@ -6165,104 +6165,104 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action305(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action212(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action251(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action305(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action212(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action251(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action306(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __1.first;
-    val end0 = __1.third;
-    val __temp0 = __action213(
-        state,
-        __1,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action251(
-        state,
-        __0,
-        __temp0_triple,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action306(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __1.first;
+        val end0 = __1.third;
+        val __temp0 = __action213(
+            state,
+            __1,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action251(
+            state,
+            __0,
+            __temp0_triple,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action307(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action212(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action252(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action307(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action212(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action252(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action308(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __1.first;
-    val end0 = __1.third;
-    val __temp0 = __action213(
-        state,
-        __1,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action252(
-        state,
-        __0,
-        __temp0_triple,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action308(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __1.first;
+        val end0 = __1.third;
+        val __temp0 = __action213(
+            state,
+            __1,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action252(
+            state,
+            __0,
+            __temp0_triple,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
 internal fun __action309(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
@@ -6276,7 +6276,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant13(__temp0), end0)
     __action237(
         state,
         __temp0_triple,
@@ -6297,7 +6297,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant13(__temp0), end0)
     __action238(
         state,
         __0,
@@ -6307,7 +6307,7 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action311(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action311(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val __0 = sym0.asNullableParameterSpannedTriple()
     val __ret = run {
 val start0 = __0.first;
@@ -6317,7 +6317,7 @@ val start0 = __0.first;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant14(__temp0), end0)
     __action149(
         state,
         __temp0_triple,
@@ -6327,7 +6327,7 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action312(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action312(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ParameterP<AstNoPayload>>> {
     val __0 = sym0.asParameterSpannedListTriple()
     val __1 = sym1.asNullableParameterSpannedTriple()
     val __ret = run {
@@ -6337,7 +6337,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant14(__temp0), end0)
     __action149(
         state,
         __temp0_triple,
@@ -6358,7 +6358,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant19(__temp0), end0)
     __action210(
         state,
         __temp0_triple,
@@ -6379,7 +6379,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant19(__temp0), end0)
     __action211(
         state,
         __0,
@@ -6389,64 +6389,64 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action315(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asCommaSpannedTriple()
-    val __4 = sym4.asNullableAssignIdentStringPairTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __3.third;
-    val end0 = __4.first;
-    val __temp0 = __action171(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action70(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action315(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asCommaSpannedTriple()
+        val __4 = sym4.asNullableAssignIdentStringPairTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __3.third;
+        val end0 = __4.first;
+        val __temp0 = __action171(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant20(__temp0), end0)
+        __action70(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action316(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asCommaSpannedTriple()
-    val __4 = sym4.asLoadPairListTriple()
-    val __5 = sym5.asNullableAssignIdentStringPairTriple()
-    val __6 = sym6.asTokenTriple()
-    val __ret = run {
-val start0 = __4.first;
-    val end0 = __4.third;
-    val __temp0 = __action172(
-        state,
-        __4,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action70(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action316(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asCommaSpannedTriple()
+        val __4 = sym4.asLoadPairListTriple()
+        val __5 = sym5.asNullableAssignIdentStringPairTriple()
+        val __6 = sym6.asTokenTriple()
+        val __ret = run {
+    val start0 = __4.first;
+        val end0 = __4.third;
+        val __temp0 = __action172(
+            state,
+            __4,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant20(__temp0), end0)
+        __action70(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
 internal fun __action317(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>? {
@@ -6458,7 +6458,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant21(__temp0), end0)
     __action168(
         state,
         __temp0_triple,
@@ -6467,120 +6467,120 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action318(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asCommaSpannedTriple()
-    val __4 = sym4.asAssignIdentStringPairTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __4.first;
-    val end0 = __4.third;
-    val __temp0 = __action317(
-        state,
-        __4,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action315(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action318(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asCommaSpannedTriple()
+        val __4 = sym4.asAssignIdentStringPairTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __4.first;
+        val end0 = __4.third;
+        val __temp0 = __action317(
+            state,
+            __4,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant22(__temp0), end0)
+        __action315(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action319(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asCommaSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __ret = run {
-val start0 = __3.third;
-    val end0 = __4.first;
-    val __temp0 = __action169(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action315(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __temp0_triple,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action319(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asCommaSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __ret = run {
+    val start0 = __3.third;
+        val end0 = __4.first;
+        val __temp0 = __action169(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant22(__temp0), end0)
+        __action315(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __temp0_triple,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action320(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asCommaSpannedTriple()
-    val __4 = sym4.asLoadPairListTriple()
-    val __5 = sym5.asAssignIdentStringPairTriple()
-    val __6 = sym6.asTokenTriple()
-    val __ret = run {
-val start0 = __5.first;
-    val end0 = __5.third;
-    val __temp0 = __action317(
-        state,
-        __5,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action316(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action320(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asCommaSpannedTriple()
+        val __4 = sym4.asLoadPairListTriple()
+        val __5 = sym5.asAssignIdentStringPairTriple()
+        val __6 = sym6.asTokenTriple()
+        val __ret = run {
+    val start0 = __5.first;
+        val end0 = __5.third;
+        val __temp0 = __action317(
+            state,
+            __5,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant22(__temp0), end0)
+        __action316(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action321(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asCommaSpannedTriple()
-    val __4 = sym4.asLoadPairListTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __4.third;
-    val end0 = __5.first;
-    val __temp0 = __action169(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action316(
-        state,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __temp0_triple,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action321(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asCommaSpannedTriple()
+        val __4 = sym4.asLoadPairListTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __4.third;
+        val end0 = __5.first;
+        val __temp0 = __action169(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant22(__temp0), end0)
+        __action316(
+            state,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __temp0_triple,
+            __5,
+        )
+        }
+    __ret
 }
 
 internal fun __action322(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): List<Spanned<StmtP<AstNoPayload>>> {
@@ -6592,7 +6592,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action184(
         state,
         __temp0_triple,
@@ -6612,7 +6612,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action184(
         state,
         __temp0_triple,
@@ -6631,7 +6631,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action185(
         state,
         __0,
@@ -6653,7 +6653,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action185(
         state,
         __0,
@@ -6663,96 +6663,96 @@ val start0 = __1.first;
     return __ret
 }
 
-internal fun __action326(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action193(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action259(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action326(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action193(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action259(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action327(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asStmtSpannedListTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __1.first;
-    val end0 = __1.third;
-    val __temp0 = __action194(
-        state,
-        __1,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action259(
-        state,
-        __0,
-        __temp0_triple,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action327(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asStmtSpannedListTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __1.first;
+        val end0 = __1.third;
+        val __temp0 = __action194(
+            state,
+            __1,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action259(
+            state,
+            __0,
+            __temp0_triple,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action328(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __1.third;
-    val end0 = __2.first;
-    val __temp0 = __action193(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action260(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action328(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __1.third;
+        val end0 = __2.first;
+        val __temp0 = __action193(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action260(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action329(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __2.first;
-    val end0 = __2.third;
-    val __temp0 = __action194(
-        state,
-        __2,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action260(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action329(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __2.first;
+        val end0 = __2.third;
+        val __temp0 = __action194(
+            state,
+            __2,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant10(__temp0), end0)
+        __action260(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __3,
+        )
+        }
+    __ret
 }
 
 internal fun __action330(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): List<Spanned<ExprP<AstNoPayload>>> {
@@ -6766,7 +6766,7 @@ val start0 = __0.first;
         __0,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action241(
         state,
         __temp0_triple,
@@ -6787,7 +6787,7 @@ val start0 = __1.first;
         __1,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action242(
         state,
         __0,
@@ -6807,7 +6807,7 @@ val start0 = __0.first;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
     __action265(
         state,
         __temp0_triple,
@@ -6827,7 +6827,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
     __action265(
         state,
         __temp0_triple,
@@ -6846,7 +6846,7 @@ val start0 = __lookbehind;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
     __action266(
         state,
         __temp0_triple,
@@ -6864,7 +6864,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
     __action266(
         state,
         __temp0_triple,
@@ -6873,1359 +6873,1359 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action336(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action222(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action253(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action336(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action222(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action253(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action337(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __1.first;
-    val end0 = __1.third;
-    val __temp0 = __action223(
-        state,
-        __1,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action253(
-        state,
-        __0,
-        __temp0_triple,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action337(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __1.first;
+        val end0 = __1.third;
+        val __temp0 = __action223(
+            state,
+            __1,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action253(
+            state,
+            __0,
+            __temp0_triple,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action338(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action222(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action254(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action338(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action222(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action254(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action339(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __1.first;
-    val end0 = __1.third;
-    val __temp0 = __action223(
-        state,
-        __1,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action254(
-        state,
-        __0,
-        __temp0_triple,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action339(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __1.first;
+        val end0 = __1.third;
+        val __temp0 = __action223(
+            state,
+            __1,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant18(__temp0), end0)
+        __action254(
+            state,
+            __0,
+            __temp0_triple,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action340(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asArgumentValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action157(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action340(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asArgumentValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action157(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action341(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action153(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action341(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action153(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action342(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action150(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action342(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action150(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action343(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action154(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action343(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action154(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action344(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asParameterValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action189(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action344(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asParameterValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action189(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action345(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asParameterValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action190(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action345(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asParameterValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action190(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action346(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action176(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action346(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action176(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action347(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action192(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action347(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action192(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action348(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action175(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action348(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action175(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action349(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action179(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action349(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action179(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action350(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action183(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action350(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action183(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action351(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action180(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action351(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action180(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action352(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action174(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action352(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action174(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action353(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action114(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action353(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action114(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action354(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action137(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action354(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action137(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action355(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action138(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action355(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action138(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action356(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action132(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action356(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action132(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action357(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action128(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action357(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action128(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action358(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action130(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action358(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action130(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action359(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action67(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action359(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action67(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action360(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action118(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action360(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action118(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action361(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action119(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action361(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action119(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action362(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action120(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action362(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action120(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action363(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action121(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action363(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action121(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action364(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action122(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action364(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action122(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action365(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action123(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action365(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action123(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action366(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action124(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action366(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action124(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action367(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action125(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action367(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action125(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action368(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action145(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action368(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action145(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action369(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action146(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action369(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action146(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action370(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action147(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action370(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action147(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action371(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action305(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action371(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action305(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action372(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedListTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action306(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action372(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedListTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action306(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action373(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action307(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action373(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action307(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action374(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedListTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action308(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action374(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedListTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action308(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action375(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action336(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action375(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action336(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action376(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedListTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action337(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action376(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedListTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action337(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action377(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action338(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action377(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action338(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action378(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedListTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action339(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action378(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedListTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action339(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action379(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action116(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action379(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action116(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action380(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIdentSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action87(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action380(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIdentSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action87(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action381(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenIntSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action88(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action381(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenIntSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action88(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action382(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asDoubleSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action89(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action382(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asDoubleSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action89(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action383(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStringSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action90(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action383(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStringSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action90(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action384(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action91(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action384(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action91(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action385(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asExprSpannedListTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action92(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action385(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asExprSpannedListTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action92(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action386(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asExprPairListTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action94(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action386(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asExprPairListTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action94(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action387(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asNullableExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action96(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action387(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asNullableExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action96(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action388(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asFStringSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action97(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action388(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asFStringSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action97(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action389(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action112(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action389(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action112(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action390(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action75(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action390(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action75(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action391(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asArgumentSpannedListTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action76(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action391(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asArgumentSpannedListTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action76(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action392(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): Any? {
+internal fun __action392(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>, sym8: Triple<Int, GrammarSymbol, Int>): NullableOption<Spanned<ExprP<AstNoPayload>>> {
     val __0 = sym0.asExprSpannedTriple()
     val __1 = sym1.asTokenTriple()
     val __2 = sym2.asExprSpannedTriple()
@@ -8243,7 +8243,7 @@ val start0 = __0.first;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action273(
         state,
         __temp0_triple,
@@ -8261,1048 +8261,1048 @@ val start0 = __0.first;
     return __ret
 }
 
-internal fun __action393(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action274(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action393(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action274(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action394(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action275(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action394(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action275(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action395(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action276(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action395(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action276(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action396(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action277(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action396(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action277(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action397(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action278(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action397(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action278(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action398(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asExprSpannedTriple()
-    val __6 = sym6.asTokenTriple()
-    val __7 = sym7.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action279(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-        __7,
-    )
-    }
-    return __ret
+internal fun __action398(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>, sym7: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asExprSpannedTriple()
+        val __6 = sym6.asTokenTriple()
+        val __7 = sym7.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action279(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+            __7,
+        )
+        }
+    __ret
 }
 
-internal fun __action399(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action280(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action399(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action280(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action400(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asExprSpannedTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action281(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action400(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asExprSpannedTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action281(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action401(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action282(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action401(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action282(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action402(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asTokenTriple()
-    val __5 = sym5.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action283(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action402(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asTokenTriple()
+        val __5 = sym5.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action283(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action403(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action284(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action403(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action284(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action404(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action78(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action404(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action78(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action405(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asTokenTriple()
-    val __6 = sym6.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action79(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-        __6,
-    )
-    }
-    return __ret
+internal fun __action405(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>, sym6: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asTokenTriple()
+        val __6 = sym6.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action79(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+            __6,
+        )
+        }
+    __ret
 }
 
-internal fun __action406(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action140(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action406(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action140(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action407(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action141(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action407(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action141(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action408(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action142(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action408(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action142(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action409(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action143(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action409(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action143(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action410(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action134(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action410(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action134(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action411(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action135(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action411(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action135(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action412(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __3 = sym3.asTokenTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action287(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action412(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __3 = sym3.asTokenTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action287(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action413(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtSpannedTriple()
-    val __1 = sym1.asStmtSpannedListTriple()
-    val __2 = sym2.asTokenTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __4 = sym4.asTokenTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action288(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action413(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtSpannedTriple()
+        val __1 = sym1.asStmtSpannedListTriple()
+        val __2 = sym2.asTokenTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __4 = sym4.asTokenTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action288(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action414(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtSpannedTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __2 = sym2.asTokenTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action289(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action414(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtSpannedTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __2 = sym2.asTokenTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action289(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action415(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtSpannedTriple()
-    val __1 = sym1.asStmtSpannedListTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __3 = sym3.asTokenTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action290(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-    )
-    }
-    return __ret
+internal fun __action415(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtSpannedTriple()
+        val __1 = sym1.asStmtSpannedListTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __3 = sym3.asTokenTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action290(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+        )
+        }
+    __ret
 }
 
-internal fun __action416(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asNullableExprSpannedTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action44(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action416(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asNullableExprSpannedTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action44(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action417(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action45(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action417(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action45(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action418(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action46(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action418(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action46(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action419(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action47(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action419(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action47(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action420(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action326(
-        state,
-        __temp0_triple,
-        __0,
-    )
-    }
-    return __ret
+internal fun __action420(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action326(
+            state,
+            __temp0_triple,
+            __0,
+        )
+        }
+    __ret
 }
 
-internal fun __action421(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStmtSpannedListTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action327(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action421(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStmtSpannedListTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action327(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action422(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action328(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action422(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action328(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action423(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asStmtSpannedListTriple()
-    val __2 = sym2.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __1.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action329(
-        state,
-        __0,
-        __temp0_triple,
-        __1,
-        __2,
-    )
-    }
-    return __ret
+internal fun __action423(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asStmtSpannedListTriple()
+        val __2 = sym2.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __1.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action329(
+            state,
+            __0,
+            __temp0_triple,
+            __1,
+            __2,
+        )
+        }
+    __ret
 }
 
-internal fun __action424(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStmtSpannedListTriple()
-    val __3 = sym3.asIntValueTriple()
-    val __4 = sym4.asTokenTriple()
-    val __ret = run {
-val start0 = __1.third;
-    val end0 = __2.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action261(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __2,
-        __3,
-        __4,
-    )
-    }
-    return __ret
+internal fun __action424(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStmtSpannedListTriple()
+        val __3 = sym3.asIntValueTriple()
+        val __4 = sym4.asTokenTriple()
+        val __ret = run {
+    val start0 = __1.third;
+        val end0 = __2.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action261(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __2,
+            __3,
+            __4,
+        )
+        }
+    __ret
 }
 
-internal fun __action425(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenListTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asTokenListTriple()
-    val __3 = sym3.asStmtSpannedListTriple()
-    val __4 = sym4.asIntValueTriple()
-    val __5 = sym5.asTokenTriple()
-    val __ret = run {
-val start0 = __1.third;
-    val end0 = __2.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action262(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-        __2,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action425(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenListTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asTokenListTriple()
+        val __3 = sym3.asStmtSpannedListTriple()
+        val __4 = sym4.asIntValueTriple()
+        val __5 = sym5.asTokenTriple()
+        val __ret = run {
+    val start0 = __1.third;
+        val end0 = __2.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action262(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+            __2,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action426(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asExprSpannedTriple()
-    val __3 = sym3.asTokenTriple()
-    val __4 = sym4.asExprSpannedTriple()
-    val __5 = sym5.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action107(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-        __2,
-        __3,
-        __4,
-        __5,
-    )
-    }
-    return __ret
+internal fun __action426(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>, sym4: Triple<Int, GrammarSymbol, Int>, sym5: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asExprSpannedTriple()
+        val __3 = sym3.asTokenTriple()
+        val __4 = sym4.asExprSpannedTriple()
+        val __5 = sym5.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action107(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+            __2,
+            __3,
+            __4,
+            __5,
+        )
+        }
+    __ret
 }
 
-internal fun __action427(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asDoubleValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action2(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action427(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asDoubleValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action2(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action428(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenFStringTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action4(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action428(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenFStringTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action4(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action429(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStringValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action5(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action429(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStringValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action5(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action430(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenIntTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action1(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action430(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenIntTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action1(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action431(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStringValueTriple()
-    val __1 = sym1.asIntValueTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action199(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action3(
-        state,
-        __temp0_triple,
-        __0,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action431(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStringValueTriple()
+        val __1 = sym1.asIntValueTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action199(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action3(
+            state,
+            __temp0_triple,
+            __0,
+            __1,
+        )
+        }
+    __ret
 }
 
 internal fun __action432(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ArgumentP<AstNoPayload>> {
@@ -9315,7 +9315,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action340(
         state,
         __0,
@@ -9335,7 +9335,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action341(
         state,
         __0,
@@ -9355,7 +9355,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action342(
         state,
         __0,
@@ -9375,7 +9375,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action343(
         state,
         __0,
@@ -9395,7 +9395,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action344(
         state,
         __0,
@@ -9415,7 +9415,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action345(
         state,
         __0,
@@ -9435,7 +9435,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action346(
         state,
         __0,
@@ -9455,7 +9455,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action347(
         state,
         __0,
@@ -9475,7 +9475,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action348(
         state,
         __0,
@@ -9495,7 +9495,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action349(
         state,
         __0,
@@ -9515,7 +9515,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action350(
         state,
         __0,
@@ -9535,7 +9535,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action351(
         state,
         __0,
@@ -9555,7 +9555,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action352(
         state,
         __0,
@@ -9577,7 +9577,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action353(
         state,
         __0,
@@ -9601,7 +9601,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action354(
         state,
         __0,
@@ -9625,7 +9625,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action355(
         state,
         __0,
@@ -9649,7 +9649,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action356(
         state,
         __0,
@@ -9673,7 +9673,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action357(
         state,
         __0,
@@ -9697,7 +9697,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action358(
         state,
         __0,
@@ -9719,7 +9719,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action359(
         state,
         __0,
@@ -9741,7 +9741,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action360(
         state,
         __0,
@@ -9765,7 +9765,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action361(
         state,
         __0,
@@ -9789,7 +9789,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action362(
         state,
         __0,
@@ -9813,7 +9813,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action363(
         state,
         __0,
@@ -9837,7 +9837,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action364(
         state,
         __0,
@@ -9861,7 +9861,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action365(
         state,
         __0,
@@ -9885,7 +9885,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action366(
         state,
         __0,
@@ -9910,7 +9910,7 @@ val start0 = __3.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action367(
         state,
         __0,
@@ -9934,7 +9934,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action368(
         state,
         __0,
@@ -9956,7 +9956,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action369(
         state,
         __0,
@@ -9978,7 +9978,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action370(
         state,
         __0,
@@ -10000,7 +10000,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action371(
         state,
         __0,
@@ -10023,7 +10023,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action372(
         state,
         __0,
@@ -10045,7 +10045,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action373(
         state,
         __0,
@@ -10066,7 +10066,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action374(
         state,
         __0,
@@ -10088,7 +10088,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action375(
         state,
         __0,
@@ -10111,7 +10111,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action376(
         state,
         __0,
@@ -10133,7 +10133,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action377(
         state,
         __0,
@@ -10154,7 +10154,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action378(
         state,
         __0,
@@ -10176,7 +10176,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action379(
         state,
         __0,
@@ -10197,7 +10197,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action380(
         state,
         __0,
@@ -10207,64 +10207,64 @@ val start0 = __0.third;
     return __ret
 }
 
-internal fun __action473(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenIntSpannedTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __0.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action381(
-        state,
-        __0,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action473(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenIntSpannedTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __0.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action381(
+            state,
+            __0,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
-internal fun __action474(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asDoubleSpannedTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __0.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action382(
-        state,
-        __0,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action474(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asDoubleSpannedTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __0.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action382(
+            state,
+            __0,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
-internal fun __action475(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStringSpannedTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __0.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action383(
-        state,
-        __0,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action475(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStringSpannedTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __0.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action383(
+            state,
+            __0,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
 internal fun __action476(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -10277,7 +10277,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action384(
         state,
         __0,
@@ -10299,7 +10299,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action385(
         state,
         __0,
@@ -10323,7 +10323,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action386(
         state,
         __0,
@@ -10335,48 +10335,48 @@ val start0 = __2.third;
     return __ret
 }
 
-internal fun __action479(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asNullableExprSpannedTriple()
-    val __2 = sym2.asTokenTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __2.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action387(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action479(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asNullableExprSpannedTriple()
+        val __2 = sym2.asTokenTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __2.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action387(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
-internal fun __action480(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asFStringSpannedTriple()
-    val __ret = run {
-val start0 = __0.third;
-    val end0 = __0.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action388(
-        state,
-        __0,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action480(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asFStringSpannedTriple()
+        val __ret = run {
+    val start0 = __0.third;
+        val end0 = __0.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action388(
+            state,
+            __0,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
 internal fun __action481(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -10391,7 +10391,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action389(
         state,
         __0,
@@ -10403,28 +10403,28 @@ val start0 = __2.third;
     return __ret
 }
 
-internal fun __action482(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asExprSpannedTriple()
-    val __1 = sym1.asTokenTriple()
-    val __2 = sym2.asStringSpannedTriple()
-    val __ret = run {
-val start0 = __2.third;
-    val end0 = __2.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action390(
-        state,
-        __0,
-        __1,
-        __2,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action482(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asExprSpannedTriple()
+        val __1 = sym1.asTokenTriple()
+        val __2 = sym2.asStringSpannedTriple()
+        val __ret = run {
+    val start0 = __2.third;
+        val end0 = __2.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action390(
+            state,
+            __0,
+            __1,
+            __2,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
 internal fun __action483(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>, sym3: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -10440,7 +10440,7 @@ val start0 = __3.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action391(
         state,
         __0,
@@ -10470,7 +10470,7 @@ val start0 = __7.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action392(
         state,
         __0,
@@ -10503,7 +10503,7 @@ val start0 = __6.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action393(
         state,
         __0,
@@ -10534,7 +10534,7 @@ val start0 = __5.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action394(
         state,
         __0,
@@ -10565,7 +10565,7 @@ val start0 = __6.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action395(
         state,
         __0,
@@ -10596,7 +10596,7 @@ val start0 = __5.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action396(
         state,
         __0,
@@ -10625,7 +10625,7 @@ val start0 = __4.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action397(
         state,
         __0,
@@ -10655,7 +10655,7 @@ val start0 = __6.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action398(
         state,
         __0,
@@ -10686,7 +10686,7 @@ val start0 = __5.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action399(
         state,
         __0,
@@ -10715,7 +10715,7 @@ val start0 = __4.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action400(
         state,
         __0,
@@ -10744,7 +10744,7 @@ val start0 = __5.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action401(
         state,
         __0,
@@ -10773,7 +10773,7 @@ val start0 = __4.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action402(
         state,
         __0,
@@ -10800,7 +10800,7 @@ val start0 = __3.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action403(
         state,
         __0,
@@ -10826,7 +10826,7 @@ val start0 = __3.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action404(
         state,
         __0,
@@ -10854,7 +10854,7 @@ val start0 = __5.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action405(
         state,
         __0,
@@ -10881,7 +10881,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action406(
         state,
         __0,
@@ -10905,7 +10905,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action407(
         state,
         __0,
@@ -10929,7 +10929,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action408(
         state,
         __0,
@@ -10953,7 +10953,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action409(
         state,
         __0,
@@ -10977,7 +10977,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action410(
         state,
         __0,
@@ -11001,7 +11001,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action411(
         state,
         __0,
@@ -11025,7 +11025,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action412(
         state,
         __0,
@@ -11050,7 +11050,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action413(
         state,
         __0,
@@ -11074,7 +11074,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action414(
         state,
         __0,
@@ -11097,7 +11097,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action415(
         state,
         __0,
@@ -11109,26 +11109,26 @@ val start0 = __1.third;
     return __ret
 }
 
-internal fun __action508(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asTokenTriple()
-    val __1 = sym1.asNullableExprSpannedTriple()
-    val __ret = run {
-val start0 = __1.third;
-    val end0 = __1.third;
-    val __temp0 = __action198(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action416(
-        state,
-        __0,
-        __1,
-        __temp0_triple,
-    )
-    }
-    return __ret
+internal fun __action508(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asTokenTriple()
+        val __1 = sym1.asNullableExprSpannedTriple()
+        val __ret = run {
+    val start0 = __1.third;
+        val end0 = __1.third;
+        val __temp0 = __action198(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
+        __action416(
+            state,
+            __0,
+            __1,
+            __temp0_triple,
+        )
+        }
+    __ret
 }
 
 internal fun __action509(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Spanned<StmtP<AstNoPayload>> {
@@ -11141,7 +11141,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action417(
         state,
         __0,
@@ -11161,7 +11161,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action418(
         state,
         __0,
@@ -11181,7 +11181,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action419(
         state,
         __0,
@@ -11200,7 +11200,7 @@ val start0 = __lookbehind;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action420(
         state,
         __temp0_triple,
@@ -11219,7 +11219,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action421(
         state,
         __0,
@@ -11239,7 +11239,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action422(
         state,
         __0,
@@ -11260,7 +11260,7 @@ val start0 = __1.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action423(
         state,
         __0,
@@ -11284,7 +11284,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action424(
         state,
         __0,
@@ -11311,7 +11311,7 @@ val start0 = __3.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action425(
         state,
         __0,
@@ -11339,7 +11339,7 @@ val start0 = __4.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action426(
         state,
         __0,
@@ -11363,7 +11363,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action427(
         state,
         __0,
@@ -11383,7 +11383,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action428(
         state,
         __0,
@@ -11403,7 +11403,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action429(
         state,
         __0,
@@ -11423,7 +11423,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action430(
         state,
         __0,
@@ -11443,7 +11443,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant23(__temp0), end0)
     __action431(
         state,
         __0,
@@ -11462,7 +11462,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant11(__temp0), end0)
     __action82(
         state,
         __temp0_triple,
@@ -11480,7 +11480,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action101(
         state,
         __temp0_triple,
@@ -11498,7 +11498,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action110(
         state,
         __temp0_triple,
@@ -11516,7 +11516,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant17(__temp0), end0)
     __action99(
         state,
         __temp0_triple,
@@ -11534,7 +11534,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant13(__temp0), end0)
     __action20(
         state,
         __temp0_triple,
@@ -11552,7 +11552,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant13(__temp0), end0)
     __action13(
         state,
         __temp0_triple,
@@ -11570,7 +11570,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action63(
         state,
         __temp0_triple,
@@ -11588,7 +11588,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action9(
         state,
         __temp0_triple,
@@ -11606,7 +11606,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action65(
         state,
         __temp0_triple,
@@ -11624,7 +11624,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action42(
         state,
         __temp0_triple,
@@ -11642,7 +11642,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action36(
         state,
         __temp0_triple,
@@ -11660,7 +11660,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action38(
         state,
         __temp0_triple,
@@ -11678,7 +11678,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant9(__temp0), end0)
     __action68(
         state,
         __temp0_triple,
@@ -11696,7 +11696,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant24(__temp0), end0)
     __action293(
         state,
         __temp0_triple,
@@ -11714,7 +11714,7 @@ val start0 = __lookbehind;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant24(__temp0), end0)
     __action293(
         state,
         __temp0_triple,
@@ -11733,7 +11733,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant24(__temp0), end0)
     __action294(
         state,
         __0,
@@ -11753,7 +11753,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant24(__temp0), end0)
     __action294(
         state,
         __0,
@@ -11773,7 +11773,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant34(__temp0), end0)
     __action103(
         state,
         __0,
@@ -11793,7 +11793,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant34(__temp0), end0)
     __action103(
         state,
         __0,
@@ -11812,7 +11812,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action297(
         state,
         __temp0_triple,
@@ -11830,7 +11830,7 @@ val start0 = __lookbehind;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action297(
         state,
         __temp0_triple,
@@ -11849,7 +11849,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action298(
         state,
         __0,
@@ -11869,7 +11869,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action298(
         state,
         __0,
@@ -11888,7 +11888,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant40(__temp0), end0)
     __action301(
         state,
         __temp0_triple,
@@ -11906,7 +11906,7 @@ val start0 = __lookbehind;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant40(__temp0), end0)
     __action301(
         state,
         __temp0_triple,
@@ -11925,7 +11925,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant40(__temp0), end0)
     __action302(
         state,
         __0,
@@ -11945,7 +11945,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant40(__temp0), end0)
     __action302(
         state,
         __0,
@@ -11967,7 +11967,7 @@ val start0 = __3.first;
         state,
         __3,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant41(__temp0), end0)
     __action37(
         state,
         __0,
@@ -11991,7 +11991,7 @@ val start0 = __2.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant41(__temp0), end0)
     __action37(
         state,
         __0,
@@ -12012,7 +12012,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action311(
         state,
         __temp0_triple,
@@ -12030,7 +12030,7 @@ val start0 = __lookbehind;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action311(
         state,
         __temp0_triple,
@@ -12049,7 +12049,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action312(
         state,
         __0,
@@ -12069,7 +12069,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant37(__temp0), end0)
     __action312(
         state,
         __0,
@@ -12079,44 +12079,44 @@ val start0 = __0.third;
     return __ret
 }
 
-internal fun __action557(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStringSpannedTriple()
-    val __1 = sym1.asStringSpannedTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.third;
-    val __temp0 = __action166(
-        state,
-        __0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action72(
-        state,
-        __temp0_triple,
-        __1,
-    )
-    }
-    return __ret
+internal fun __action557(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStringSpannedTriple()
+        val __1 = sym1.asStringSpannedTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.third;
+        val __temp0 = __action166(
+            state,
+            __0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant45(__temp0), end0)
+        __action72(
+            state,
+            __temp0_triple,
+            __1,
+        )
+        }
+    __ret
 }
 
-internal fun __action558(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>): Any? {
-    val __0 = sym0.asStringSpannedTriple()
-    val __ret = run {
-val start0 = __0.first;
-    val end0 = __0.first;
-    val __temp0 = __action167(
-        state,
-        start0,
-        end0,
-    );
-    val __temp0_triple = Triple(start0, __temp0, end0)
-    __action72(
-        state,
-        __temp0_triple,
-        __0,
-    )
-    }
-    return __ret
+internal fun __action558(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>) = run {
+        val __0 = sym0.asStringSpannedTriple()
+        val __ret = run {
+    val start0 = __0.first;
+        val end0 = __0.first;
+        val __temp0 = __action167(
+            state,
+            start0,
+            end0,
+        );
+        val __temp0_triple= Triple(start0, GrammarSymbol.Variant45(__temp0), end0)
+        __action72(
+            state,
+            __temp0_triple,
+            __0,
+        )
+        }
+    __ret
 }
 
 internal fun __action559(state: io.github.kotlinmania.starlarksyntax.syntax.state.ParserState, sym0: Triple<Int, GrammarSymbol, Int>, sym1: Triple<Int, GrammarSymbol, Int>, sym2: Triple<Int, GrammarSymbol, Int>): Spanned<ExprP<AstNoPayload>> {
@@ -12130,7 +12130,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action479(
         state,
         __0,
@@ -12152,7 +12152,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action479(
         state,
         __0,
@@ -12173,7 +12173,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action508(
         state,
         __0,
@@ -12193,7 +12193,7 @@ val start0 = __0.third;
         start0,
         end0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant7(__temp0), end0)
     __action508(
         state,
         __0,
@@ -12212,7 +12212,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant48(__temp0), end0)
     __action474(
         state,
         __temp0_triple,
@@ -12230,7 +12230,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant49(__temp0), end0)
     __action480(
         state,
         __temp0_triple,
@@ -12250,7 +12250,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action84(
         state,
         __temp0_triple,
@@ -12270,7 +12270,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action7(
         state,
         __temp0_triple,
@@ -12288,7 +12288,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action6(
         state,
         __temp0_triple,
@@ -12307,7 +12307,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action71(
         state,
         __temp0_triple,
@@ -12328,7 +12328,7 @@ val start0 = __2.first;
         state,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action482(
         state,
         __0,
@@ -12348,7 +12348,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant50(__temp0), end0)
     __action473(
         state,
         __temp0_triple,
@@ -12367,7 +12367,7 @@ val start0 = __1.first;
         state,
         __1,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action557(
         state,
         __0,
@@ -12386,7 +12386,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action558(
         state,
         __temp0_triple,
@@ -12407,7 +12407,7 @@ val start0 = __2.first;
         state,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action69(
         state,
         __0,
@@ -12433,7 +12433,7 @@ val start0 = __2.first;
         state,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action318(
         state,
         __0,
@@ -12460,7 +12460,7 @@ val start0 = __2.first;
         state,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action319(
         state,
         __0,
@@ -12488,7 +12488,7 @@ val start0 = __2.first;
         state,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action320(
         state,
         __0,
@@ -12517,7 +12517,7 @@ val start0 = __2.first;
         state,
         __2,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action321(
         state,
         __0,
@@ -12540,7 +12540,7 @@ val start0 = __0.first;
         state,
         __0,
     );
-    val __temp0_triple = Triple(start0, __temp0, end0)
+    val __temp0_triple= Triple(start0, GrammarSymbol.Variant44(__temp0), end0)
     __action475(
         state,
         __temp0_triple,

@@ -102,241 +102,241 @@ internal fun GrammarSymbol.asToken(): Token = when (this) {
     is GrammarSymbol.Variant0 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asTokenTriple(): Triple<Int, Token, Int> = Triple(first, second.asToken(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asTokenTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asDoubleValue(): Double = when (this) {
     is GrammarSymbol.Variant1 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asDoubleValueTriple(): Triple<Int, Double, Int> = Triple(first, second.asDoubleValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asDoubleValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asTokenFString(): TokenFString = when (this) {
     is GrammarSymbol.Variant2 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asTokenFStringTriple(): Triple<Int, TokenFString, Int> = Triple(first, second.asTokenFString(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asTokenFStringTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asStringValue(): String = when (this) {
     is GrammarSymbol.Variant3 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asStringValueTriple(): Triple<Int, String, Int> = Triple(first, second.asStringValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asStringValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asTokenInt(): TokenInt = when (this) {
     is GrammarSymbol.Variant4 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asTokenIntTriple(): Triple<Int, TokenInt, Int> = Triple(first, second.asTokenInt(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asTokenIntTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableToken(): Token? = when (this) {
     is GrammarSymbol.Variant5 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableTokenTriple(): Triple<Int, Token?, Int> = Triple(first, second.asNullableToken(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableTokenTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asTokenList(): List<Token> = when (this) {
     is GrammarSymbol.Variant6 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asTokenListTriple(): Triple<Int, List<Token>, Int> = Triple(first, second.asTokenList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asTokenListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableExprSpanned(): Spanned<ExprP<AstNoPayload>>? = when (this) {
     is GrammarSymbol.Variant7 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableExprSpannedTriple(): Triple<Int, Spanned<ExprP<AstNoPayload>>?, Int> = Triple(first, second.asNullableExprSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableExprSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableOptionExprSpanned(): NullableOption<Spanned<ExprP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant8 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableOptionExprSpannedTriple(): Triple<Int, NullableOption<Spanned<ExprP<AstNoPayload>>>, Int> = Triple(first, second.asNullableOptionExprSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableOptionExprSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asStmtSpanned(): Spanned<StmtP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant9 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asStmtSpannedTriple(): Triple<Int, Spanned<StmtP<AstNoPayload>>, Int> = Triple(first, second.asStmtSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asStmtSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asStmtSpannedList(): List<Spanned<StmtP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant10 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asStmtSpannedListTriple(): Triple<Int, List<Spanned<StmtP<AstNoPayload>>>, Int> = Triple(first, second.asStmtSpannedList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asStmtSpannedListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asArgumentSpanned(): Spanned<ArgumentP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant11 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asArgumentSpannedTriple(): Triple<Int, Spanned<ArgumentP<AstNoPayload>>, Int> = Triple(first, second.asArgumentSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asArgumentSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asArgumentSpannedList(): List<Spanned<ArgumentP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant12 -> value
     is GrammarSymbol.Variant29 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asArgumentSpannedListTriple(): Triple<Int, List<Spanned<ArgumentP<AstNoPayload>>>, Int> = Triple(first, second.asArgumentSpannedList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asArgumentSpannedListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asParameterSpanned(): Spanned<ParameterP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant13 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asParameterSpannedTriple(): Triple<Int, Spanned<ParameterP<AstNoPayload>>, Int> = Triple(first, second.asParameterSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asParameterSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asParameterSpannedList(): List<Spanned<ParameterP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant14 -> value
     is GrammarSymbol.Variant30 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asParameterSpannedListTriple(): Triple<Int, List<Spanned<ParameterP<AstNoPayload>>>, Int> = Triple(first, second.asParameterSpannedList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asParameterSpannedListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asExprPair(): Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant15 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asExprPairTriple(): Triple<Int, Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>, Int> = Triple(first, second.asExprPair(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asExprPairTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asExprPairList(): List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>> = when (this) {
     is GrammarSymbol.Variant16 -> value
     is GrammarSymbol.Variant31 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asExprPairListTriple(): Triple<Int, List<Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>>, Int> = Triple(first, second.asExprPairList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asExprPairListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asExprSpanned(): Spanned<ExprP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant17 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asExprSpannedTriple(): Triple<Int, Spanned<ExprP<AstNoPayload>>, Int> = Triple(first, second.asExprSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asExprSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asExprSpannedList(): List<Spanned<ExprP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant18 -> value
     is GrammarSymbol.Variant32 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asExprSpannedListTriple(): Triple<Int, List<Spanned<ExprP<AstNoPayload>>>, Int> = Triple(first, second.asExprSpannedList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asExprSpannedListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asLoadPair(): Pair<Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Spanned<Comma>> = when (this) {
     is GrammarSymbol.Variant19 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asLoadPairTriple(): Triple<Int, Pair<Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Spanned<Comma>>, Int> = Triple(first, second.asLoadPair(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asLoadPairTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asLoadPairList(): List<Pair<Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Spanned<Comma>>> = when (this) {
     is GrammarSymbol.Variant20 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asLoadPairListTriple(): Triple<Int, List<Pair<Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Spanned<Comma>>>, Int> = Triple(first, second.asLoadPairList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asLoadPairListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asAssignIdentStringPair(): Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>> = when (this) {
     is GrammarSymbol.Variant21 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asAssignIdentStringPairTriple(): Triple<Int, Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>, Int> = Triple(first, second.asAssignIdentStringPair(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asAssignIdentStringPairTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableAssignIdentStringPair(): Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>? = when (this) {
     is GrammarSymbol.Variant22 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableAssignIdentStringPairTriple(): Triple<Int, Pair<Spanned<AssignIdentP<AstNoPayload>>, Spanned<String>>?, Int> = Triple(first, second.asNullableAssignIdentStringPair(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableAssignIdentStringPairTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asIntValue(): Int = when (this) {
     is GrammarSymbol.Variant23 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asIntValueTriple(): Triple<Int, Int, Int> = Triple(first, second.asIntValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asIntValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableArgumentSpanned(): Spanned<ArgumentP<AstNoPayload>>? = when (this) {
     is GrammarSymbol.Variant24 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableArgumentSpannedTriple(): Triple<Int, Spanned<ArgumentP<AstNoPayload>>?, Int> = Triple(first, second.asNullableArgumentSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableArgumentSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asArgumentValue(): ArgumentP<AstNoPayload> = when (this) {
     is GrammarSymbol.Variant25 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asArgumentValueTriple(): Triple<Int, ArgumentP<AstNoPayload>, Int> = Triple(first, second.asArgumentValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asArgumentValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asAssignIdentSpanned(): Spanned<AssignIdentP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant26 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asAssignIdentSpannedTriple(): Triple<Int, Spanned<AssignIdentP<AstNoPayload>>, Int> = Triple(first, second.asAssignIdentSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asAssignIdentSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableAssignOp(): AssignOp? = when (this) {
     is GrammarSymbol.Variant27 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableAssignOpTriple(): Triple<Int, AssignOp?, Int> = Triple(first, second.asNullableAssignOp(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableAssignOpTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asStmtValue(): StmtP<AstNoPayload> = when (this) {
     is GrammarSymbol.Variant28 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asStmtValueTriple(): Triple<Int, StmtP<AstNoPayload>, Int> = Triple(first, second.asStmtValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asStmtValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asClauseValue(): ClauseP<AstNoPayload> = when (this) {
     is GrammarSymbol.Variant33 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asClauseValueTriple(): Triple<Int, ClauseP<AstNoPayload>, Int> = Triple(first, second.asClauseValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asClauseValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asClauseList(): List<ClauseP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant34 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asClauseListTriple(): Triple<Int, List<ClauseP<AstNoPayload>>, Int> = Triple(first, second.asClauseList(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asClauseListTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asCommaSpanned(): Spanned<Comma> = when (this) {
     is GrammarSymbol.Variant35 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asCommaSpannedTriple(): Triple<Int, Spanned<Comma>, Int> = Triple(first, second.asCommaSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asCommaSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asForClauseClauseListPair(): Pair<ForClauseP<AstNoPayload>, List<ClauseP<AstNoPayload>>> = when (this) {
     is GrammarSymbol.Variant36 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asForClauseClauseListPairTriple(): Triple<Int, Pair<ForClauseP<AstNoPayload>, List<ClauseP<AstNoPayload>>>, Int> = Triple(first, second.asForClauseClauseListPair(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asForClauseClauseListPairTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableParameterSpanned(): Spanned<ParameterP<AstNoPayload>>? = when (this) {
     is GrammarSymbol.Variant37 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableParameterSpannedTriple(): Triple<Int, Spanned<ParameterP<AstNoPayload>>?, Int> = Triple(first, second.asNullableParameterSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableParameterSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asParameterValue(): ParameterP<AstNoPayload> = when (this) {
     is GrammarSymbol.Variant38 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asParameterValueTriple(): Triple<Int, ParameterP<AstNoPayload>, Int> = Triple(first, second.asParameterValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asParameterValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asExprValue(): ExprP<AstNoPayload> = when (this) {
     is GrammarSymbol.Variant39 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asExprValueTriple(): Triple<Int, ExprP<AstNoPayload>, Int> = Triple(first, second.asExprValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asExprValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableExprPair(): Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>? = when (this) {
     is GrammarSymbol.Variant40 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableExprPairTriple(): Triple<Int, Pair<Spanned<ExprP<AstNoPayload>>, Spanned<ExprP<AstNoPayload>>>?, Int> = Triple(first, second.asNullableExprPair(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableExprPairTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableStmtSpanned(): Spanned<StmtP<AstNoPayload>>? = when (this) {
     is GrammarSymbol.Variant41 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableStmtSpannedTriple(): Triple<Int, Spanned<StmtP<AstNoPayload>>?, Int> = Triple(first, second.asNullableStmtSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableStmtSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asForClauseValue(): ForClauseP<AstNoPayload> = when (this) {
     is GrammarSymbol.Variant42 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asForClauseValueTriple(): Triple<Int, ForClauseP<AstNoPayload>, Int> = Triple(first, second.asForClauseValue(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asForClauseValueTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asIdentSpanned(): Spanned<IdentP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant43 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asIdentSpannedTriple(): Triple<Int, Spanned<IdentP<AstNoPayload>>, Int> = Triple(first, second.asIdentSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asIdentSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asStringSpanned(): Spanned<String> = when (this) {
     is GrammarSymbol.Variant44 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asStringSpannedTriple(): Triple<Int, Spanned<String>, Int> = Triple(first, second.asStringSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asStringSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableStringSpanned(): Spanned<String>? = when (this) {
     is GrammarSymbol.Variant45 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableStringSpannedTriple(): Triple<Int, Spanned<String>?, Int> = Triple(first, second.asNullableStringSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableStringSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asNullableTypeExprSpanned(): Spanned<TypeExprP<AstNoPayload>>? = when (this) {
     is GrammarSymbol.Variant46 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asNullableTypeExprSpannedTriple(): Triple<Int, Spanned<TypeExprP<AstNoPayload>>?, Int> = Triple(first, second.asNullableTypeExprSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asNullableTypeExprSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asTypeExprSpanned(): Spanned<TypeExprP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant47 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asTypeExprSpannedTriple(): Triple<Int, Spanned<TypeExprP<AstNoPayload>>, Int> = Triple(first, second.asTypeExprSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asTypeExprSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asDoubleSpanned(): Spanned<Double> = when (this) {
     is GrammarSymbol.Variant48 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asDoubleSpannedTriple(): Triple<Int, Spanned<Double>, Int> = Triple(first, second.asDoubleSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asDoubleSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asFStringSpanned(): Spanned<FStringP<AstNoPayload>> = when (this) {
     is GrammarSymbol.Variant49 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asFStringSpannedTriple(): Triple<Int, Spanned<FStringP<AstNoPayload>>, Int> = Triple(first, second.asFStringSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asFStringSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 internal fun GrammarSymbol.asTokenIntSpanned(): Spanned<TokenInt> = when (this) {
     is GrammarSymbol.Variant50 -> value
     else -> unexpectedValue()
 }
-internal fun Triple<Int, GrammarSymbol, Int>.asTokenIntSpannedTriple(): Triple<Int, Spanned<TokenInt>, Int> = Triple(first, second.asTokenIntSpanned(), third)
+internal fun Triple<Int, GrammarSymbol, Int>.asTokenIntSpannedTriple(): Triple<Int, GrammarSymbol, Int> = this
 
 internal fun Token.toSymbol(): GrammarSymbol = when (this) {
     is Token.FloatToken -> GrammarSymbol.Variant1(value)
