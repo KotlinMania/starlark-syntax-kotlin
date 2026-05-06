@@ -38,8 +38,8 @@ jobs:
           -PenableIosSimulatorTests=true
           --no-configuration-cache
 
-  build-macos-x64:
-    name: Build and Test (macOS x64 / iOS simulator x64)
+  build-ios-x64:
+    name: Build and Test (iOS simulator x64)
     runs-on: macos-15-intel
     steps:
       - name: Checkout
@@ -58,9 +58,7 @@ jobs:
         run: >
           ./gradlew
           compileKotlinIosX64
-          compileKotlinMacosX64
           iosX64Test
-          macosX64Test
           -PenableIosSimulatorTests=true
           --no-configuration-cache
 
