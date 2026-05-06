@@ -20,7 +20,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
 
 //! LALRPOP-backed [Parser] implementation.
 
-import io.github.kotlinmania.lalrpop.runtime.ParseError as LuParseError
+import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException

@@ -18,7 +18,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
  * limitations under the License.
  */
 
-import io.github.kotlinmania.lalrpop.runtime.ParseError as LuParseError
+import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.Token
