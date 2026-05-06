@@ -19,6 +19,7 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  */
 
 private const val REGENERATE_VAR_NAME: String = "STARLARK_RUST_REGENERATE_GOLDEN_TESTS"
+private const val CARGO_MANIFEST_DIR_VAR_NAME: String = "CARGO_MANIFEST_DIR"
 
 private fun makeGolden(output: String): String {
     val golden = StringBuilder()
@@ -34,28 +35,22 @@ private fun makeGolden(output: String): String {
     return golden.toString()
 }
 
-/**
- * Common code for golden tests.
- *
- * The upstream Rust crate uses `CARGO_MANIFEST_DIR` and reads `src/**/*.golden` files from the
- * crate root. In this Kotlin port, the oracle golden files live under `tmp/starlark_syntax/`,
- * so we resolve `goldenRelPath` under that directory.
- *
- * Regeneration is deliberately unsupported because `tmp/` is read-only by convention.
- */
 fun goldenTestTemplate(goldenRelPath: String, output: String) {
     check(goldenRelPath.startsWith("src/"))
     check(goldenRelPath.contains(".golden"))
 
+    val manifestDir =
+        platformGetEnv(CARGO_MANIFEST_DIR_VAR_NAME)
+            ?: error("`$CARGO_MANIFEST_DIR_VAR_NAME` variable must be set")
+
+    val goldenFilePath = "$manifestDir/$goldenRelPath"
     val outputWithPrefix = makeGolden(output)
 
-    val regenerate = platformGetEnv(REGENERATE_VAR_NAME) != null
-    check(!regenerate) {
-        "Golden regeneration is not supported in Kotlin ports; do not write into tmp/. " +
-            "Unset $REGENERATE_VAR_NAME and re-run the tests."
+    if (platformGetEnv(REGENERATE_VAR_NAME) != null) {
+        platformWriteUtf8File(goldenFilePath, outputWithPrefix)
+        return
     }
 
-    val goldenFilePath = "tmp/starlark_syntax/$goldenRelPath"
     var expected = platformReadUtf8File(goldenFilePath)
     if (platformIsWindows()) {
         // Git may check out files on Windows with \\r\\n as line separator.
@@ -91,7 +86,7 @@ fun goldenTestTemplate(goldenRelPath: String, output: String) {
         val end = firstDiff + context
         val message =
             "Golden file mismatch for `$goldenFilePath` at line $firstDiff.\n" +
-                "Set $REGENERATE_VAR_NAME in upstream Rust to regenerate.\n\n" +
+                "Set $REGENERATE_VAR_NAME to regenerate.\n\n" +
                 snippet("Expected", expected, start, end) +
                 "\n" +
                 snippet("Actual", outputWithPrefix, start, end)
@@ -102,5 +97,7 @@ fun goldenTestTemplate(goldenRelPath: String, output: String) {
 internal expect fun platformGetEnv(name: String): String?
 
 internal expect fun platformReadUtf8File(path: String): String
+
+internal expect fun platformWriteUtf8File(path: String, content: String)
 
 internal expect fun platformIsWindows(): Boolean

@@ -61,4 +61,16 @@ internal actual fun platformGetEnv(name: String): String? = platformGetEnvImpl(n
 
 internal actual fun platformReadUtf8File(path: String): String = platformReadUtf8FileImpl(path)
 
+private val platformWriteUtf8FileImpl: (String, String) -> Unit =
+    js(
+        "(path, content) => {\n" +
+            "  const fs = require('fs');\n" +
+            "  fs.writeFileSync(path, content, 'utf8');\n" +
+            "}",
+    )
+
+internal actual fun platformWriteUtf8File(path: String, content: String) {
+    platformWriteUtf8FileImpl(path, content)
+}
+
 internal actual fun platformIsWindows(): Boolean = platformIsWindowsImpl()
