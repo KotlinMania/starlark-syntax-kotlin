@@ -5,27 +5,15 @@ Based on AST analysis, here are the concrete next steps.
 ## Summary
 
 - **Files Present:** 32/37 (86.5%)
-- **Function parity:** 240/387 matched (target 458) — 62.0%
-- **Class/type parity:** 125/142 matched (target 320) — 88.0%
-- **Combined symbol parity:** 365/529 matched (target 778) — 69.0%
+- **Function parity:** 240/387 matched (target 444) — 62.0%
+- **Class/type parity:** 125/142 matched (target 314) — 88.0%
+- **Combined symbol parity:** 365/529 matched (target 758) — 69.0%
 - **Average inline-code cosine:** 0.51 (function body across 27 matched files)
-- **Average documentation cosine:** 0.84 (doc text across 27 matched files)
+- **Average documentation cosine:** 0.85 (doc text across 27 matched files)
 - **Cheat-zeroed Files:** 12
 - **Critical Issues:** 19 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
-
-### 0. `syntax/parser/ParserLalrpop.kt` — blocked on `StarlarkParser` codegen
-
-**Status:** API-parity cleanup landed on branch `port/codemap` (commits 530eab4 + f9d6485). The phantom `LalrpopBackend` fun interface, the constructor parameter on `LalrpopParser`, and the local `LalrpopParseError` sealed class clone are gone; the file now imports `io.github.kotlinmania.lalrpop.runtime.ParseError` directly and `parseModule` calls `StarlarkParser().parse(state, tokens)` the way upstream `parser_lalrpop.rs` does.
-
-**Compile state:** one unresolved reference, `StarlarkParser`. This is the honest blocker, restored from the previous "green build behind a phantom interface" state.
-
-**Resolution path (out of scope for this branch):**
-
-1. Finish lalrpop-kotlin's Kotlin-emit codegen — ~2500 LOC of new code in `lalrpop-kotlin/src/commonMain/kotlin/io/github/kotlinmania/lalrpop/lr1/kotlintarget/`. The Rust-emit backend that already lives in `lalrpop-kotlin/src/commonMain/kotlin/io/github/kotlinmania/lalrpop/lr1/codegen/` (Ascent.kt 901 lines, ParseTable.kt 1328 lines, Base.kt 346 lines) is the silhouette to mirror — same inputs, idiomatic-Kotlin output strings instead of Rust output strings.
-2. Add a Gradle task in this repo that invokes `lalrpop-kotlin`'s `Configuration.new().processFile("tmp/starlark_syntax/src/syntax/grammar.lalrpop")` at build time and writes to `build/generated/source/lalrpop/syntax/grammar/StarlarkParser.kt`. Wire that path into the `commonMain` source set.
-3. The emitter must produce a class shape that matches what `ParserLalrpop.kt` already calls: `class StarlarkParser { fun parse(state: ParserState, tokens: Iterator<Lexeme>): Result<AstStmt, LuParseError<Int, Token, EvalException>> }`. The user has stated lalrpop-kotlin's *internal engine* (table-driven LR(1) driver) does not need to mirror Rust; only the *public API names* must match.
 
 ### 1. codemap
 - **Similarity:** 0.75 (needs 10% improvement)
@@ -111,14 +99,15 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 6. golden_test_template
 
-- **Target:** `goldentesttemplate.PlatformIoJs [STUB]`
+- **Target:** `goldentesttemplate.GoldenTestTemplate [STUB]`
 - **Similarity:** 0.00
 - **Dependents:** 3
 - **Priority Score:** 3000210.0
-- **Functions:** 2/2 matched (target 17)
+- **Functions:** 2/2 matched (target 3)
 - **Missing functions:** _none_
 - **Types:** 0/0 matched
 - **Missing types:** _none_
+- **TODOs:** 1
 
 ### 7. lexer
 
@@ -349,12 +338,12 @@ Every matched file is listed below with function and type symbol parity.
 ### 26. syntax.parser_lalrpop
 
 - **Target:** `parser.ParserLalrpop [PROVENANCE-FALLBACK]`
-- **Similarity:** 0.79
+- **Similarity:** 0.80
 - **Dependents:** 0
-- **Priority Score:** 502.1
+- **Priority Score:** 502.0
 - **Functions:** 4/4 matched (target 5)
 - **Missing functions:** _none_
-- **Types:** 1/1 matched (target 8)
+- **Types:** 1/1 matched (target 2)
 - **Missing types:** _none_
 - **Tests:** 1/1 matched
 - **Provenance warning:** port-lint provenance header matched only after fallback normalization: `tests:syntax/parser_lalrpop.rs` vs expected `syntax/parser_lalrpop.rs`
@@ -441,7 +430,7 @@ For each file to be considered "complete":
 ```bash
 # Initialize task queue for systematic porting
 cd tools/ast_distance
-./ast_distance --init-tasks ../../tmp/starlark_syntax rust ../../src kotlin tasks.json ../../AGENTS.md
+./ast_distance --init-tasks ../../tmp/starlark_syntax rust ../../src/commonMain/kotlin/io/github/kotlinmania/starlarksyntax kotlin tasks.json ../../AGENTS.md
 
 # Get next high-priority task
 ./ast_distance --assign tasks.json <agent-id>
