@@ -52,7 +52,6 @@ These are line-by-line **transliterations**. Read the Rust file end to end, then
 - Changes are task-scoped, not pattern-scoped. Every touched file is named up front.
 - Small multi-file changes are allowed when mechanically coupled — primary file plus its `commonTest` and any required call-site rewires.
 - No drive-by refactors, renames, or formatting churn.
-- More than ~5 files in a single change? Stop and ask.
 
 ## Verification
 
