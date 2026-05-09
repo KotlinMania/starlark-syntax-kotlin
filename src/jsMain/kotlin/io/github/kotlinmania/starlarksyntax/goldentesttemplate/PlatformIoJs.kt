@@ -22,12 +22,25 @@ private const val CARGO_MANIFEST_DIR_BROWSER_FALLBACK: String = "."
 // Karma serves project files under `/base` during browser test execution.
 private const val KARMA_BROWSER_BASE_PATH_PREFIX: String = "/base/"
 
+private fun isNodeRuntime(): Boolean {
+    val process: dynamic = nodeProcessOrNull() ?: return false
+    val nodeVersion: dynamic = process.versions?.node
+    return !(nodeVersion == null || jsTypeOf(nodeVersion) == "undefined")
+}
+
 private fun nodeRequireOrNull(name: String): dynamic {
+    if (!isNodeRuntime()) {
+        return null
+    }
     val requireFn: dynamic = js("typeof require !== 'undefined' ? require : undefined")
     if (jsTypeOf(requireFn) == "undefined") {
         return null
     }
-    return requireFn(name)
+    return try {
+        requireFn(name)
+    } catch (_: dynamic) {
+        null
+    }
 }
 
 private fun nodeProcessOrNull(): dynamic {
