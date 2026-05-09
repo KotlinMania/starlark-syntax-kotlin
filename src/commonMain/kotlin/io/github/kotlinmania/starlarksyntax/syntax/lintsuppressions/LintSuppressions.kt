@@ -37,11 +37,11 @@ internal class LintSuppressions internal constructor(
     /** A map from lint short names to spans where they are suppressed. */
     internal val suppressions: MutableMap<String, MutableList<SuppressionInfo>> = mutableMapOf(),
 ) {
-    /** Check if a given lint short_name and span is suppressed. */
+    /** Check if a given lint short name and span is suppressed. */
     fun isSuppressed(issueShortName: String, issueSpan: Span): Boolean {
         val suppressionSpans = suppressions[issueShortName] ?: return false
         return suppressionSpans.any { info ->
-            // is this suppression that last thing in a suppress_next_line issue span? ...
+            // is this suppression the last thing in a "suppress next line" issue span? ...
             if (info.suppressNextLine &&
                 // (issueSpan includes line terminator)
                 (issueSpan.end().value - 1) == info.tokenSpan.end().value
@@ -103,7 +103,7 @@ internal class LintSuppressionsBuilder {
     }
 
     /**
-     * Update the line_suppressions hashmap with parsed lint suppressions for a block of comments.
+     * Update the per-line suppressions map with parsed lint suppressions for a block of comments.
      * Consumes and clears the [ParseState].
      */
     private fun updateLintSuppressions(codemap: CodeMap) {

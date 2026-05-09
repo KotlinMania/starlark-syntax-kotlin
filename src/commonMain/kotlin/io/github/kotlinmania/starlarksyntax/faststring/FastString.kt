@@ -18,13 +18,26 @@ package io.github.kotlinmania.starlarksyntax.faststring
  * limitations under the License.
  */
 
-//! Our string operations (indexing) are O(n) because of our current representation.
-//! There are plans afoot to change that, but in the meantime let's use fast algorithms
-//! to make up some of the difference.
+/**
+ * Our string operations (indexing) are O(n) because of our current representation.
+ * There are plans afoot to change that, but in the meantime let's use fast algorithms
+ * to make up some of the difference.
+ */
 
 import io.github.kotlinmania.starlarksyntax.convertindices.convertIndices
+import kotlin.math.min
 
-private fun is1Byte(x: Byte): Boolean = (x.toInt() and 0x80) == 0
+private fun is1Byte(x: UByte): Boolean = (x.toInt() and 0x80) == 0
+
+private fun is1Bytes(x: ULong): Boolean = (x and 0x8080_8080_8080_8080uL) == 0uL
+
+private fun loadULongLe(bytes: ByteArray, offset: Int): ULong {
+    var x = 0uL
+    for (i in 0 until 8) {
+        x = x or (bytes[offset + i].toUByte().toULong() shl (8 * i))
+    }
+    return x
+}
 
 /**
  * Skip at most n 1byte characters from the prefix of the string, return how many you skipped.
@@ -32,14 +45,55 @@ private fun is1Byte(x: Byte): Boolean = (x.toInt() and 0x80) == 0
  * The string _must_ have at least n bytes in it.
  */
 private fun skipAtMost1Byte(x: String, n: Int): Int {
-    if (n == 0) return 0
     val bytes = x.encodeToByteArray()
+    if (n == 0) return 0
     check(bytes.size >= n)
-    var i = 0
-    while (i < n && is1Byte(bytes[i])) {
-        i++
+
+    // Multi-byte UTF8 characters have 0x80 set.
+    // We first process enough characters so we align on an 8-byte boundary,
+    // then process 8 bytes at a time.
+    // If we see a higher value, we bail to the standard Kotlin byte loop.
+    // It is possible to do faster with population count, but we don't expect many real UTF8 strings.
+    // (c.f. https://github.com/haskell-foundation/foundation/blob/master/foundation/cbits/foundation_utf8.c)
+
+    // Same function, but returning the end offset.
+    fun f(n: Int): Int {
+        val leading = min(0, n)
+        val trailing = (n - leading) % 8
+        val loops = (n - leading) / 8
+
+        var p = 0
+
+        // Loop over 1 byte at a time until we reach alignment.
+        for (i in 0 until leading) {
+            if (is1Byte(bytes[p].toUByte())) {
+                p++
+            } else {
+                return p
+            }
+        }
+
+        // Loop over 8 bytes at a time, until we reach the end.
+        for (i in 0 until loops) {
+            if (is1Bytes(loadULongLe(bytes, p))) {
+                p += 8
+            } else {
+                return p
+            }
+        }
+
+        // Mop up all trailing bytes.
+        for (i in 0 until trailing) {
+            if (is1Byte(bytes[p].toUByte())) {
+                p++
+            } else {
+                return p
+            }
+        }
+        return p
     }
-    return i
+
+    return f(n)
 }
 
 /** Find the character at position `i`. */
@@ -62,8 +116,7 @@ fun at(x: String, i: CharIndex): Char? {
 }
 
 /**
- * Find the length of the string in characters (Unicode codepoints, matching Rust's
- * `str::chars().count()`).
+ * Find the length of the string in characters (Unicode codepoints).
  *
  * If the length matches the length in bytes, the string must be 7bit ASCII.
  */
@@ -79,8 +132,9 @@ fun len(x: String): CharIndex {
 
 /**
  * Count Unicode codepoints in a string, treating each surrogate pair as one codepoint.
- * Equivalent to Rust's `str::chars().count()`. Kotlin's [String.length] / [String.count] count
- * UTF-16 code units, which double-counts characters in supplementary planes (e.g. emoji).
+ *
+ * Kotlin's [String.length] and [String.count] return UTF-16 code units, which double-counts
+ * characters in supplementary planes (e.g. emoji). This walk yields one increment per codepoint.
  */
 private fun codepointCount(s: String): Int {
     var i = 0

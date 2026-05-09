@@ -62,8 +62,7 @@ sealed class VisitMut<P : AstPayload> {
     class Expr<P : AstPayload>(val expr: AstExprP<P>) : VisitMut<P>()
 }
 
-// ----- DefP visit helpers (in Rust they're `impl<P: AstPayload> DefP<P>` methods; in Kotlin
-// they're extension functions on the typealiased generic class) -----
+// ----- DefP visit helpers — extension functions on the generic AST class. -----
 
 private fun <P : AstPayload> io.github.kotlinmania.starlarksyntax.syntax.ast.DefP<P>.visitChildren(
     f: (Visit<P>) -> Unit,
@@ -231,9 +230,9 @@ fun <P : AstPayload> StmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
 }
 
 /**
- * Forwarder mirroring Rust's `impl<T> Deref for Spanned<T>` (codemap.rs:179) — call sites
- * in upstream like `stmt.visit_expr(...)` resolve through `Deref::deref` to the inner
- * `StmtP::visit_expr`. Kotlin has no Deref, so we expose the same name on the wrapper.
+ * Forwarder for [AstStmtP.node] — upstream call sites that read like `stmt.visitExpr(...)`
+ * deref through the [Spanned] wrapper to the inner [StmtP.visitExpr]. Kotlin has no
+ * deref-coercion, so we expose the same name on the [Spanned] wrapper.
  */
 fun <P : AstPayload> AstStmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
     node.visitExpr(f)
