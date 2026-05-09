@@ -22,6 +22,7 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 // Kotlin/Wasm does not support `dynamic`, and `js("...")` calls must appear as a single
 // expression in a top-level function body or property initializer. Define JS lambdas
 // in top-level initializers, then call them from the expect/actual surface.
+// Karma serves browser test files under `/base`.
 
 private val platformGetEnvImpl: (String) -> String? =
     js(

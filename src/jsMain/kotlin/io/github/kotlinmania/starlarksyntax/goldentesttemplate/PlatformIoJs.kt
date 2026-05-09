@@ -24,7 +24,7 @@ private const val KARMA_BROWSER_BASE_PATH_PREFIX: String = "/base/"
 
 private fun nodeRequireOrNull(name: String): dynamic {
     val requireFn: dynamic = js("typeof require !== 'undefined' ? require : undefined")
-    if (requireFn == null || jsTypeOf(requireFn) == "undefined") {
+    if (jsTypeOf(requireFn) == "undefined") {
         return null
     }
     return requireFn(name)
@@ -32,7 +32,7 @@ private fun nodeRequireOrNull(name: String): dynamic {
 
 private fun nodeProcessOrNull(): dynamic {
     val process: dynamic = js("typeof process !== 'undefined' ? process : undefined")
-    return if (process == null || jsTypeOf(process) == "undefined") null else process
+    return if (jsTypeOf(process) == "undefined") null else process
 }
 
 private fun resolvePathForNode(path: String): String {
