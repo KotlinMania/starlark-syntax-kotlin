@@ -18,8 +18,8 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  * limitations under the License.
  */
 
-private const val BROWSER_MANIFEST_DIR: String = "."
-private const val KARMA_BASE_PATH_PREFIX: String = "/base/"
+private const val MANIFEST_DIR_FALLBACK: String = "."
+private const val BROWSER_TEST_BASE_PATH_PREFIX: String = "/base/"
 
 private fun nodeRequireOrNull(name: String): dynamic {
     val requireFn: dynamic = js("typeof require !== 'undefined' ? require : undefined")
@@ -62,7 +62,7 @@ private fun resolvePathForNode(path: String): String {
 private fun browserReadUtf8File(path: String): String {
     val normalizedPath = path.removePrefix("./")
     val requestPath =
-        if (normalizedPath.startsWith("/")) normalizedPath else "$KARMA_BASE_PATH_PREFIX$normalizedPath"
+        if (normalizedPath.startsWith("/")) normalizedPath else "$BROWSER_TEST_BASE_PATH_PREFIX$normalizedPath"
     val xhr: dynamic = js("new XMLHttpRequest()")
     xhr.open("GET", requestPath, false)
     xhr.send()
@@ -83,7 +83,7 @@ internal actual fun platformGetEnv(name: String): String? {
             env[name]
         }
     if (v == null || jsTypeOf(v) == "undefined") {
-        return if (name == "CARGO_MANIFEST_DIR") BROWSER_MANIFEST_DIR else null
+        return if (name == "CARGO_MANIFEST_DIR") MANIFEST_DIR_FALLBACK else null
     }
     return v.toString()
 }
