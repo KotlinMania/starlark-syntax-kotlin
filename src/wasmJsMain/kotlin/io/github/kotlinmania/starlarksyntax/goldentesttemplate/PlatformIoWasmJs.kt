@@ -40,25 +40,30 @@ private val platformGetEnvImpl: (String) -> String? =
 private val platformReadUtf8FileImpl: (String) -> String =
     js(
         "(path) => {\n" +
-            "  if (typeof require !== 'undefined') {\n" +
-            "    const fs = require('fs');\n" +
-            "    const p = require('path');\n" +
-            "    if (fs.existsSync(path)) {\n" +
+            "  const isNode = typeof process !== 'undefined' && process && process.versions && process.versions.node;\n" +
+            "  if (isNode && typeof require !== 'undefined') {\n" +
+            "    try {\n" +
+            "      const fs = require('fs');\n" +
+            "      const p = require('path');\n" +
+            "      if (fs.existsSync(path)) {\n" +
+            "        return fs.readFileSync(path, 'utf8').toString();\n" +
+            "      }\n" +
+            "      let dir = (typeof process !== 'undefined' && process && process.cwd) ? process.cwd() : null;\n" +
+            "      while (dir) {\n" +
+            "        const candidate = p.join(dir, path);\n" +
+            "        if (fs.existsSync(candidate)) {\n" +
+            "          return fs.readFileSync(candidate, 'utf8').toString();\n" +
+            "        }\n" +
+            "        const parent = p.dirname(dir);\n" +
+            "        if (parent === dir) {\n" +
+            "          break;\n" +
+            "        }\n" +
+            "        dir = parent;\n" +
+            "      }\n" +
             "      return fs.readFileSync(path, 'utf8').toString();\n" +
-            "    }\n" +
-            "    let dir = (typeof process !== 'undefined' && process && process.cwd) ? process.cwd() : null;\n" +
-            "    while (dir) {\n" +
-            "      const candidate = p.join(dir, path);\n" +
-            "      if (fs.existsSync(candidate)) {\n" +
-            "        return fs.readFileSync(candidate, 'utf8').toString();\n" +
+            "    } catch (_) {\n" +
+            "      // fall through to browser XHR fallback\n" +
             "      }\n" +
-            "      const parent = p.dirname(dir);\n" +
-            "      if (parent === dir) {\n" +
-            "        break;\n" +
-            "      }\n" +
-            "      dir = parent;\n" +
-            "    }\n" +
-            "    return fs.readFileSync(path, 'utf8').toString();\n" +
             "  }\n" +
             "  const normalized = path.startsWith('./') ? path.substring(2) : path;\n" +
             "  const requestPath = normalized.startsWith('/') ? normalized : '/base/' + normalized;\n" +
@@ -82,10 +87,16 @@ internal actual fun platformReadUtf8File(path: String): String = platformReadUtf
 private val platformWriteUtf8FileImpl: (String, String) -> Unit =
     js(
         "(path, content) => {\n" +
-            "  if (typeof require === 'undefined') {\n" +
+            "  const isNode = typeof process !== 'undefined' && process && process.versions && process.versions.node;\n" +
+            "  if (!isNode || typeof require === 'undefined') {\n" +
             "    throw new Error('Golden regeneration is not supported in JS browser runtime');\n" +
             "  }\n" +
-            "  const fs = require('fs');\n" +
+            "  let fs;\n" +
+            "  try {\n" +
+            "    fs = require('fs');\n" +
+            "  } catch (_) {\n" +
+            "    throw new Error('Golden regeneration is not supported in JS browser runtime');\n" +
+            "  }\n" +
             "  fs.writeFileSync(path, content, 'utf8');\n" +
             "}",
     )
