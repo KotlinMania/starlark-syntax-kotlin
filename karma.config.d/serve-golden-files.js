@@ -3,7 +3,17 @@
 // `included` flag is false to a URL under /base/<path>, which is exactly
 // what browserReadUtf8File() requests.
 const path = require('path');
-config.basePath = path.resolve(config.basePath || '.', '../../../../');
+const fs = require('fs');
+
+let repoRoot = config.basePath || '.';
+while (!fs.existsSync(path.join(repoRoot, 'src', 'lexer_tests'))) {
+    const parent = path.dirname(repoRoot);
+    if (parent === repoRoot) {
+        break;
+    }
+    repoRoot = parent;
+}
+config.basePath = repoRoot;
 
 config.files.push({
     pattern: 'src/**/*.golden',
