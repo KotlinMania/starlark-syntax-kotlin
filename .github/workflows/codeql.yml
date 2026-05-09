@@ -46,12 +46,16 @@ jobs:
         # `java-kotlin` runs in `manual` mode because:
         #   - `autobuild` invokes `./gradlew testClasses`, a JVM-style task that
         #     doesn't exist in this Kotlin Multiplatform project (no JVM target).
-        #     Autobuild fails with "Task 'testClasses' not found in root project".
         #   - `build-mode: none` produces no extractable artifacts for KMP, so
         #     the extractor exits with "could not process any code written in
         #     Java/Kotlin".
-        # The manual build below runs `compileKotlinMetadata` so CodeQL traces
-        # the Kotlin compiler invocations and extracts commonMain source.
+        #   - `compileKotlinMetadata` (the previous attempt) only emits `.knm`
+        #     metadata via the metadata compiler — the LD_PRELOAD tracer hooks
+        #     JVM `kotlinc` exec, so metadata builds give it nothing to trace.
+        # The manual build below runs `compileAndroidMain`, which is the one
+        # KMP compilation in this repo that produces real JVM `.class` files
+        # (`com.android.kotlin.multiplatform.library` plugin). That's the
+        # compile path CodeQL's Kotlin extractor can ingest.
         #
         # `javascript-typescript` and `python` are intentionally not scanned:
         #   - javascript-typescript: the only JS file is karma.config.d/serve-golden-files.js;
@@ -83,12 +87,18 @@ jobs:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
 
-    - name: Compile common Kotlin metadata for CodeQL extraction
+    - name: Compile Android Kotlin (JVM bytecode) for CodeQL extraction
       if: matrix.build-mode == 'manual'
       shell: bash
+      # `compileAndroidMain` is the only compilation in this KMP project that
+      # emits real JVM `.class` files (under `build/classes/kotlin/android/main`).
+      # The `com.android.kotlin.multiplatform.library` plugin runs the JVM
+      # `kotlinc` for the Android target, which is exactly what the CodeQL
+      # Kotlin extractor's LD_PRELOAD tracer can hook.
+      #
       # `--rerun-tasks` defeats Gradle's up-to-date check and any restored
       # build cache from setup-gradle, ensuring kotlinc is actually invoked
-      # so the CodeQL tracer has something to hook.
+      # so the tracer has something to hook.
       #
       # `kotlin.compiler.execution.strategy=out-of-process` spawns a fresh
       # kotlinc JVM per compilation (instead of the long-lived `daemon`
@@ -96,7 +106,7 @@ jobs:
       # tracer hooks new process invocations, so out-of-process gives it a
       # process exec to intercept.
       run: |
-        ./gradlew compileKotlinMetadata \
+        ./gradlew compileAndroidMain \
           --rerun-tasks \
           -Pkotlin.compiler.execution.strategy=out-of-process \
           --no-configuration-cache \
