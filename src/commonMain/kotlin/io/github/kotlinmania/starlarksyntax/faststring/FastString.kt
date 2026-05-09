@@ -45,8 +45,8 @@ private fun loadULongLe(bytes: ByteArray, offset: Int): ULong {
  * The string _must_ have at least n bytes in it.
  */
 private fun skipAtMost1Byte(x: String, n: Int): Int {
-    val bytes = x.encodeToByteArray()
     if (n == 0) return 0
+    val bytes = x.encodeToByteArray()
     check(bytes.size >= n)
 
     // Multi-byte UTF8 characters have 0x80 set.
@@ -58,7 +58,7 @@ private fun skipAtMost1Byte(x: String, n: Int): Int {
 
     // Same function, but returning the end offset.
     fun f(n: Int): Int {
-        val leading = min(0, n)
+        val leading = min(8, n)
         val trailing = (n - leading) % 8
         val loops = (n - leading) / 8
 
