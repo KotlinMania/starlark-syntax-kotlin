@@ -23,6 +23,9 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 // expression in a top-level function body or property initializer. Define JS lambdas
 // in top-level initializers, then call them from the expect/actual surface.
 
+private const val BROWSER_MANIFEST_DIR: String = "."
+private const val KARMA_BASE_PATH_PREFIX: String = "/base/"
+
 private val platformGetEnvImpl: (String) -> String? =
     js(
         "(name) => {\n" +
@@ -30,7 +33,7 @@ private val platformGetEnvImpl: (String) -> String? =
             "    return process.env[name];\n" +
             "  }\n" +
             "  if (name === 'CARGO_MANIFEST_DIR') {\n" +
-            "    return '.';\n" +
+            "    return '$BROWSER_MANIFEST_DIR';\n" +
             "  }\n" +
             "  return null;\n" +
             "}",
@@ -60,7 +63,7 @@ private val platformReadUtf8FileImpl: (String) -> String =
             "    return fs.readFileSync(path, 'utf8').toString();\n" +
             "  }\n" +
             "  const normalized = path.startsWith('./') ? path.substring(2) : path;\n" +
-            "  const requestPath = normalized.startsWith('/') ? normalized : '/base/' + normalized;\n" +
+            "  const requestPath = normalized.startsWith('/') ? normalized : '$KARMA_BASE_PATH_PREFIX' + normalized;\n" +
             "  const xhr = new XMLHttpRequest();\n" +
             "  xhr.open('GET', requestPath, false);\n" +
             "  xhr.send();\n" +
