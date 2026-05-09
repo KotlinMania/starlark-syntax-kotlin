@@ -25,7 +25,7 @@ private const val KARMA_BROWSER_BASE_PATH_PREFIX: String = "/base/"
 private fun isNodeRuntime(): Boolean {
     val process: dynamic = nodeProcessOrNull() ?: return false
     val nodeVersion: dynamic = process.versions?.node
-    return !(nodeVersion == null || jsTypeOf(nodeVersion) == "undefined")
+    return nodeVersion != null && jsTypeOf(nodeVersion) != "undefined"
 }
 
 private fun nodeRequireOrNull(name: String): dynamic {
