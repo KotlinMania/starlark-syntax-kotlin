@@ -1,4 +1,4 @@
-// port-lint: ignore JS runtime regression test for browser env fallback behavior.
+// port-lint: ignore JS runtime regression test for browser environment fallback behavior.
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 import kotlin.test.Test
@@ -12,7 +12,7 @@ private fun isBrowserRuntime(): Boolean {
 
 class PlatformIoJsTest {
     @Test
-    fun testGetEnvReturnsFallbackInBrowser() {
+    fun getEnvReturnsFallbackInBrowser() {
         if (!isBrowserRuntime()) {
             return
         }
