@@ -12,12 +12,12 @@ private fun isBrowserRuntime(): Boolean {
 
 class PlatformIoJsTest {
     @Test
-    fun platformGetEnvUsesBrowserFallbackForCargoManifestDir() {
+    fun testGetEnvReturnsFallbackInBrowser() {
         if (!isBrowserRuntime()) {
             return
         }
 
         assertEquals(".", platformGetEnv("CARGO_MANIFEST_DIR"))
-        assertNull(platformGetEnv("STARLARK_SYNTAX_KOTLIN_UNLIKELY_ENV_NAME_FOR_BROWSER_TEST"))
+        assertNull(platformGetEnv("NONEXISTENT_ENV_VAR_FOR_BROWSER_TEST"))
     }
 }
