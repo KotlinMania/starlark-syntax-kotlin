@@ -86,13 +86,19 @@ jobs:
     - name: Compile common Kotlin metadata for CodeQL extraction
       if: matrix.build-mode == 'manual'
       shell: bash
-      # `kotlin.compiler.execution.strategy=in-process` is required for CodeQL's
-      # tracer to see the Kotlin compiler invocations. The default `daemon`
-      # strategy runs kotlinc in a separate JVM that CodeQL's LD_PRELOAD hook
-      # cannot reach, so the Kotlin source never gets extracted.
+      # `--rerun-tasks` defeats Gradle's up-to-date check and any restored
+      # build cache from setup-gradle, ensuring kotlinc is actually invoked
+      # so the CodeQL tracer has something to hook.
+      #
+      # `kotlin.compiler.execution.strategy=out-of-process` spawns a fresh
+      # kotlinc JVM per compilation (instead of the long-lived `daemon`
+      # default or function-call `in-process` mode). CodeQL's LD_PRELOAD
+      # tracer hooks new process invocations, so out-of-process gives it a
+      # process exec to intercept.
       run: |
         ./gradlew compileKotlinMetadata \
-          -Pkotlin.compiler.execution.strategy=in-process \
+          --rerun-tasks \
+          -Pkotlin.compiler.execution.strategy=out-of-process \
           --no-configuration-cache \
           --no-daemon
 
