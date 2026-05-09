@@ -43,57 +43,58 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        # Only `actions` is scanned. The other languages CodeQL auto-detected
-        # don't apply to this project:
-        #   - java-kotlin: this is a Kotlin Multiplatform project with no JVM
-        #     target, so neither `autobuild` nor `build-mode: none` produces
-        #     anything the Java/Kotlin extractor can index. The extractor exits
-        #     with "could not process any code written in Java/Kotlin".
+        # `java-kotlin` runs in `manual` mode because:
+        #   - `autobuild` invokes `./gradlew testClasses`, a JVM-style task that
+        #     doesn't exist in this Kotlin Multiplatform project (no JVM target).
+        #     Autobuild fails with "Task 'testClasses' not found in root project".
+        #   - `build-mode: none` produces no extractable artifacts for KMP, so
+        #     the extractor exits with "could not process any code written in
+        #     Java/Kotlin".
+        # The manual build below runs `compileKotlinMetadata` so CodeQL traces
+        # the Kotlin compiler invocations and extracts commonMain source.
+        #
+        # `javascript-typescript` and `python` are intentionally not scanned:
         #   - javascript-typescript: the only JS file is karma.config.d/serve-golden-files.js;
         #     the extractor reports "could not process any code written in
         #     JavaScript/TypeScript" and fails the run.
         #   - python: no Python source in this repo.
         - language: actions
           build-mode: none
+        - language: java-kotlin
+          build-mode: manual
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    # Add any setup steps before running the `github/codeql-action/init` action.
-    # This includes steps like installing compilers or runtimes (`actions/setup-node`
-    # or others). This is typically only required for manual builds.
-    # - name: Setup runtime (example)
-    #   uses: actions/setup-example@v1
+    - name: Set up JDK 21
+      if: matrix.build-mode == 'manual'
+      uses: actions/setup-java@v5.2.0
+      with:
+        distribution: zulu
+        java-version: '21'
 
-    # Initializes the CodeQL tools for scanning.
+    - name: Setup Gradle
+      if: matrix.build-mode == 'manual'
+      uses: gradle/actions/setup-gradle@v6.1.0
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
         languages: ${{ matrix.language }}
         build-mode: ${{ matrix.build-mode }}
-        # If you wish to specify custom queries, you can do so here or in a config file.
-        # By default, queries listed here will override any specified in a config file.
-        # Prefix the list here with "+" to use these queries and those in the config file.
 
-        # For more details on CodeQL's query packs, refer to: https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
-        # queries: security-extended,security-and-quality
-
-    # If the analyze step fails for one of the languages you are analyzing with
-    # "We were unable to automatically build your code", modify the matrix above
-    # to set the build mode to "manual" for that language. Then modify this step
-    # to build your code.
-    # ℹ️ Command-line programs to run using the OS shell.
-    # 📚 See https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idstepsrun
-    - name: Run manual build steps
+    - name: Compile common Kotlin metadata for CodeQL extraction
       if: matrix.build-mode == 'manual'
       shell: bash
+      # `kotlin.compiler.execution.strategy=in-process` is required for CodeQL's
+      # tracer to see the Kotlin compiler invocations. The default `daemon`
+      # strategy runs kotlinc in a separate JVM that CodeQL's LD_PRELOAD hook
+      # cannot reach, so the Kotlin source never gets extracted.
       run: |
-        echo 'If you are using a "manual" build mode for one or more of the' \
-          'languages you are analyzing, replace this with the commands to build' \
-          'your code, for example:'
-        echo '  make bootstrap'
-        echo '  make release'
-        exit 1
+        ./gradlew compileKotlinMetadata \
+          -Pkotlin.compiler.execution.strategy=in-process \
+          --no-configuration-cache \
+          --no-daemon
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
