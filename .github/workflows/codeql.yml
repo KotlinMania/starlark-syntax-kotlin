@@ -81,10 +81,6 @@ jobs:
       if: matrix.build-mode == 'manual'
       uses: gradle/actions/setup-gradle@v6.1.0
 
-    - name: Stop any existing Gradle daemons before CodeQL tracing
-      if: matrix.build-mode == 'manual'
-      run: ./gradlew --stop || true
-
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
@@ -98,33 +94,24 @@ jobs:
       # emits real JVM `.class` files (under `build/classes/kotlin/android/main`).
       # The `com.android.kotlin.multiplatform.library` plugin runs the JVM
       # `kotlinc` for the Android target, which is exactly what the CodeQL
-      # Kotlin extractor can hook via Build Tools API.
+      # Kotlin extractor's LD_PRELOAD tracer can hook.
       #
       # `--rerun-tasks` defeats Gradle's up-to-date check and `--no-build-cache`
       # disables cache hits restored by setup-gradle, ensuring kotlinc is
-      # actually invoked.
+      # actually invoked so the tracer has something to hook.
       #
-      # We use in-process compilation mode to ensure the Build Tools API is used,
-      # which CodeQL's modern Java/Kotlin extractor can trace. The older LD_PRELOAD
-      # approach required out-of-process compilation, but BTA support is more reliable.
+      # `kotlin.compiler.execution.strategy=out-of-process` spawns a fresh
+      # kotlinc JVM per compilation (instead of the long-lived `daemon`
+      # default or function-call `in-process` mode). CodeQL's LD_PRELOAD
+      # tracer hooks new process invocations, so out-of-process gives it a
+      # process exec to intercept.
       run: |
         ./gradlew compileAndroidMain \
           --rerun-tasks \
           --no-build-cache \
+          -Pkotlin.compiler.execution.strategy=out-of-process \
           --no-configuration-cache \
-          -Pkotlin.compiler.execution.strategy=in-process
-
-    - name: Check CodeQL tracer log
-      if: matrix.build-mode == 'manual' && always()
-      run: |
-        echo "=== CodeQL Tracer Log ==="
-        if [ -f "/home/runner/work/_temp/codeql_databases/log/build-tracer.log" ]; then
-          cat "/home/runner/work/_temp/codeql_databases/log/build-tracer.log" || true
-        else
-          echo "Tracer log not found"
-        fi
-        echo "=== Checking for class files ==="
-        find build/classes/kotlin/android/main -name "*.class" 2>/dev/null | head -20 || echo "No class files found"
+          --no-daemon
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
