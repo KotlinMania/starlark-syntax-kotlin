@@ -98,22 +98,21 @@ jobs:
       # emits real JVM `.class` files (under `build/classes/kotlin/android/main`).
       # The `com.android.kotlin.multiplatform.library` plugin runs the JVM
       # `kotlinc` for the Android target, which is exactly what the CodeQL
-      # Kotlin extractor's LD_PRELOAD tracer can hook.
+      # Kotlin extractor can hook via Build Tools API.
       #
       # `--rerun-tasks` defeats Gradle's up-to-date check and `--no-build-cache`
       # disables cache hits restored by setup-gradle, ensuring kotlinc is
-      # actually invoked so the tracer has something to hook.
+      # actually invoked.
       #
-      # We use daemon mode (default) instead of out-of-process because the KGP 2.x
-      # out-of-process mode disables Build Tools API, which may interfere with
-      # CodeQL's ability to trace compilation. The tracer should be able to see
-      # the daemon startup since no daemon is running yet (--no-daemon in gradle
-      # setup ensured no persistent daemon).
+      # We use in-process compilation mode to ensure the Build Tools API is used,
+      # which CodeQL's modern Java/Kotlin extractor can trace. The older LD_PRELOAD
+      # approach required out-of-process compilation, but BTA support is more reliable.
       run: |
         ./gradlew compileAndroidMain \
           --rerun-tasks \
           --no-build-cache \
-          --no-configuration-cache
+          --no-configuration-cache \
+          -Pkotlin.compiler.execution.strategy=in-process
 
     - name: Check CodeQL tracer log
       if: matrix.build-mode == 'manual' && always()
