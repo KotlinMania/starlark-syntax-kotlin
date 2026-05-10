@@ -81,6 +81,10 @@ jobs:
       if: matrix.build-mode == 'manual'
       uses: gradle/actions/setup-gradle@v6.1.0
 
+    - name: Stop any existing Gradle daemons before CodeQL tracing
+      if: matrix.build-mode == 'manual'
+      run: ./gradlew --stop || true
+
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v4
       with:
@@ -100,18 +104,28 @@ jobs:
       # disables cache hits restored by setup-gradle, ensuring kotlinc is
       # actually invoked so the tracer has something to hook.
       #
-      # `kotlin.compiler.execution.strategy=out-of-process` spawns a fresh
-      # kotlinc JVM per compilation (instead of the long-lived `daemon`
-      # default or function-call `in-process` mode). CodeQL's LD_PRELOAD
-      # tracer hooks new process invocations, so out-of-process gives it a
-      # process exec to intercept.
+      # We use daemon mode (default) instead of out-of-process because the KGP 2.x
+      # out-of-process mode disables Build Tools API, which may interfere with
+      # CodeQL's ability to trace compilation. The tracer should be able to see
+      # the daemon startup since no daemon is running yet (--no-daemon in gradle
+      # setup ensured no persistent daemon).
       run: |
         ./gradlew compileAndroidMain \
           --rerun-tasks \
           --no-build-cache \
-          -Pkotlin.compiler.execution.strategy=out-of-process \
-          --no-configuration-cache \
-          --no-daemon
+          --no-configuration-cache
+
+    - name: Check CodeQL tracer log
+      if: matrix.build-mode == 'manual' && always()
+      run: |
+        echo "=== CodeQL Tracer Log ==="
+        if [ -f "/home/runner/work/_temp/codeql_databases/log/build-tracer.log" ]; then
+          cat "/home/runner/work/_temp/codeql_databases/log/build-tracer.log" || true
+        else
+          echo "Tracer log not found"
+        fi
+        echo "=== Checking for class files ==="
+        find build/classes/kotlin/android/main -name "*.class" 2>/dev/null | head -20 || echo "No class files found"
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v4
