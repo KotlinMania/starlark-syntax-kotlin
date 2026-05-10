@@ -96,9 +96,9 @@ jobs:
       # `kotlinc` for the Android target, which is exactly what the CodeQL
       # Kotlin extractor's LD_PRELOAD tracer can hook.
       #
-      # `--rerun-tasks` defeats Gradle's up-to-date check and any restored
-      # build cache from setup-gradle, ensuring kotlinc is actually invoked
-      # so the tracer has something to hook.
+      # `--rerun-tasks` defeats Gradle's up-to-date check and `--no-build-cache`
+      # disables cache hits restored by setup-gradle, ensuring kotlinc is
+      # actually invoked so the tracer has something to hook.
       #
       # `kotlin.compiler.execution.strategy=out-of-process` spawns a fresh
       # kotlinc JVM per compilation (instead of the long-lived `daemon`
@@ -108,6 +108,7 @@ jobs:
       run: |
         ./gradlew compileAndroidMain \
           --rerun-tasks \
+          --no-build-cache \
           -Pkotlin.compiler.execution.strategy=out-of-process \
           --no-configuration-cache \
           --no-daemon
