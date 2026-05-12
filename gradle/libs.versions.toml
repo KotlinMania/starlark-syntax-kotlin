@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.3.21"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 serialization = "1.11.0"
 datetime = "0.7.1"
 starlark-syntax-kotlin = "0.1.1"
