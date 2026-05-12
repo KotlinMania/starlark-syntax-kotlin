@@ -18,7 +18,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
  * limitations under the License.
  */
 
-//! Code called by the parser to handle complex cases not handled by the grammar.
+/** Code called by the parser to handle complex cases not handled by the grammar. */
 
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Pos

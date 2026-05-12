@@ -69,9 +69,9 @@ class FastStringTest {
 
     @Test
     fun testConvertStrIndicesTriggerDebugAssertions() {
-        // Sweep representative slice/end pairs (including None and out-of-range integers) over
-        // a few sample strings to exercise every internal branch and any debug_assert
-        // boundary check inside convertStrIndices.
+        // Sweep representative slice/end pairs (including null and out-of-range integers) over
+        // a few sample strings to exercise every internal branch and any debug-mode boundary
+        // assertion inside convertStrIndices.
         val noneOrs: Sequence<Int?> = sequenceOf<Int?>(null) + (-30..29).asSequence().map { it as Int? }
 
         for (s in listOf("", "a", "abcde", "Телемак")) {

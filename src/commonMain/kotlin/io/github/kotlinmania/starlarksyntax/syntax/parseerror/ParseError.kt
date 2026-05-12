@@ -18,7 +18,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.parseerror
  * limitations under the License.
  */
 
-//! Parser-agnostic error type for parse failures.
+/** Parser-agnostic error type for parse failures. */
 
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
