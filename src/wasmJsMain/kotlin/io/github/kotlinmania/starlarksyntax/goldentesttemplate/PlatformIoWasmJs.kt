@@ -22,35 +22,58 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 // Kotlin/Wasm does not support `dynamic`, and `js("...")` calls must appear as a single
 // expression in a top-level function body or property initializer. Define JS lambdas
 // in top-level initializers, then call them from the expect/actual surface.
+// Karma serves browser test files under `/base`.
 
 private val platformGetEnvImpl: (String) -> String? =
     js(
-        "(name) => (" +
-            "typeof process !== 'undefined' && process && process.env && process.env[name]" +
-            ") ? process.env[name] : null",
+        "(name) => {\n" +
+            "  if (typeof process !== 'undefined' && process && process.env && process.env[name]) {\n" +
+            "    return process.env[name];\n" +
+            "  }\n" +
+            "  if (name === 'CARGO_MANIFEST_DIR') {\n" +
+            "    return '.';\n" +
+            "  }\n" +
+            "  return null;\n" +
+            "}",
     )
 
 private val platformReadUtf8FileImpl: (String) -> String =
     js(
         "(path) => {\n" +
-            "  const fs = require('fs');\n" +
-            "  const p = require('path');\n" +
-            "  if (fs.existsSync(path)) {\n" +
-            "    return fs.readFileSync(path, 'utf8').toString();\n" +
+            "  const isNode = typeof process !== 'undefined' && process && process.versions && process.versions.node;\n" +
+            "  if (isNode && typeof require !== 'undefined') {\n" +
+            "    try {\n" +
+            "      const fs = require('fs');\n" +
+            "      const p = require('path');\n" +
+            "      if (fs.existsSync(path)) {\n" +
+            "        return fs.readFileSync(path, 'utf8').toString();\n" +
+            "      }\n" +
+            "      let dir = (typeof process !== 'undefined' && process && process.cwd) ? process.cwd() : null;\n" +
+            "      while (dir) {\n" +
+            "        const candidate = p.join(dir, path);\n" +
+            "        if (fs.existsSync(candidate)) {\n" +
+            "          return fs.readFileSync(candidate, 'utf8').toString();\n" +
+            "        }\n" +
+            "        const parent = p.dirname(dir);\n" +
+            "        if (parent === dir) {\n" +
+            "          break;\n" +
+            "        }\n" +
+            "        dir = parent;\n" +
+            "      }\n" +
+            "      return fs.readFileSync(path, 'utf8').toString();\n" +
+            "    } catch (_) {\n" +
+            "      // fall through to browser XHR fallback\n" +
+            "      }\n" +
             "  }\n" +
-            "  let dir = (typeof process !== 'undefined' && process && process.cwd) ? process.cwd() : null;\n" +
-            "  while (dir) {\n" +
-            "    const candidate = p.join(dir, path);\n" +
-            "    if (fs.existsSync(candidate)) {\n" +
-            "      return fs.readFileSync(candidate, 'utf8').toString();\n" +
-            "    }\n" +
-            "    const parent = p.dirname(dir);\n" +
-            "    if (parent === dir) {\n" +
-            "      break;\n" +
-            "    }\n" +
-            "    dir = parent;\n" +
+            "  const normalized = path.startsWith('./') ? path.substring(2) : path;\n" +
+            "  const requestPath = normalized.startsWith('/') ? normalized : '/base/' + normalized;\n" +
+            "  const xhr = new XMLHttpRequest();\n" +
+            "  xhr.open('GET', requestPath, false);\n" +
+            "  xhr.send();\n" +
+            "  if (xhr.status === 200 || xhr.status === 0) {\n" +
+            "    return xhr.responseText;\n" +
             "  }\n" +
-            "  return fs.readFileSync(path, 'utf8').toString();\n" +
+            "  throw new Error('Failed to load golden file `' + path + '` in browser, HTTP status ' + xhr.status);\n" +
             "}",
     )
 
@@ -64,7 +87,16 @@ internal actual fun platformReadUtf8File(path: String): String = platformReadUtf
 private val platformWriteUtf8FileImpl: (String, String) -> Unit =
     js(
         "(path, content) => {\n" +
-            "  const fs = require('fs');\n" +
+            "  const isNode = typeof process !== 'undefined' && process && process.versions && process.versions.node;\n" +
+            "  if (!isNode || typeof require === 'undefined') {\n" +
+            "    throw new Error('Golden regeneration is not supported in JS browser runtime');\n" +
+            "  }\n" +
+            "  let fs;\n" +
+            "  try {\n" +
+            "    fs = require('fs');\n" +
+            "  } catch (_) {\n" +
+            "    throw new Error('Golden regeneration is not supported in JS browser runtime');\n" +
+            "  }\n" +
             "  fs.writeFileSync(path, content, 'utf8');\n" +
             "}",
     )

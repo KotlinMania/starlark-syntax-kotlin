@@ -166,7 +166,7 @@ class AstModule internal constructor(
             if (ast.node !is StmtP.Statements<AstNoPayload>) {
                 res.add(FileSpan(codemap, ast.span))
             }
-            // Descend into nested statements (the upstream uses `visit_stmt`).
+            // Descend into nested statements.
             visitStmtChildren(ast) { walk(it) }
         }
         walk(statement)
@@ -184,15 +184,15 @@ class AstModule internal constructor(
         statement = rewriteStmt(statement, replace)
     }
 
-    /** Check if a given Lint short_name and span is suppressed in this module. */
+    /** Check if a given Lint short name and span is suppressed in this module. */
     fun isSuppressed(issueShortName: String, issueSpan: Span): Boolean {
         return lintSuppressions.isSuppressed(issueShortName, issueSpan)
     }
 }
 
-// --- traversal helpers used by stmt_locations / replace_binary_operators ---
+// --- traversal helpers used by [AstModule.stmtLocations] / [AstModule.replaceBinaryOperators] ---
 
-/** Visit immediate child statements of [stmt]. Mirrors upstream `visit_stmt`. */
+/** Visit immediate child statements of [stmt]. */
 private fun visitStmtChildren(stmt: AstStmt, f: (AstStmt) -> Unit) {
     when (val node = stmt.node) {
         is StmtP.Statements<AstNoPayload> -> for (s in node.stmts) f(s)

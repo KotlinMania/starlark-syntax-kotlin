@@ -469,7 +469,7 @@ private fun fmtStringLiteral(out: StringBuilder, s: String) {
             '\n' -> out.append("\\n")
             '\t' -> out.append("\\t")
             '\r' -> out.append("\\r")
-            ' ' -> out.append("\\0")
+            '\u0000' -> out.append("\\0")
             '"' -> out.append("\\\"")
             '\\' -> out.append("\\\\")
             else -> out.append(c)
