@@ -167,7 +167,9 @@ rootProject.extensions.configure<NodeJsRootExtension>("kotlinNodeJs") {
 
 mavenPublishing {
     publishToMavenCentral()
-    signAllPublications()
+    if (project.findProperty("RELEASE_SIGNING_ENABLED") != "false") {
+        signAllPublications()
+    }
 
     coordinates(group.toString(), "starlark-syntax-kotlin", version.toString())
 
