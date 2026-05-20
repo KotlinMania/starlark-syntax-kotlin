@@ -22,6 +22,7 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.FileSpan
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
+import io.github.kotlinmania.starlarkmap.smallmap.SmallMap
 import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
@@ -37,16 +38,10 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.ForP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.IdentP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArgP
 import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
+import io.github.kotlinmania.starlarksyntax.syntax.astload.AstLoad
 import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressions
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.starlarksyntax.syntax.validate.validateModule
-
-/** Symbol pair from a `load` statement: `(local, their)`. */
-class AstLoad(
-    val span: FileSpan,
-    val moduleId: String,
-    val symbols: Map<String, String>,
-)
 
 data class AstModuleParts(
     val codemap: CodeMap,
@@ -134,9 +129,11 @@ class AstModule internal constructor(
                         AstLoad(
                             span = FileSpan(codemap, load.module.span),
                             moduleId = load.module.node,
-                            symbols = load.args.associate { arg ->
-                                arg.local.node.ident to arg.their.node
-                            },
+                            symbols = SmallMap.fromIterator(
+                                load.args.map { arg ->
+                                    arg.local.node.ident to arg.their.node
+                                },
+                            ),
                         )
                     )
                 }
