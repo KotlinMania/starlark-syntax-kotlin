@@ -208,7 +208,11 @@ kotlin {
         binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
     }
     iosArm64 {
-        binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
+        binaries.framework {
+            baseName = "StarlarkSyntax"
+            isStatic = true
+            xcf.add(this)
+        }
     }
     iosSimulatorArm64 {
         binaries.framework {
