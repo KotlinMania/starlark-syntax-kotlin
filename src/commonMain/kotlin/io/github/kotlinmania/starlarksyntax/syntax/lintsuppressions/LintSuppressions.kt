@@ -71,6 +71,10 @@ internal class LintSuppressionsBuilder {
     private var state = ParseState()
     private val suppressions = LintSuppressions()
 
+    companion object {
+        fun new(): LintSuppressionsBuilder = LintSuppressionsBuilder()
+    }
+
     /** Call for each comment in a block of comments. */
     fun parseComment(
         codemap: CodeMap,

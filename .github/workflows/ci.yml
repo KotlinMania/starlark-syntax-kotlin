@@ -2,7 +2,6 @@ name: CI
 
 on:
   workflow_dispatch:
-
 # Least-privilege default for any inline job in this file. The reusable
 # workflows invoked below declare their own permissions; this top-level
 # block only applies to direct jobs in ci.yml itself.
@@ -19,15 +18,10 @@ permissions:
 # CodeQL workflows live in .github/workflows/codeql.yml and are NOT invoked
 # from here — they have their own trigger and run independently.
 #
-# GitHub-hosted CI is available by manual dispatch to avoid automatic hosted
-# runner spend on every push. Use Actions -> CI -> Run workflow when a hosted
-# matrix run is needed.
-#
-# The current Maven Central releases of starlarkmap-kotlin (0.1.2) and
-# lalrpop-util-kotlin (0.1.0) do not publish linuxArm64, Android Native,
-# tvOS, watchOS, or wasmWasi variants yet. Keep those reusable workflows in
-# the repo as the template target shape, but do not invoke them from the
-# hosted matrix until the dependency releases catch up.
+# Branch trigger is `main` only. The previous shape `[main, master]` would
+# fire CI on any branch literally named `master`, which is a workflow-content
+# trust escalation since GitHub Actions runs the workflow file from the
+# branch being pushed to.
 
 # Each `uses:` job below declares its own `permissions:` block. For a job
 # that calls a reusable workflow, the permissions value sets a CEILING on
@@ -43,8 +37,20 @@ jobs:
     uses: ./.github/workflows/macos.yml
     permissions:
       contents: read
+  tvos:
+    uses: ./.github/workflows/tvos.yml
+    permissions:
+      contents: read
+  watchos:
+    uses: ./.github/workflows/watchos.yml
+    permissions:
+      contents: read
   android:
     uses: ./.github/workflows/android.yml
+    permissions:
+      contents: read
+  android-native:
+    uses: ./.github/workflows/android-native.yml
     permissions:
       contents: read
   linux:
