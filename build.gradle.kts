@@ -236,15 +236,11 @@ kotlin {
         binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
     }
 
-    watchosArm32 {
-        binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
-    }
+
     watchosArm64 {
         binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
     }
-    watchosDeviceArm64 {
-        binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
-    }
+
     watchosSimulatorArm64 {
         binaries.framework { baseName = "StarlarkSyntax"; xcf.add(this) }
     }
@@ -296,8 +292,8 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.8.0")
                 implementation("org.jetbrains.kotlinx:kotlinx-collections-immutable:0.4.0")
                 implementation("com.ionspin.kotlin:bignum:0.3.10")
-                implementation("io.github.kotlinmania:starlarkmap-kotlin:0.1.2")
-                implementation("io.github.kotlinmania:lalrpop-util-kotlin:0.1.0")
+                implementation("io.github.kotlinmania:starlarkmap-kotlin:0.1.3")
+                implementation("io.github.kotlinmania:lalrpop-util-kotlin:0.1.1")
             }
         }
         val commonTest by getting { dependencies { implementation(kotlin("test")) } }
@@ -443,8 +439,8 @@ dependencies {
     codeqlSourceClasspath("org.jetbrains.kotlinx:kotlinx-datetime-jvm:0.8.0")
     codeqlSourceClasspath("org.jetbrains.kotlinx:kotlinx-collections-immutable-jvm:0.4.0")
     codeqlSourceClasspath("com.ionspin.kotlin:bignum-jvm:0.3.10")
-    codeqlSourceClasspath("io.github.kotlinmania:starlarkmap-kotlin-jvm:0.1.2")
-    codeqlSourceClasspath("io.github.kotlinmania:lalrpop-util-kotlin-jvm:0.1.0")
+    codeqlSourceClasspath("io.github.kotlinmania:starlarkmap-kotlin-jvm:0.1.3")
+    codeqlSourceClasspath("io.github.kotlinmania:lalrpop-util-kotlin-jvm:0.1.1")
 }
 
 val codeqlCompileJvm = tasks.register<JavaExec>("codeqlCompileJvm") {
@@ -521,6 +517,37 @@ tasks.register("test") {
     dependsOn(defaultTestTasks.mapNotNull { taskName -> tasks.findByName(taskName) })
 }
 
+// The generated Wasm-WASI Node test runner cannot see the filesystem unless
+// the project directory is preopened. Patch the runner before wasmWasiNodeTest.
+val patchWasmWasiNodePreopens = tasks.register("patchWasmWasiNodePreopens") {
+    description = "Preopen the project directory for the generated Wasm-WASI Node test runner."
+    group = "verification"
+    dependsOn("compileTestDevelopmentExecutableKotlinWasmWasi")
+    outputs.upToDateWhen { false }
+
+    doLast {
+        val runnerFile = layout.buildDirectory.file(
+            "compileSync/wasmWasi/test/testDevelopmentExecutable/kotlin/${rootProject.name}-test.mjs",
+        ).get().asFile
+        if (!runnerFile.exists()) {
+            // No Wasm-WASI test runner was generated (the repo has no
+            // wasmWasi test sources), so there is nothing to preopen.
+            return@doLast
+        }
+        val text = runnerFile.readText()
+        val projectDirPath = project.projectDir.absolutePath.replace("\\", "/")
+        val patched = text.replace(
+            "const wasi = new WASI({ version: 'preview1', args: argv, env, });",
+            "const wasi = new WASI({ version: 'preview1', args: argv, env, preopens: { '/': \"$projectDirPath\" }, });",
+        )
+        runnerFile.writeText(patched)
+    }
+}
+
+tasks.named("wasmWasiNodeTest") {
+    dependsOn(patchWasmWasiNodePreopens)
+}
+
 val cargoManifestDir: String = rootProject.projectDir.absolutePath.replace("\\", "/")
 
 tasks.withType<KotlinNativeTest>().configureEach {
@@ -529,6 +556,10 @@ tasks.withType<KotlinNativeTest>().configureEach {
 }
 
 tasks.withType<KotlinJsTest>().configureEach {
+    environment("CARGO_MANIFEST_DIR", cargoManifestDir)
+}
+
+tasks.withType<Test>().configureEach {
     environment("CARGO_MANIFEST_DIR", cargoManifestDir)
 }
 
@@ -617,12 +648,9 @@ val fullTargetBuildTasks = listOf(
     "tvosArm64TestBinaries",
     "tvosSimulatorArm64Binaries",
     "tvosSimulatorArm64TestBinaries",
-    "watchosArm32Binaries",
-    "watchosArm32TestBinaries",
+
     "watchosArm64Binaries",
     "watchosArm64TestBinaries",
-    "watchosDeviceArm64Binaries",
-    "watchosDeviceArm64TestBinaries",
     "watchosSimulatorArm64Binaries",
     "watchosSimulatorArm64TestBinaries",
     "embedSwiftExportForXcode",
@@ -658,9 +686,8 @@ val fullTargetBuildTasks = listOf(
     "exportCrossCompilationMetadataForMingwX64ApiElements",
     "exportCrossCompilationMetadataForTvosArm64ApiElements",
     "exportCrossCompilationMetadataForTvosSimulatorArm64ApiElements",
-    "exportCrossCompilationMetadataForWatchosArm32ApiElements",
+
     "exportCrossCompilationMetadataForWatchosArm64ApiElements",
-    "exportCrossCompilationMetadataForWatchosDeviceArm64ApiElements",
     "exportCrossCompilationMetadataForWatchosSimulatorArm64ApiElements",
     "exportTargetPublicationCoordinatesForAndroidApiElements",
     "exportTargetPublicationCoordinatesForAndroidNativeArm32ApiElements",
@@ -683,9 +710,8 @@ val fullTargetBuildTasks = listOf(
     "exportTargetPublicationCoordinatesForWasmJsRuntimeElements",
     "exportTargetPublicationCoordinatesForWasmWasiApiElements",
     "exportTargetPublicationCoordinatesForWasmWasiRuntimeElements",
-    "exportTargetPublicationCoordinatesForWatchosArm32ApiElements",
+
     "exportTargetPublicationCoordinatesForWatchosArm64ApiElements",
-    "exportTargetPublicationCoordinatesForWatchosDeviceArm64ApiElements",
     "exportTargetPublicationCoordinatesForWatchosSimulatorArm64ApiElements",
 )
 

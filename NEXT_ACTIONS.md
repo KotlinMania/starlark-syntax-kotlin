@@ -1,6 +1,11 @@
 # Immediate Actions - High-Value Files
 
+## Target Exclusions & Impossibilities
+
+- **watchosDeviceArm64**: Excluded due to upstream dependency `com.ionspin.kotlin:bignum:0.3.10` not publishing a `watchosDeviceArm64` variant.
+
 Based on AST analysis, here are the concrete next steps.
+
 
 ## Summary
 
