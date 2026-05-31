@@ -41,6 +41,11 @@ dependencies {
 - Wasm-JS (browser + Node.js)
 - Android (API 24+)
 
+### Target Impossibilities
+
+- **watchosDeviceArm64**: This target cannot compile because the project's dependency `com.ionspin.kotlin:bignum:0.3.10` does not support and publish artifacts for `watchosDeviceArm64`.
+
+
 ### Porting guidelines
 
 See [AGENTS.md](AGENTS.md) and [CLAUDE.md](CLAUDE.md) for translator discipline, port-lint header convention, and Rust → Kotlin idiom mapping.

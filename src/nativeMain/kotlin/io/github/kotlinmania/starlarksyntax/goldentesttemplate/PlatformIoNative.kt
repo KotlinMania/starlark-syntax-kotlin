@@ -19,6 +19,7 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  * limitations under the License.
  */
 
+import kotlinx.cinterop.convert
 import kotlinx.cinterop.toKString
 import kotlinx.cinterop.addressOf
 import kotlinx.cinterop.usePinned
@@ -56,8 +57,8 @@ internal actual fun platformWriteUtf8File(path: String, content: String) {
     try {
         val bytes = content.encodeToByteArray()
         bytes.usePinned { pinned ->
-            val written = fwrite(pinned.addressOf(0), 1UL, bytes.size.toULong(), f)
-            check(written == bytes.size.toULong()) { "Unable to write file: $path" }
+            val written = fwrite(pinned.addressOf(0), 1.convert(), bytes.size.convert(), f)
+            check(written == bytes.size.convert<platform.posix.size_t>()) { "Unable to write file: $path" }
         }
     } finally {
         fclose(f)
