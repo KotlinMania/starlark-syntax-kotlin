@@ -452,17 +452,20 @@ val codeqlCompileJvm = tasks.register<JavaExec>("codeqlCompileJvm") {
     mainClass.set("org.jetbrains.kotlin.cli.jvm.K2JVMCompiler")
 
     val outDir = layout.buildDirectory.dir("classes/kotlin/codeql-jvm")
-    val sources = fileTree("src/commonMain/kotlin") { include("**/*.kt") }
+    val commonSources = fileTree("src/commonMain/kotlin") { include("**/*.kt") }
+    val androidSources = fileTree("src/androidMain/kotlin") { include("**/*.kt") }
     val sentinelDir = layout.buildDirectory.dir("generated/codeql-empty-source")
-    inputs.files(sources).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(commonSources).withPathSensitivity(PathSensitivity.RELATIVE)
+    inputs.files(androidSources).withPathSensitivity(PathSensitivity.RELATIVE)
     inputs.files(codeqlSourceClasspath).withNormalizer(ClasspathNormalizer::class.java)
     outputs.dir(outDir)
     outputs.dir(sentinelDir)
 
     doFirst {
         outDir.get().asFile.mkdirs()
-        val sourceFiles = sources.files.toMutableList()
-        if (sourceFiles.isEmpty()) {
+        val commonSourceFiles = commonSources.files.toMutableList()
+        val sourceFiles = (commonSources.files + androidSources.files).toMutableList()
+        if (commonSourceFiles.isEmpty()) {
             val sentinelFile = sentinelDir.get().asFile.resolve("io/github/kotlinmania/codeql/_CodeqlEmptySource.kt")
             sentinelFile.parentFile.mkdirs()
             sentinelFile.writeText(
@@ -475,6 +478,7 @@ val codeqlCompileJvm = tasks.register<JavaExec>("codeqlCompileJvm") {
                 private object _CodeqlEmptySource
                 """.trimIndent(),
             )
+            commonSourceFiles += sentinelFile
             sourceFiles += sentinelFile
         }
         args = listOf(
@@ -485,6 +489,8 @@ val codeqlCompileJvm = tasks.register<JavaExec>("codeqlCompileJvm") {
             "-no-reflect",
             "-language-version", "2.3",
             "-api-version", "2.3",
+            "-Xmulti-platform",
+            "-Xcommon-sources=${commonSourceFiles.joinToString(",") { it.absolutePath }}",
             "-Xexpect-actual-classes",
             "-opt-in", "kotlin.time.ExperimentalTime",
             "-opt-in", "kotlin.concurrent.atomics.ExperimentalAtomicApi",
