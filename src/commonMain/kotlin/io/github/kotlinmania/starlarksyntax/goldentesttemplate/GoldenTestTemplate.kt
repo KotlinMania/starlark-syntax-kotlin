@@ -40,8 +40,7 @@ fun goldenTestTemplate(goldenRelPath: String, output: String) {
     check(goldenRelPath.contains(".golden"))
 
     val manifestDir =
-        platformGetEnv(CARGO_MANIFEST_DIR_VAR_NAME)
-            ?: error("`$CARGO_MANIFEST_DIR_VAR_NAME` variable must be set")
+        platformGetEnv(CARGO_MANIFEST_DIR_VAR_NAME) ?: "."
 
     val goldenFilePath = "$manifestDir/$goldenRelPath"
     val outputWithPrefix = makeGolden(output)

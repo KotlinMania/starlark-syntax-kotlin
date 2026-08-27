@@ -25,7 +25,7 @@ import io.github.kotlinmania.starlarksyntax.codemap.Spanned as Spanned
 import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
@@ -45,7 +45,7 @@ internal object Parser {
     // Rule ID for the LALRPOP augmented start production (__Starlark = Starlark)
     private const val ACCEPT_RULE = 297
 
-    internal fun parse(state: ParserState, tokens: Iterator<Triple<Int, Token, Int>>): Spanned<StmtP<AstNoPayload>> {
+    internal fun parse(state: ParserState, tokens: Iterator<Triple<Int, Token, Int>>): AstStmt {
         val states = mutableListOf(0)
         val symbols = mutableListOf<Triple<Int, GrammarSymbol, Int>>()
 
@@ -148,7 +148,7 @@ internal class StarlarkParser {
         return try {
             Result.Ok(Parser.parse(state, tokenIterator))
         } catch (e: EvalException) {
-            Result.Err(LuParseError.User(e))
+            Result.Err(LuParseError.User<Int, Token, EvalException>(e))
         }
     }
 }

@@ -32,7 +32,7 @@ const val CALL_STACK_TRACEBACK_PREFIX: String = "Traceback (most recent call las
 /** Owned call stack. */
 data class CallStack(
     /** The frames. */
-    val frames: MutableList<Frame> = mutableListOf(),
+    val frames: List<Frame> = emptyList(),
 ) {
     /** Is the call stack empty? */
     fun isEmpty(): Boolean {
@@ -40,7 +40,7 @@ data class CallStack(
     }
 
     /** Take the contained frames. */
-    fun intoFrames(): MutableList<Frame> {
+    fun intoFrames(): List<Frame> {
         return frames
     }
 

@@ -18,37 +18,36 @@ package io.github.kotlinmania.starlarksyntax.syntax.uniplate
  * limitations under the License.
  */
 
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignTargetP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmtP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstTypeExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ClauseP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ForClauseP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LambdaP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ParameterP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExprP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignTarget
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstTypeExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Clause
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Def
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.ForClause
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Parameter
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
+import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExpr
 
 /**
  * One AST child being visited — either a statement or an expression. Mirrors upstream
  * `Visit<'a, P>`.
  */
-sealed class Visit<P : AstPayload> {
-    class Stmt<P : AstPayload>(val stmt: AstStmtP<P>) : Visit<P>()
-    class Expr<P : AstPayload>(val expr: AstExprP<P>) : Visit<P>()
+internal sealed class Visit {
+    class Stmt(val stmt: AstStmt) : Visit()
+    class Expr(val expr: AstExpr) : Visit()
 
-    fun visitChildren(f: (Visit<P>) -> Unit) {
+    fun visitChildren(f: (Visit) -> Unit) {
         when (this) {
             is Stmt -> stmt.node.visitChildren(f)
             is Expr -> expr.node.visitExpr { x -> f(Expr(x)) }
         }
     }
 
-    fun <E : Throwable> visitChildrenErr(f: (Visit<P>) -> kotlin.Result<Unit>): kotlin.Result<Unit> {
+    fun <E : Throwable> visitChildrenErr(f: (Visit) -> kotlin.Result<Unit>): kotlin.Result<Unit> {
         return when (this) {
             is Stmt -> stmt.node.visitChildrenErr(f)
             is Expr -> expr.node.visitExprErr { x -> f(Expr(x)) }
@@ -57,15 +56,15 @@ sealed class Visit<P : AstPayload> {
 }
 
 /** Mutable visit variant; in Kotlin this carries the same shape as [Visit]. */
-sealed class VisitMut<P : AstPayload> {
-    class Stmt<P : AstPayload>(val stmt: AstStmtP<P>) : VisitMut<P>()
-    class Expr<P : AstPayload>(val expr: AstExprP<P>) : VisitMut<P>()
+internal sealed class VisitMut {
+    class Stmt(val stmt: AstStmt) : VisitMut()
+    class Expr(val expr: AstExpr) : VisitMut()
 }
 
-// ----- DefP visit helpers — extension functions on the generic AST class. -----
+// ----- Def visit helpers -----
 
-private fun <P : AstPayload> io.github.kotlinmania.starlarksyntax.syntax.ast.DefP<P>.visitChildren(
-    f: (Visit<P>) -> Unit,
+private fun Def.visitChildren(
+    f: (Visit) -> Unit,
 ) {
     for (x in this.params) {
         x.node.visitExpr { e -> f(Visit.Expr(e)) }
@@ -77,8 +76,8 @@ private fun <P : AstPayload> io.github.kotlinmania.starlarksyntax.syntax.ast.Def
     f(Visit.Stmt(this.body))
 }
 
-fun <P : AstPayload> io.github.kotlinmania.starlarksyntax.syntax.ast.DefP<P>.visitChildrenErr(
-    f: (Visit<P>) -> kotlin.Result<Unit>,
+internal fun Def.visitChildrenErr(
+    f: (Visit) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var result: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitChildren { x ->
@@ -89,94 +88,92 @@ fun <P : AstPayload> io.github.kotlinmania.starlarksyntax.syntax.ast.DefP<P>.vis
     return result
 }
 
-// ----- StmtP visit helpers -----
+// ----- Stmt visit helpers -----
 
-fun <P : AstPayload> StmtP<P>.visitChildren(f: (Visit<P>) -> Unit) {
+internal fun Stmt.visitChildren(f: (Visit) -> Unit) {
     when (val self = this) {
-        is StmtP.Statements -> for (x in self.stmts) f(Visit.Stmt(x))
-        is StmtP.If -> {
+        is Stmt.Statements -> for (x in self.stmts) f(Visit.Stmt(x))
+        is Stmt.If -> {
             f(Visit.Expr(self.cond))
             f(Visit.Stmt(self.suite))
         }
-        is StmtP.IfElse -> {
+        is Stmt.IfElse -> {
             f(Visit.Expr(self.cond))
             f(Visit.Stmt(self.suite1))
             f(Visit.Stmt(self.suite2))
         }
-        is StmtP.Def -> self.def.visitChildren(f)
-        is StmtP.For -> {
+        is Stmt.Def -> self.def.visitChildren(f)
+        is Stmt.For -> {
             self.forStmt.variable.node.visitExpr { e -> f(Visit.Expr(e)) }
             f(Visit.Expr(self.forStmt.over))
             f(Visit.Stmt(self.forStmt.body))
         }
-        // Nothing else contains nested statements
-        is StmtP.Break -> {}
-        is StmtP.Continue -> {}
-        is StmtP.Pass -> {}
-        is StmtP.Return -> {
+        is Stmt.Break -> {}
+        is Stmt.Continue -> {}
+        is Stmt.Pass -> {}
+        is Stmt.Return -> {
             self.value?.let { f(Visit.Expr(it)) }
         }
-        is StmtP.Expression -> f(Visit.Expr(self.expr))
-        is StmtP.Assign -> {
+        is Stmt.Expression -> f(Visit.Expr(self.expr))
+        is Stmt.Assign -> {
             self.assign.lhs.node.visitExpr { e -> f(Visit.Expr(e)) }
             self.assign.ty?.let { it.node.visitExpr { e -> f(Visit.Expr(e)) } }
             f(Visit.Expr(self.assign.rhs))
         }
-        is StmtP.AssignModify -> {
+        is Stmt.AssignModify -> {
             self.lhs.node.visitExpr { e -> f(Visit.Expr(e)) }
             f(Visit.Expr(self.rhs))
         }
-        is StmtP.Load -> {}
+        is Stmt.Load -> {}
     }
 }
 
-fun <P : AstPayload> StmtP<P>.visitChildrenMut(f: (VisitMut<P>) -> Unit) {
+internal fun Stmt.visitChildrenMut(f: (VisitMut) -> Unit) {
     when (val self = this) {
-        is StmtP.Statements -> for (x in self.stmts) f(VisitMut.Stmt(x))
-        is StmtP.If -> {
+        is Stmt.Statements -> for (x in self.stmts) f(VisitMut.Stmt(x))
+        is Stmt.If -> {
             f(VisitMut.Expr(self.cond))
             f(VisitMut.Stmt(self.suite))
         }
-        is StmtP.IfElse -> {
+        is Stmt.IfElse -> {
             f(VisitMut.Expr(self.cond))
             f(VisitMut.Stmt(self.suite1))
             f(VisitMut.Stmt(self.suite2))
         }
-        is StmtP.Def -> {
+        is Stmt.Def -> {
             for (x in self.def.params) {
                 x.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
             }
             self.def.returnType?.let { it.node.visitExprMut { e -> f(VisitMut.Expr(e)) } }
             f(VisitMut.Stmt(self.def.body))
         }
-        is StmtP.For -> {
+        is Stmt.For -> {
             self.forStmt.variable.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
             f(VisitMut.Expr(self.forStmt.over))
             f(VisitMut.Stmt(self.forStmt.body))
         }
-        // Nothing else contains nested statements
-        is StmtP.Break -> {}
-        is StmtP.Continue -> {}
-        is StmtP.Pass -> {}
-        is StmtP.Return -> {
+        is Stmt.Break -> {}
+        is Stmt.Continue -> {}
+        is Stmt.Pass -> {}
+        is Stmt.Return -> {
             self.value?.let { f(VisitMut.Expr(it)) }
         }
-        is StmtP.Expression -> f(VisitMut.Expr(self.expr))
-        is StmtP.Assign -> {
+        is Stmt.Expression -> f(VisitMut.Expr(self.expr))
+        is Stmt.Assign -> {
             self.assign.lhs.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
             self.assign.ty?.let { it.node.visitExprMut { e -> f(VisitMut.Expr(e)) } }
             f(VisitMut.Expr(self.assign.rhs))
         }
-        is StmtP.AssignModify -> {
+        is Stmt.AssignModify -> {
             self.lhs.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
             f(VisitMut.Expr(self.rhs))
         }
-        is StmtP.Load -> {}
+        is Stmt.Load -> {}
     }
 }
 
-fun <P : AstPayload> StmtP<P>.visitChildrenErr(
-    f: (Visit<P>) -> kotlin.Result<Unit>,
+internal fun Stmt.visitChildrenErr(
+    f: (Visit) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var result: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitChildren { x ->
@@ -187,8 +184,8 @@ fun <P : AstPayload> StmtP<P>.visitChildrenErr(
     return result
 }
 
-fun <P : AstPayload> StmtP<P>.visitChildrenErrMut(
-    f: (VisitMut<P>) -> kotlin.Result<Unit>,
+internal fun Stmt.visitChildrenErrMut(
+    f: (VisitMut) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var result: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitChildrenMut { x ->
@@ -199,28 +196,26 @@ fun <P : AstPayload> StmtP<P>.visitChildrenErrMut(
     return result
 }
 
-fun <P : AstPayload> StmtP<P>.visitStmt(f: (AstStmtP<P>) -> Unit) {
+internal fun Stmt.visitStmt(f: (AstStmt) -> Unit) {
     visitChildren { x ->
         when (x) {
             is Visit.Stmt -> f(x.stmt)
-            is Visit.Expr -> {} // Nothing to do
+            is Visit.Expr -> {}
         }
     }
 }
 
-fun <P : AstPayload> StmtP<P>.visitStmtMut(f: (AstStmtP<P>) -> Unit) {
+internal fun Stmt.visitStmtMut(f: (AstStmt) -> Unit) {
     visitChildrenMut { x ->
         when (x) {
             is VisitMut.Stmt -> f(x.stmt)
-            is VisitMut.Expr -> {} // Nothing to do
+            is VisitMut.Expr -> {}
         }
     }
 }
 
-fun <P : AstPayload> StmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
-    // Note the &mut impl on f, it's subtle, see
-    // https://stackoverflow.com/questions/54613966/error-reached-the-recursion-limit-while-instantiating-funcclosure
-    fun pick(x: Visit<P>) {
+internal fun Stmt.visitExpr(f: (AstExpr) -> Unit) {
+    fun pick(x: Visit) {
         when (x) {
             is Visit.Stmt -> x.stmt.node.visitChildren(::pick)
             is Visit.Expr -> f(x.expr)
@@ -229,17 +224,12 @@ fun <P : AstPayload> StmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
     visitChildren(::pick)
 }
 
-/**
- * Forwarder for [AstStmtP.node] — upstream call sites that read like `stmt.visitExpr(...)`
- * deref through the [Spanned] wrapper to the inner [StmtP.visitExpr]. Kotlin has no
- * deref-coercion, so we expose the same name on the [Spanned] wrapper.
- */
-fun <P : AstPayload> AstStmtP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+internal fun AstStmt.visitExpr(f: (AstExpr) -> Unit) {
     node.visitExpr(f)
 }
 
-fun <P : AstPayload> StmtP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
-    fun pick(x: VisitMut<P>) {
+internal fun Stmt.visitExprMut(f: (AstExpr) -> Unit) {
+    fun pick(x: VisitMut) {
         when (x) {
             is VisitMut.Stmt -> x.stmt.node.visitChildrenMut(::pick)
             is VisitMut.Expr -> f(x.expr)
@@ -248,8 +238,8 @@ fun <P : AstPayload> StmtP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
     visitChildrenMut(::pick)
 }
 
-fun <P : AstPayload> StmtP<P>.visitExprResult(
-    f: (AstExprP<P>) -> kotlin.Result<Unit>,
+internal fun Stmt.visitExprResult(
+    f: (AstExpr) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var result: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitExpr { x ->
@@ -260,8 +250,8 @@ fun <P : AstPayload> StmtP<P>.visitExprResult(
     return result
 }
 
-fun <P : AstPayload> StmtP<P>.visitStmtResult(
-    f: (AstStmtP<P>) -> kotlin.Result<Unit>,
+internal fun Stmt.visitStmtResult(
+    f: (AstStmt) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var result: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitStmt { x ->
@@ -272,12 +262,11 @@ fun <P : AstPayload> StmtP<P>.visitStmtResult(
     return result
 }
 
-/** Visit all type expressions in this statement and its children. */
-fun <P : AstPayload> StmtP<P>.visitTypeExprErrMut(
-    f: (AstTypeExprP<P>) -> kotlin.Result<Unit>,
+internal fun Stmt.visitTypeExprErrMut(
+    f: (AstTypeExpr) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     when (val self = this) {
-        is StmtP.Def -> {
+        is Stmt.Def -> {
             for (param in self.def.params) {
                 val (_, ty, _) = param.node.splitMut()
                 if (ty != null) {
@@ -291,7 +280,7 @@ fun <P : AstPayload> StmtP<P>.visitTypeExprErrMut(
                 if (r.isFailure) return r
             }
         }
-        is StmtP.Assign -> {
+        is Stmt.Assign -> {
             val ty = self.assign.ty
             if (ty != null) {
                 val r = f(ty)
@@ -308,102 +297,99 @@ fun <P : AstPayload> StmtP<P>.visitTypeExprErrMut(
     }
 }
 
-/** Visit all identifiers in read position recursively. */
-fun <P : AstPayload> StmtP<P>.visitIdent(
-    f: (AstIdentP<P>) -> kotlin.Result<Unit>,
+internal fun Stmt.visitIdent(
+    f: (AstIdent) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     return visitExprResult { expr -> expr.node.visitIdent(f) }
 }
 
-// ----- ParameterP helpers -----
+// ----- Parameter helpers -----
 
-/** Split a parameter into name, type, default value. */
-fun <P : AstPayload> ParameterP<P>.split(): Triple<AstAssignIdentP<P>?, AstTypeExprP<P>?, AstExprP<P>?> {
+internal fun Parameter.split(): Triple<AstAssignIdent?, AstTypeExpr?, AstExpr?> {
     return when (val self = this) {
-        is ParameterP.Normal -> Triple(self.name, self.type, self.default)
-        is ParameterP.Args -> Triple(self.name, self.type, null)
-        is ParameterP.KwArgs -> Triple(self.name, self.type, null)
-        is ParameterP.NoArgs -> Triple(null, null, null)
-        is ParameterP.Slash -> Triple(null, null, null)
+        is Parameter.Normal -> Triple(self.name, self.type, self.default)
+        is Parameter.Args -> Triple(self.name, self.type, null)
+        is Parameter.KwArgs -> Triple(self.name, self.type, null)
+        is Parameter.NoArgs -> Triple(null, null, null)
+        is Parameter.Slash -> Triple(null, null, null)
     }
 }
 
-/** Split a parameter into name, type, default value (mutable variant). Same shape as [split] in Kotlin. */
-fun <P : AstPayload> ParameterP<P>.splitMut(): Triple<AstAssignIdentP<P>?, AstTypeExprP<P>?, AstExprP<P>?> = split()
+internal fun Parameter.splitMut(): Triple<AstAssignIdent?, AstTypeExpr?, AstExpr?> = split()
 
-fun <P : AstPayload> ParameterP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+internal fun Parameter.visitExpr(f: (AstExpr) -> Unit) {
     val (_, typ, def) = split()
     if (typ != null) typ.node.visitExpr(f)
     if (def != null) f(def)
 }
 
-fun <P : AstPayload> ParameterP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
+internal fun Parameter.visitExprMut(f: (AstExpr) -> Unit) {
     val (_, typ, def) = splitMut()
     if (typ != null) typ.node.visitExprMut(f)
     if (def != null) f(def)
 }
 
-// ----- ExprP helpers -----
+// ----- Expr helpers -----
 
-fun <P : AstPayload> ExprP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+internal fun Expr.visitExpr(f: (AstExpr) -> Unit) {
     when (val self = this) {
-        is ExprP.Tuple -> for (x in self.elems) f(x)
-        is ExprP.Dot -> f(self.target)
-        is ExprP.Call -> {
+        is Expr.Tuple -> for (x in self.elems) f(x)
+        is Expr.Dot -> f(self.target)
+        is Expr.Call -> {
             f(self.target)
             for (x in self.args.args) f(x.node.expr())
         }
-        is ExprP.Index -> {
+        is Expr.Index -> {
             f(self.target)
             f(self.index)
         }
-        is ExprP.Index2 -> {
+        is Expr.Index2 -> {
             f(self.target)
             f(self.index0)
             f(self.index1)
         }
-        is ExprP.Slice -> {
+        is Expr.Slice -> {
             f(self.target)
             self.start?.let(f)
             self.stop?.let(f)
             self.step?.let(f)
         }
-        is ExprP.Identifier -> {}
-        is ExprP.Lambda -> {
+        is Expr.Identifier -> {}
+        is Expr.Lambda -> {
             for (x in self.lambda.params) x.node.visitExpr(f)
             f(self.lambda.body)
         }
-        is ExprP.Literal -> {}
-        is ExprP.Not -> f(self.target)
-        is ExprP.Minus -> f(self.target)
-        is ExprP.Plus -> f(self.target)
-        is ExprP.BitNot -> f(self.target)
-        is ExprP.Op -> {
+        is Expr.Literal -> {}
+        is Expr.Not -> f(self.target)
+        is Expr.Minus -> f(self.target)
+        is Expr.Plus -> f(self.target)
+        is Expr.BitNot -> f(self.target)
+        is Expr.Op -> {
             f(self.left)
             f(self.right)
         }
-        is ExprP.If -> {
+        is Expr.If -> {
             f(self.condition)
             f(self.v1)
             f(self.v2)
         }
-        is ExprP.List -> for (x in self.elems) f(x)
-        is ExprP.Dict -> for ((k, v) in self.entries) {
+        is Expr.List -> for (x in self.elems) f(x)
+        is Expr.Dict -> for ((k, v) in self.entries) {
             f(k)
             f(v)
         }
-        is ExprP.ListComprehension -> {
+        is Expr.ListComprehension -> {
             self.firstFor.visitExpr(f)
             for (x in self.clauses) x.visitExpr(f)
             f(self.expr)
         }
-        is ExprP.DictComprehension -> {
+        is Expr.DictComprehension -> {
             self.firstFor.visitExpr(f)
             for (x in self.clauses) x.visitExpr(f)
             f(self.key)
             f(self.value)
         }
-        is ExprP.FString -> {
+        is Expr.FString -> {
             for (expr in self.fstring.node.expressions) {
                 f(expr)
             }
@@ -411,9 +397,8 @@ fun <P : AstPayload> ExprP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
     }
 }
 
-/** Visit children expressions. */
-fun <P : AstPayload> ExprP<P>.visitExprErr(
-    f: (AstExprP<P>) -> kotlin.Result<Unit>,
+internal fun Expr.visitExprErr(
+    f: (AstExpr) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var ok: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitExpr { x ->
@@ -424,8 +409,8 @@ fun <P : AstPayload> ExprP<P>.visitExprErr(
     return ok
 }
 
-fun <P : AstPayload> ExprP<P>.visitExprErrMut(
-    f: (AstExprP<P>) -> kotlin.Result<Unit>,
+internal fun Expr.visitExprErrMut(
+    f: (AstExpr) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
     var ok: kotlin.Result<Unit> = kotlin.Result.success(Unit)
     visitExprMut { x ->
@@ -436,15 +421,14 @@ fun <P : AstPayload> ExprP<P>.visitExprErrMut(
     return ok
 }
 
-fun <P : AstPayload> ExprP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
-    // Same shape as visitExpr in Kotlin since `&mut` and `&` don't differ at the language level.
+internal fun Expr.visitExprMut(f: (AstExpr) -> Unit) {
     visitExpr(f)
 }
 
-fun <P : AstPayload> ExprP<P>.visitTypeExprErrMut(
-    f: (AstTypeExprP<P>) -> kotlin.Result<Unit>,
+internal fun Expr.visitTypeExprErrMut(
+    f: (AstTypeExpr) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
-    if (this is ExprP.Lambda) {
+    if (this is Expr.Lambda) {
         for (param in this.lambda.params) {
             val (_, ty, _) = param.node.splitMut()
             if (ty != null) {
@@ -456,83 +440,78 @@ fun <P : AstPayload> ExprP<P>.visitTypeExprErrMut(
     return visitExprErrMut { expr -> expr.node.visitTypeExprErrMut(f) }
 }
 
-/** Visit all identifiers in read position recursively. */
-fun <P : AstPayload> ExprP<P>.visitIdent(
-    f: (AstIdentP<P>) -> kotlin.Result<Unit>,
+internal fun Expr.visitIdent(
+    f: (AstIdent) -> kotlin.Result<Unit>,
 ): kotlin.Result<Unit> {
-    if (this is ExprP.Identifier) {
+    if (this is Expr.Identifier) {
         val r = f(this.ident)
         if (r.isFailure) return r
     }
     return visitExprErr { expr -> expr.node.visitIdent(f) }
 }
 
-// ----- TypeExprP helpers -----
+// ----- TypeExpr helpers -----
 
-fun <P : AstPayload> TypeExprP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+internal fun TypeExpr.visitExpr(f: (AstExpr) -> Unit) {
     f(this.expr)
 }
 
-fun <P : AstPayload> TypeExprP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
+internal fun TypeExpr.visitExprMut(f: (AstExpr) -> Unit) {
     f(this.expr)
 }
 
-// ----- AssignTargetP helpers -----
+// ----- AssignTarget helpers -----
 
-fun <P : AstPayload> AssignTargetP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
-    fun recurse(x: AssignTargetP<P>) {
+internal fun AssignTarget.visitExpr(f: (AstExpr) -> Unit) {
+    fun recurse(x: AssignTarget) {
         when (x) {
-            is AssignTargetP.Tuple -> for (y in x.elems) recurse(y.node)
-            is AssignTargetP.Dot -> f(x.target)
-            is AssignTargetP.Index -> {
+            is AssignTarget.Tuple -> for (y in x.elems) recurse(y.node)
+            is AssignTarget.Dot -> f(x.target)
+            is AssignTarget.Index -> {
                 f(x.target)
                 f(x.index)
             }
-            is AssignTargetP.Identifier -> {}
+            is AssignTarget.Identifier -> {}
         }
     }
     recurse(this)
 }
 
-fun <P : AstPayload> AssignTargetP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) = visitExpr(f)
+internal fun AssignTarget.visitExprMut(f: (AstExpr) -> Unit) = visitExpr(f)
 
-/**
- * Assuming this expression was on the left-hand-side of an assignment,
- * visit all the names that are bound by this assignment.
- * Note that assignments like `x[i] = n` don't bind any names.
- */
-fun <P : AstPayload> AssignTargetP<P>.visitLvalue(f: (AstAssignIdentP<P>) -> Unit) {
-    fun recurse(x: AssignTargetP<P>) {
+internal fun AssignTarget.visitLvalue(f: (AstAssignIdent) -> Unit) {
+    fun recurse(x: AssignTarget) {
         when (x) {
-            is AssignTargetP.Identifier -> f(x.ident)
-            is AssignTargetP.Tuple -> for (y in x.elems) recurse(y.node)
+            is AssignTarget.Identifier -> f(x.ident)
+            is AssignTarget.Tuple -> for (y in x.elems) recurse(y.node)
             else -> {}
         }
     }
     recurse(this)
 }
 
-fun <P : AstPayload> AssignTargetP<P>.visitLvalueMut(f: (AstAssignIdentP<P>) -> Unit) = visitLvalue(f)
+internal fun AssignTarget.visitLvalueMut(f: (AstAssignIdent) -> Unit) = visitLvalue(f)
 
-// ----- ForClauseP helpers -----
+// ----- ForClause helpers -----
 
-fun <P : AstPayload> ForClauseP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+internal fun ForClause.visitExpr(f: (AstExpr) -> Unit) {
     this.variable.node.visitExpr(f)
     f(this.over)
 }
 
-fun <P : AstPayload> ForClauseP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) {
+internal fun ForClause.visitExprMut(f: (AstExpr) -> Unit) {
     this.variable.node.visitExprMut(f)
     f(this.over)
 }
 
-// ----- ClauseP helpers -----
+// ----- Clause helpers -----
 
-fun <P : AstPayload> ClauseP<P>.visitExpr(f: (AstExprP<P>) -> Unit) {
+internal fun Clause.visitExpr(f: (AstExpr) -> Unit) {
     when (val self = this) {
-        is ClauseP.For -> self.clause.visitExpr(f)
-        is ClauseP.If -> f(self.cond)
+        is Clause.For -> self.clause.visitExpr(f)
+        is Clause.If -> f(self.cond)
     }
 }
 
-fun <P : AstPayload> ClauseP<P>.visitExprMut(f: (AstExprP<P>) -> Unit) = visitExpr(f)
+internal fun Clause.visitExprMut(f: (AstExpr) -> Unit) = visitExpr(f)
+

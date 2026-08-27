@@ -21,14 +21,13 @@ package io.github.kotlinmania.starlarksyntax.syntax.typeexpr
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
 import io.github.kotlinmania.starlarksyntax.diagnostic.WithDiagnostic
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdentP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdent
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstLiteral
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
 import io.github.kotlinmania.starlarksyntax.syntax.ast.BinOp
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
 
-sealed class TypeExprUnpackError(message: String) : Exception(message) {
+internal sealed class TypeExprUnpackError(message: String) : Exception(message) {
     /** `{0} expression is not allowed in type expression` */
     class InvalidType(val kind: String) :
         TypeExprUnpackError("$kind expression is not allowed in type expression")
@@ -52,72 +51,72 @@ sealed class TypeExprUnpackError(message: String) : Exception(message) {
  * Types that are `""` or start with `"_"` are wildcard - they match everything
  * (also deprecated).
  */
-fun typeStrLiteralIsWildcard(s: String): Boolean {
+internal fun typeStrLiteralIsWildcard(s: String): Boolean {
     return s == "" || s.startsWith('_')
 }
 
 /** Path component of type. */
-data class TypePathP<P : AstPayload>(
-    val first: AstIdentP<P>,
+internal data class TypePath(
+    val first: AstIdent,
     val rem: List<Spanned<String>>,
 )
 
-/** This type should be used instead of [TypeExprP], but a lot of code needs to be updated. */
-sealed class TypeExprUnpackP<P : AstPayload> {
-    class Ellipsis<P : AstPayload> : TypeExprUnpackP<P>()
-    data class Path<P : AstPayload>(val path: TypePathP<P>) : TypeExprUnpackP<P>()
+/** This type should be used instead of [TypeExpr], but a lot of code needs to be updated. */
+internal sealed class TypeExprUnpack {
+    class Ellipsis : TypeExprUnpack()
+    data class Path(val path: TypePath) : TypeExprUnpack()
 
     /** `list[str]`. */
-    data class Index<P : AstPayload>(
-        val ident: AstIdentP<P>,
-        val index: Spanned<TypeExprUnpackP<P>>,
-    ) : TypeExprUnpackP<P>()
+    data class Index(
+        val ident: AstIdent,
+        val index: Spanned<TypeExprUnpack>,
+    ) : TypeExprUnpack()
 
     /** `dict[str, int]` or `typing.Callable[[int], str]`. */
-    data class Index2<P : AstPayload>(
-        val path: Spanned<TypePathP<P>>,
-        val i0: Spanned<TypeExprUnpackP<P>>,
-        val i1: Spanned<TypeExprUnpackP<P>>,
-    ) : TypeExprUnpackP<P>()
+    data class Index2(
+        val path: Spanned<TypePath>,
+        val i0: Spanned<TypeExprUnpack>,
+        val i1: Spanned<TypeExprUnpack>,
+    ) : TypeExprUnpack()
 
     /** List argument in `typing.Callable[[int], str]`. */
-    data class List<P : AstPayload>(
-        val items: kotlin.collections.List<Spanned<TypeExprUnpackP<P>>>,
-    ) : TypeExprUnpackP<P>()
+    data class List(
+        val items: kotlin.collections.List<Spanned<TypeExprUnpack>>,
+    ) : TypeExprUnpack()
 
-    data class Union<P : AstPayload>(
-        val xs: kotlin.collections.List<Spanned<TypeExprUnpackP<P>>>,
-    ) : TypeExprUnpackP<P>()
+    data class Union(
+        val xs: kotlin.collections.List<Spanned<TypeExprUnpack>>,
+    ) : TypeExprUnpack()
 
-    data class Tuple<P : AstPayload>(
-        val xs: kotlin.collections.List<Spanned<TypeExprUnpackP<P>>>,
-    ) : TypeExprUnpackP<P>()
+    data class Tuple(
+        val xs: kotlin.collections.List<Spanned<TypeExprUnpack>>,
+    ) : TypeExprUnpack()
 
     companion object {
-        private fun <P : AstPayload> unpackPath(
-            expr: AstExprP<P>,
+        private fun unpackPath(
+            expr: AstExpr,
             codemap: CodeMap,
-        ): Spanned<TypePathP<P>> {
+        ): Spanned<TypePath> {
             val span = expr.span
             return when (val node = expr.node) {
-                is ExprP.Identifier<P> -> Spanned(
-                    node = TypePathP(
+                is Expr.Identifier -> Spanned(
+                    node = TypePath(
                         first = node.ident,
                         rem = emptyList(),
                     ),
                     span = span,
                 )
-                is ExprP.Dot<P> -> {
-                    var current: AstExprP<P> = node.target
+                is Expr.Dot -> {
+                    var current: AstExpr = node.target
                     val rem: MutableList<Spanned<String>> =
                         mutableListOf(Spanned(node = node.attr.node, span = node.attr.span))
                     while (true) {
                         when (val cur = current.node) {
-                            is ExprP.Dot<P> -> {
+                            is Expr.Dot -> {
                                 current = cur.target
                                 rem.add(Spanned(node = cur.attr.node, span = cur.attr.span))
                             }
-                            is ExprP.Identifier<P> -> {
+                            is Expr.Identifier -> {
                                 rem.reverse()
                                 val last = rem.lastOrNull()
                                 if (last != null && last.node == "type") {
@@ -137,7 +136,7 @@ sealed class TypeExprUnpackP<P : AstPayload> {
                                     )
                                 }
                                 return Spanned(
-                                    node = TypePathP(first = cur.ident, rem = rem),
+                                    node = TypePath(first = cur.ident, rem = rem),
                                     span = span,
                                 )
                             }
@@ -162,13 +161,13 @@ sealed class TypeExprUnpackP<P : AstPayload> {
             }
         }
 
-        private fun <P : AstPayload> unpackArgument(
-            expr: AstExprP<P>,
+        private fun unpackArgument(
+            expr: AstExpr,
             codemap: CodeMap,
-        ): Spanned<TypeExprUnpackP<P>> {
+        ): Spanned<TypeExprUnpack> {
             val span = expr.span
             return when (val node = expr.node) {
-                is ExprP.List<P> -> {
+                is Expr.List -> {
                     val items = node.elems.map { x -> unpackArgument(x, codemap) }
                     Spanned(
                         node = List(items),
@@ -179,10 +178,10 @@ sealed class TypeExprUnpackP<P : AstPayload> {
             }
         }
 
-        fun <P : AstPayload> unpack(
-            expr: AstExprP<P>,
+        fun unpack(
+            expr: AstExpr,
             codemap: CodeMap,
-        ): Spanned<TypeExprUnpackP<P>> {
+        ): Spanned<TypeExprUnpack> {
             val span = expr.span
             fun err(t: String): Nothing {
                 throw WithDiagnosticException(
@@ -195,20 +194,20 @@ sealed class TypeExprUnpackP<P : AstPayload> {
             }
 
             return when (val node = expr.node) {
-                is ExprP.Tuple<P> -> {
+                is Expr.Tuple -> {
                     val xs = node.elems.map { x -> unpack(x, codemap) }
                     Spanned(node = Tuple(xs), span = span)
                 }
-                is ExprP.Dot<P> -> {
+                is Expr.Dot -> {
                     val path = unpackPath(expr, codemap)
                     Spanned(node = Path(path.node), span = span)
                 }
-                is ExprP.Call<P> -> err("call")
-                is ExprP.Index<P> -> {
+                is Expr.Call -> err("call")
+                is Expr.Index -> {
                     val a = node.target
                     val i = node.index
                     when (val aNode = a.node) {
-                        is ExprP.Identifier<P> -> {
+                        is Expr.Identifier -> {
                             val unpacked = unpack(i, codemap)
                             Spanned(
                                 node = Index(aNode.ident, unpacked),
@@ -218,7 +217,7 @@ sealed class TypeExprUnpackP<P : AstPayload> {
                         else -> err("array indirection where array is not an identifier")
                     }
                 }
-                is ExprP.Index2<P> -> {
+                is Expr.Index2 -> {
                     val a = node.target
                     val i0 = node.index0
                     val i1 = node.index1
@@ -230,25 +229,25 @@ sealed class TypeExprUnpackP<P : AstPayload> {
                         span = span,
                     )
                 }
-                is ExprP.Slice<P> -> err("slice")
-                is ExprP.Identifier<P> -> {
+                is Expr.Slice -> err("slice")
+                is Expr.Identifier -> {
                     val path = unpackPath(expr, codemap)
                     Spanned(node = Path(path.node), span = span)
                 }
-                is ExprP.Lambda<P> -> err("lambda")
-                is ExprP.Literal<P> -> when (node.literal) {
+                is Expr.Lambda -> err("lambda")
+                is Expr.Literal -> when (node.literal) {
                     // TODO(nga): eventually this should be allowed for self-referential types:
                     //   https://www.internalfb.com/tasks/?t=184482361
-                    is AstLiteral.String -> err("string literal")
-                    is AstLiteral.Int -> err("int")
-                    is AstLiteral.Float -> err("float")
-                    is AstLiteral.Ellipsis -> Spanned(node = Ellipsis(), span = span)
+                    is AstLiteral.StringLiteral -> err("string literal")
+                    is AstLiteral.IntLiteral -> err("int")
+                    is AstLiteral.FloatLiteral -> err("float")
+                    is AstLiteral.EllipsisLiteral -> Spanned(node = Ellipsis(), span = span)
                 }
-                is ExprP.Not<P> -> err("not")
-                is ExprP.Minus<P> -> err("minus")
-                is ExprP.Plus<P> -> err("plus")
-                is ExprP.BitNot<P> -> err("bit not")
-                is ExprP.Op<P> -> {
+                is Expr.Not -> err("not")
+                is Expr.Minus -> err("minus")
+                is Expr.Plus -> err("plus")
+                is Expr.BitNot -> err("bit not")
+                is Expr.Op -> {
                     if (node.op == BinOp.BitOr) {
                         val a = unpack(node.left, codemap)
                         val b = unpack(node.right, codemap)
@@ -257,8 +256,8 @@ sealed class TypeExprUnpackP<P : AstPayload> {
                         err("bin op except `|`")
                     }
                 }
-                is ExprP.If<P> -> err("if")
-                is ExprP.List<P> -> {
+                is Expr.If -> err("if")
+                is Expr.List -> {
                     val xs = node.elems
                     if (xs.isEmpty()) {
                         throw WithDiagnosticException(
@@ -275,10 +274,10 @@ sealed class TypeExprUnpackP<P : AstPayload> {
                         Spanned(node = Union(unpacked), span = span)
                     }
                 }
-                is ExprP.Dict<P> -> err("dict")
-                is ExprP.ListComprehension<P> -> err("list comprehension")
-                is ExprP.DictComprehension<P> -> err("dict comprehension")
-                is ExprP.FString<P> -> err("f-string")
+                is Expr.Dict -> err("dict")
+                is Expr.ListComprehension -> err("list comprehension")
+                is Expr.DictComprehension -> err("dict comprehension")
+                is Expr.FString -> err("f-string")
             }
         }
     }
@@ -288,6 +287,8 @@ sealed class TypeExprUnpackP<P : AstPayload> {
  * Exception wrapper for [WithDiagnostic] results, allowing diagnostic-bearing
  * failures to flow through Kotlin's exception machinery.
  */
-class WithDiagnosticException(
+internal class WithDiagnosticException(
     val diagnostic: WithDiagnostic<TypeExprUnpackError>,
 ) : Exception(diagnostic.inner().message)
+
+

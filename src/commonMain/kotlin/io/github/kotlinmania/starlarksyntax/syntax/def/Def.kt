@@ -22,41 +22,40 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstParameterP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstTypeExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ParameterP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstParameter
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstTypeExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Parameter
 
-enum class DefRegularParamMode {
+internal enum class DefRegularParamMode {
     PosOnly,
     PosOrName,
     NameOnly,
 }
 
-sealed class DefParamKind<P : AstPayload> {
+internal sealed class DefParamKind {
     /** Regular parameter, with an optional default value. */
-    class Regular<P : AstPayload>(
+    class Regular(
         val mode: DefRegularParamMode,
         /** Default value. */
-        val defaultValue: AstExprP<P>?,
-    ) : DefParamKind<P>()
-    class Args<P : AstPayload> : DefParamKind<P>()
-    class Kwargs<P : AstPayload> : DefParamKind<P>()
+        val defaultValue: AstExpr?,
+    ) : DefParamKind()
+    class Args : DefParamKind()
+    class Kwargs : DefParamKind()
 }
 
 /** One function parameter. */
-class DefParam<P : AstPayload>(
+internal class DefParam(
     /** Name of the parameter. */
-    val ident: AstAssignIdentP<P>,
+    val ident: AstAssignIdent,
     /**
      * Whether this is a regular parameter (with optional default) or a varargs construct (`*args`,
      * `**kwargs`).
      */
-    val kind: DefParamKind<P>,
+    val kind: DefParamKind,
     /** Type of the parameter. This is null when a type is not specified. */
-    val ty: AstTypeExprP<P>?,
+    val ty: AstTypeExpr?,
 )
 
 /**
@@ -64,7 +63,7 @@ class DefParam<P : AstPayload>(
  * with markers `/` and `*` omitted.
  * This struct contains sizes and indices to split the list into parts.
  */
-data class DefParamIndices(
+internal data class DefParamIndices(
     /**
      * Number of parameters which can be filled positionally.
      * That is, number of parameters before first `*`, `*args` or `**kwargs`.
@@ -103,22 +102,22 @@ data class DefParamIndices(
  * * Validated
  * * `*` parameter replaced with [DefParamIndices.numPositional] field
  */
-class DefParams<P : AstPayload>(
-    val params: List<Spanned<DefParam<P>>>,
+internal class DefParams(
+    val params: List<Spanned<DefParam>>,
     val indices: DefParamIndices,
 ) {
     companion object {
-        fun <P : AstPayload> unpack(
-            astParams: List<AstParameterP<P>>,
+        fun unpack(
+            astParams: List<AstParameter>,
             codemap: CodeMap,
-        ): Result<DefParams<P>> {
+        ): Result<DefParams> {
             val argset = HashSet<String>()
             // You can't have more than one *args/*, **kwargs
             // **kwargs must be last
             // You can't have a required `x` after an optional `y=1`
             var seenOptional = false
 
-            val params = ArrayList<Spanned<DefParam<P>>>(astParams.size)
+            val params = ArrayList<Spanned<DefParam>>(astParams.size)
             var numPositional = 0
             var args: UInt? = null
             var kwargs: UInt? = null
@@ -126,7 +125,7 @@ class DefParams<P : AstPayload>(
             // Index of `*` parameter, if any.
             var indexOfStar: Int? = null
 
-            val firstSlash = astParams.indexOfFirst { it.node is ParameterP.Slash<*> }
+            val firstSlash = astParams.indexOfFirst { it.node is Parameter.Slash }
             val numPositionalOnly: UInt = when {
                 firstSlash < 0 -> 0u
                 firstSlash == 0 -> {
@@ -153,7 +152,7 @@ class DefParams<P : AstPayload>(
                 }
 
                 when (val node = param.node) {
-                    is ParameterP.Normal<P> -> {
+                    is Parameter.Normal -> {
                         if (state >= State.SeenStarStar) {
                             return Result.failure(
                                 EvalException.parserError(
@@ -196,7 +195,7 @@ class DefParams<P : AstPayload>(
                             )
                         )
                     }
-                    is ParameterP.NoArgs<P> -> {
+                    is Parameter.NoArgs -> {
                         if (state >= State.SeenStar) {
                             return Result.failure(
                                 EvalException.parserError(
@@ -218,7 +217,7 @@ class DefParams<P : AstPayload>(
                         }
                         indexOfStar = i
                     }
-                    is ParameterP.Slash<P> -> {
+                    is Parameter.Slash -> {
                         if (state >= State.SeenSlash) {
                             return Result.failure(
                                 EvalException.parserError(
@@ -230,7 +229,7 @@ class DefParams<P : AstPayload>(
                         }
                         state = State.SeenSlash
                     }
-                    is ParameterP.Args<P> -> {
+                    is Parameter.Args -> {
                         if (state >= State.SeenStar) {
                             return Result.failure(
                                 EvalException.parserError(
@@ -262,7 +261,7 @@ class DefParams<P : AstPayload>(
                             )
                         )
                     }
-                    is ParameterP.KwArgs<P> -> {
+                    is Parameter.KwArgs -> {
                         if (state >= State.SeenStarStar) {
                             return Result.failure(
                                 EvalException.parserError(
@@ -307,11 +306,11 @@ class DefParams<P : AstPayload>(
                         )
                     )
                 when (next.node) {
-                    is ParameterP.Normal<P> -> {}
-                    is ParameterP.KwArgs<P>,
-                    is ParameterP.Args<P>,
-                    is ParameterP.NoArgs<P>,
-                    is ParameterP.Slash<P> -> {
+                    is Parameter.Normal -> {}
+                    is Parameter.KwArgs,
+                    is Parameter.Args,
+                    is Parameter.NoArgs,
+                    is Parameter.Slash -> {
                         // We get here only for `**kwargs`, the rest is handled above.
                         return Result.failure(
                             EvalException.parserError(
@@ -337,9 +336,9 @@ class DefParams<P : AstPayload>(
             )
         }
 
-        private fun <P : AstPayload, T> checkParamName(
+        private fun <T> checkParamName(
             argset: HashSet<String>,
-            n: AstAssignIdentP<P>,
+            n: AstAssignIdent,
             arg: Spanned<T>,
             codemap: CodeMap,
         ): Result<Unit> {
@@ -366,3 +365,4 @@ private enum class State {
     /** After `**kwargs`. */
     SeenStarStar,
 }
+

@@ -107,10 +107,9 @@ data class Span(
 }
 
 /** Associate a Span with a value of arbitrary type (e.g. an AST node). */
-data class Spanned<out T>(
-    /** Data in the node. */
-    val node: T,
-    val span: Span,
+open class Spanned<out T>(
+    open val node: T,
+    open val span: Span,
 ) {
     /** Apply the function to the node, keep the span. */
     fun <U> map(f: (@UnsafeVariance T) -> U): Spanned<U> = Spanned(f(node), span)
@@ -120,6 +119,23 @@ data class Spanned<out T>(
     fun deref(): T = node
 
     fun derefMut(): T = node
+
+    operator fun component1(): T = node
+    operator fun component2(): Span = span
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Spanned<*>) return false
+        return node == other.node && span == other.span
+    }
+
+    override fun hashCode(): Int {
+        var result = node?.hashCode() ?: 0
+        result = 31 * result + span.hashCode()
+        return result
+    }
+
+    override fun toString(): String = "Spanned(node=$node, span=$span)"
 }
 
 /**
