@@ -17,6 +17,9 @@ import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootEnvSpec
 import org.jetbrains.kotlin.gradle.targets.js.yarn.YarnRootExtension
 import org.jetbrains.kotlin.gradle.targets.wasm.nodejs.WasmNodeJsEnvSpec
 import org.jetbrains.kotlin.gradle.targets.wasm.yarn.WasmYarnRootEnvSpec
+import org.gradle.api.tasks.testing.Test
+import org.jetbrains.kotlin.gradle.targets.js.testing.KotlinJsTest
+import org.jetbrains.kotlin.gradle.targets.native.tasks.KotlinNativeTest
 import java.io.ByteArrayInputStream
 import java.net.URI
 import java.nio.file.Files
@@ -425,10 +428,8 @@ kotlin {
     linuxArm64 { configureBenchmarkCompilation() }
     mingwX64 { configureBenchmarkCompilation() }
 
-    // Android NDK — always built (full target surface, no opt-in gate).
-    androidNativeArm32 { configureBenchmarkCompilation() }
+    // Android NDK — 64-bit only (32-bit retired §5.5.3, 2026-06-25).
     androidNativeArm64 { configureBenchmarkCompilation() }
-    androidNativeX86 { configureBenchmarkCompilation() }
     androidNativeX64 { configureBenchmarkCompilation() }
 
     // Web
@@ -711,8 +712,7 @@ mavenPublishing {
 tasks.register("test") {
     group = "verification"
     description = "Runs the commonTest-backed KMP suite, Android host tests, and Swift Export smoke test."
-    dependsOn("allTests")
-    dependsOn("testAndroidHostTest")
+    dependsOn("hostTests")
     dependsOn("swiftExportSmokeTest")
 }
 
@@ -720,6 +720,58 @@ tasks.register("setupAndroidSdk") {
     group = "setup"
     description = "Downloads and configures the project-local Android SDK. (Alias for ensureAndroidSdk)"
     dependsOn("ensureAndroidSdk")
+}
+
+val cargoManifestDir: String = project.projectDir.absolutePath.replace("\\", "/")
+
+tasks.withType<KotlinNativeTest>().configureEach {
+    environment("CARGO_MANIFEST_DIR", cargoManifestDir)
+}
+
+tasks.withType<KotlinJsTest>().configureEach {
+    environment("CARGO_MANIFEST_DIR", cargoManifestDir)
+}
+
+tasks.withType<Test>().configureEach {
+    environment("CARGO_MANIFEST_DIR", cargoManifestDir)
+}
+
+// The generated Wasm-WASI Node test runner cannot see the filesystem unless
+// the project directory is preopened. Patch the runner before wasmWasiNodeTest.
+val patchWasmWasiNodePreopens = tasks.register("patchWasmWasiNodePreopens") {
+    description = "Preopen the project directory for the generated Wasm-WASI Node test runner."
+    group = "verification"
+    dependsOn("compileTestDevelopmentExecutableKotlinWasmWasi")
+    mustRunAfter("compileTestDevelopmentExecutableKotlinWasmWasi")
+    outputs.upToDateWhen { false }
+
+    doLast {
+        val runnerFiles = listOf(
+            layout.buildDirectory.file(
+                "compileSync/wasmWasi/test/testDevelopmentExecutable/kotlin/${rootProject.name}-test.mjs",
+            ).get().asFile,
+            layout.buildDirectory.file(
+                "wasm/packages/${rootProject.name}-test/kotlin/${rootProject.name}-test.mjs",
+            ).get().asFile,
+        )
+        val projectDirPath = project.projectDir.absolutePath.replace("\\", "/")
+        for (runnerFile in runnerFiles) {
+            if (runnerFile.exists()) {
+                val text = runnerFile.readText()
+                if (!text.contains("preopens:")) {
+                    val patched = text.replace(
+                        "const wasi = new WASI({ version: 'preview1', args: argv, env, });",
+                        "const wasi = new WASI({ version: 'preview1', args: argv, env, preopens: { '.': \"$projectDirPath\", '/': \"$projectDirPath\" }, });",
+                    )
+                    runnerFile.writeText(patched)
+                }
+            }
+        }
+    }
+}
+
+tasks.named("wasmWasiNodeTest") {
+    dependsOn(patchWasmWasiNodePreopens)
 }
 
 // Explicit test runner. Named hostTests to avoid shadowing the KMP allTests
@@ -822,10 +874,8 @@ tasks.register("swiftExportSmokeTest") {
 // ============================================================================
 val nativeTargetNames =
     listOf(
-        "androidNativeArm32",
         "androidNativeArm64",
         "androidNativeX64",
-        "androidNativeX86",
         "iosArm64",
         "iosSimulatorArm64",
         "iosX64",

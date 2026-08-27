@@ -25,10 +25,10 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstLiteral
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstParameter
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
-import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgsP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ParameterP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Parameter
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitExpr
 import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitStmt
 import io.github.kotlinmania.starlarksyntax.syntax.call.CallArgsUnpack
@@ -54,8 +54,8 @@ internal fun checkCall(
     f: AstExpr,
     args: List<AstArgument>,
     parserState: ParserState,
-): ExprP<io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload> {
-    val callArgs = CallArgsP<io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload>(args)
+): Expr {
+    val callArgs = CallArgs(args)
 
     val unpackResult = CallArgsUnpack.unpack(callArgs, parserState.codemap)
     unpackResult.exceptionOrNull()?.let { e ->
@@ -64,7 +64,7 @@ internal fun checkCall(
         }
     }
 
-    return ExprP.Call(f, callArgs)
+    return Expr.Call(f, callArgs)
 }
 
 /** Validate all statements only occur where they are allowed to. */
@@ -72,7 +72,7 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
     fun validateParams(params: List<AstParameter>, parserState: ParserState) {
         if (!parserState.dialect.enableKeywordOnlyArguments) {
             for (param in params) {
-                if (param.node is ParameterP.NoArgs) {
+                if (param.node is Parameter.NoArgs) {
                     parserState.error(
                         param.span,
                         "* keyword-only-arguments is not allowed in this dialect",
@@ -82,7 +82,7 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
         }
         if (!parserState.dialect.enablePositionalOnlyArguments) {
             for (param in params) {
-                if (param.node is ParameterP.Slash) {
+                if (param.node is Parameter.Slash) {
                     parserState.error(
                         param.span,
                         "/ positional-only-arguments is not allowed in this dialect",
@@ -112,37 +112,37 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
         val span = stmt.span
 
         when (val node = stmt.node) {
-            is StmtP.Def -> {
+            is Stmt.Def -> {
                 if (!parserState.dialect.enableDef) {
                     parserState.error(span, "`def` is not allowed in this dialect")
                 }
                 validateParams(node.def.params, parserState)
                 f(node.def.body, parserState, false, false, true)
             }
-            is StmtP.For -> {
+            is Stmt.For -> {
                 if (topLevel && !parserState.dialect.enableTopLevelStmt) {
                     parserState.error(span, "`for` cannot be used outside `def` in this dialect")
                 } else {
                     f(node.forStmt.body, parserState, false, true, insideDef)
                 }
             }
-            is StmtP.If, is StmtP.IfElse -> {
+            is Stmt.If, is Stmt.IfElse -> {
                 if (topLevel && !parserState.dialect.enableTopLevelStmt) {
                     parserState.error(span, "`if` cannot be used outside `def` in this dialect")
                 } else {
                     node.visitStmt { x -> f(x, parserState, false, insideFor, insideDef) }
                 }
             }
-            is StmtP.Break -> if (!insideFor) {
+            is Stmt.Break -> if (!insideFor) {
                 parserState.error(span, "`break` cannot be used outside of a `for` loop")
             }
-            is StmtP.Continue -> if (!insideFor) {
+            is Stmt.Continue -> if (!insideFor) {
                 parserState.error(span, "`continue` cannot be used outside of a `for` loop")
             }
-            is StmtP.Return -> if (!insideDef) {
+            is Stmt.Return -> if (!insideDef) {
                 parserState.error(span, "`return` cannot be used outside of a `def` function")
             }
-            is StmtP.Load -> {
+            is Stmt.Load -> {
                 if (!topLevel) {
                     parserState.error(span, "`load` must only occur at the top of a module")
                 }
@@ -156,14 +156,14 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
 
     fun expr(x: AstExpr, parserState: ParserState) {
         when (val node = x.node) {
-            is ExprP.Literal -> {
-                if (node.literal is AstLiteral.Ellipsis) {
+            is Expr.Literal -> {
+                if (node.literal is AstLiteral.EllipsisLiteral) {
                     if (parserState.dialect.enableTypes == DialectTypes.Disable) {
                         parserState.error(x.span, "`...` is not allowed in this dialect")
                     }
                 }
             }
-            is ExprP.Lambda -> {
+            is Expr.Lambda -> {
                 if (!parserState.dialect.enableLambda) {
                     parserState.error(x.span, "`lambda` is not allowed in this dialect")
                 }

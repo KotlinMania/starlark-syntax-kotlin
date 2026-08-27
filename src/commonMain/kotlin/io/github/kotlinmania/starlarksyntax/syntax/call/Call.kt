@@ -21,25 +21,24 @@ package io.github.kotlinmania.starlarksyntax.syntax.call
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgumentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
-import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgsP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Argument
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
+import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
 
 /** Validated call arguments. */
-class CallArgsUnpack<P : AstPayload>(
-    val pos: List<AstArgumentP<P>>,
-    val named: List<AstArgumentP<P>>,
-    val star: AstArgumentP<P>?,
-    val starStar: AstArgumentP<P>?,
+internal class CallArgsUnpack(
+    val pos: List<AstArgument>,
+    val named: List<AstArgument>,
+    val star: AstArgument?,
+    val starStar: AstArgument?,
 ) {
     companion object {
-        fun <P : AstPayload> unpack(
-            args: CallArgsP<P>,
+        fun unpack(
+            args: CallArgs,
             codemap: CodeMap,
-        ): Result<CallArgsUnpack<P>> {
+        ): Result<CallArgsUnpack> {
             val err = { span: Span, msg: String ->
-                Result.failure<CallArgsUnpack<P>>(EvalException.parserError(msg, span, codemap))
+                Result.failure<CallArgsUnpack>(EvalException.parserError(msg, span, codemap))
             }
 
             val argList = args.args
@@ -48,18 +47,18 @@ class CallArgsUnpack<P : AstPayload>(
             val namedArgs = HashSet<String>()
             var numPos = 0
             var numNamed = 0
-            var star: AstArgumentP<P>? = null
-            var starStar: AstArgumentP<P>? = null
+            var star: AstArgument? = null
+            var starStar: AstArgument? = null
             for (arg in argList) {
                 when (val node = arg.node) {
-                    is ArgumentP.Positional<*> -> {
+                    is Argument.Positional -> {
                         if (stage != ArgsStage.POSITIONAL) {
                             return err(arg.span, "positional argument after non positional")
                         } else {
                             numPos += 1
                         }
                     }
-                    is ArgumentP.Named<*> -> {
+                    is Argument.Named -> {
                         if (stage > ArgsStage.NAMED) {
                             return err(arg.span, "named argument after *args or **kwargs")
                         } else if (!namedArgs.add(node.name.node)) {
@@ -70,7 +69,7 @@ class CallArgsUnpack<P : AstPayload>(
                             numNamed += 1
                         }
                     }
-                    is ArgumentP.Args<*> -> {
+                    is Argument.Args -> {
                         if (stage > ArgsStage.NAMED) {
                             return err(arg.span, "Args array after another args or kwargs")
                         } else {
@@ -87,7 +86,7 @@ class CallArgsUnpack<P : AstPayload>(
                             star = arg
                         }
                     }
-                    is ArgumentP.KwArgs<*> -> {
+                    is Argument.KwArgs -> {
                         if (stage == ArgsStage.KWARGS) {
                             return err(arg.span, "Multiple kwargs dictionary in arguments")
                         } else {
@@ -137,3 +136,4 @@ private enum class ArgsStage {
     ARGS,
     KWARGS,
 }
+

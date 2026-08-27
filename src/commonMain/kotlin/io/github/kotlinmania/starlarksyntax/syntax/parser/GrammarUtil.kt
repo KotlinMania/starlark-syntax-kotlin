@@ -31,33 +31,33 @@ import io.github.kotlinmania.starlarksyntax.dotformatparser.FormatToken
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.TokenFString
 import io.github.kotlinmania.starlarksyntax.lexer.lexExactlyOneIdentifier
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignIdentP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Argument
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Assign
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignIdent
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignOp
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignTargetP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignTarget
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdent
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignTarget
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstFString
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstString
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstTypeExpr
-import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgsP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstComma
+import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Comma
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.FStringP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.IdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArgP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.FString
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Ident
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Load
+import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArg
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExprP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExpr
 import io.github.kotlinmania.starlarksyntax.syntax.ast.ast
 import io.github.kotlinmania.starlarksyntax.syntax.call.CallArgsUnpack
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
-import io.github.kotlinmania.starlarksyntax.syntax.typeexpr.TypeExprUnpackP
+import io.github.kotlinmania.starlarksyntax.syntax.typeexpr.TypeExprUnpack
 
 private enum class GrammarUtilError(val message: String) {
     /** `left-hand-side of assignment must take the form `a`, `a.b` or `a[b]`` */
@@ -84,27 +84,22 @@ fun statements(xs: List<AstStmt>, begin: Int, end: Int): AstStmt {
     return if (xs.size == 1) {
         xs[0]
     } else {
-        StmtP.Statements<AstNoPayload>(xs).ast(begin, end)
+        Stmt.Statements(xs).ast(begin, end)
     }
 }
 
 fun checkAssign(codemap: CodeMap, x: AstExpr): AstAssignTarget {
-    val node: AssignTargetP<AstNoPayload> = when (val expr = x.node) {
-        is ExprP.Tuple<AstNoPayload> -> AssignTargetP.Tuple(
+    val node: AssignTarget = when (val expr = x.node) {
+        is Expr.Tuple -> AssignTarget.Tuple(
             expr.elems.map { checkAssign(codemap, it) }
         )
-        is ExprP.List<AstNoPayload> -> AssignTargetP.Tuple(
+        is Expr.List -> AssignTarget.Tuple(
             expr.elems.map { checkAssign(codemap, it) }
         )
-        is ExprP.Dot<AstNoPayload> -> AssignTargetP.Dot(expr.target, expr.attr)
-        is ExprP.Index<AstNoPayload> -> AssignTargetP.Index(expr.target, expr.index)
-        is ExprP.Identifier<AstNoPayload> -> AssignTargetP.Identifier(
-            expr.ident.map { s ->
-                AssignIdentP<AstNoPayload>(
-                    ident = s.ident,
-                    payload = Unit,
-                )
-            }
+        is Expr.Dot -> AssignTarget.Dot(expr.target, expr.attr)
+        is Expr.Index -> AssignTarget.Index(expr.target, expr.index)
+        is Expr.Identifier -> AssignTarget.Identifier(
+            AstAssignIdent(AssignIdent(ident = expr.ident.node.ident, payload = Unit), expr.ident.span)
         )
         else -> throw EvalException.newAnyhow(
             Throwable(GrammarUtilError.InvalidLhs.message),
@@ -112,7 +107,7 @@ fun checkAssign(codemap: CodeMap, x: AstExpr): AstAssignTarget {
             codemap,
         )
     }
-    return Spanned(node, x.span)
+    return AstAssignTarget(node, x.span)
 }
 
 fun checkAssignment(
@@ -125,7 +120,7 @@ fun checkAssignment(
     if (op != null) {
         // for augmented assignment, Starlark doesn't allow tuple/list
         when (lhs.node) {
-            is ExprP.Tuple<AstNoPayload>, is ExprP.List<AstNoPayload> -> throw EvalException.newAnyhow(
+            is Expr.Tuple, is Expr.List -> throw EvalException.newAnyhow(
                 Throwable(GrammarUtilError.InvalidModifyLhs.message),
                 lhs.span,
                 codemap,
@@ -137,7 +132,7 @@ fun checkAssignment(
     if (ty != null) {
         val err = if (op != null) {
             GrammarUtilError.TypeAnnotationOnAssignOp
-        } else if (assignTarget.node is AssignTargetP.Tuple<AstNoPayload>) {
+        } else if (assignTarget.node is AssignTarget.Tuple) {
             GrammarUtilError.TypeAnnotationOnTupleAssign
         } else {
             null
@@ -151,14 +146,14 @@ fun checkAssignment(
         }
     }
     return when (op) {
-        null -> StmtP.Assign(
-            AssignP(
+        null -> Stmt.Assign(
+            Assign(
                 lhs = assignTarget,
                 ty = ty,
                 rhs = rhs,
             )
         )
-        else -> StmtP.AssignModify(assignTarget, op, rhs)
+        else -> Stmt.AssignModify(assignTarget, op, rhs)
     }
 }
 
@@ -182,8 +177,8 @@ internal fun checkLoad0(module: AstString, parserState: ParserState): Stmt {
             parserState.codemap,
         )
     )
-    return StmtP.Load(
-        LoadP(
+    return Stmt.Load(
+        Load(
             module = module,
             args = emptyList(),
             payload = Unit,
@@ -193,7 +188,7 @@ internal fun checkLoad0(module: AstString, parserState: ParserState): Stmt {
 
 internal fun checkLoad(
     module: AstString,
-    args: List<Pair<Pair<AstAssignIdent, AstString>, Spanned<Comma>>>,
+    args: List<Pair<Pair<AstAssignIdent, AstString>, AstComma>>,
     last: Pair<AstAssignIdent, AstString>?,
     parserState: ParserState,
 ): Stmt {
@@ -201,16 +196,16 @@ internal fun checkLoad(
         return checkLoad0(module, parserState)
     }
 
-    val loadArgs: List<LoadArgP<AstNoPayload>> = args.map { (localTheir, comma) ->
+    val loadArgs: List<LoadArg> = args.map { (localTheir, comma) ->
         val (local, their) = localTheir
-        LoadArgP<AstNoPayload>(
+        LoadArg(
             local = local,
             their = their,
             comma = comma,
         )
     } + if (last != null) {
         listOf(
-            LoadArgP<AstNoPayload>(
+            LoadArg(
                 local = last.first,
                 their = last.second,
                 comma = null,
@@ -220,8 +215,8 @@ internal fun checkLoad(
         emptyList()
     }
 
-    return StmtP.Load(
-        LoadP(
+    return Stmt.Load(
+        Load(
             module = module,
             args = loadArgs,
             payload = Unit,
@@ -259,7 +254,6 @@ internal fun fstring(
             )
             break
         } ?: break
-
         when (token) {
             is FormatToken.Text -> format.append(token.text)
             is FormatToken.Escape -> {
@@ -281,8 +275,8 @@ internal fun fstring(
                     continue
                 }
 
-                val expr: AstExpr = ExprP.Identifier<AstNoPayload>(
-                    IdentP<AstNoPayload>(ident = ident, payload = Unit).ast(captureBegin, captureEnd)
+                val expr: AstExpr = Expr.Identifier(
+                    Ident(ident = ident, payload = Unit).ast(captureBegin, captureEnd)
                 ).ast(captureBegin, captureEnd)
                 expressions.add(expr)
                 // Positional format.
@@ -294,7 +288,7 @@ internal fun fstring(
         }
     }
 
-    return FStringP<AstNoPayload>(
+    return FString(
         format = format.toString().ast(begin, end),
         expressions = expressions,
     ).ast(begin, end)
@@ -312,34 +306,35 @@ private fun <T> err(codemap: CodeMap, span: Span, err: DialectError): T {
 internal fun dialectCheckType(
     state: ParserState,
     x: AstExpr,
-): Spanned<TypeExprP<AstNoPayload>> {
-    val span = x.span
+): AstTypeExpr {
     if (state.dialect.enableTypes == DialectTypes.Disable) {
         err<Unit>(state.codemap, x.span, DialectError.Types)
     }
 
     // Validate the type expression.
-    TypeExprUnpackP.unpack<AstNoPayload>(x, state.codemap)
+    TypeExprUnpack.unpack(x, state.codemap)
 
-    return x.map { node ->
-        TypeExprP<AstNoPayload>(
-            expr = Spanned(node, span),
+    return AstTypeExpr(
+        TypeExpr(
+            expr = x,
             payload = Unit,
-        )
-    }
+        ),
+        x.span,
+    )
 }
 
 internal fun checkCall(
     e: AstExpr,
-    a: List<Spanned<ArgumentP<AstNoPayload>>>,
+    a: List<AstArgument>,
     state: ParserState,
-): ExprP<AstNoPayload> {
-    val args = CallArgsP<AstNoPayload>(args = a)
+): Expr {
+    val args = CallArgs(args = a)
 
     val unpackResult = CallArgsUnpack.unpack(args, state.codemap)
     unpackResult.exceptionOrNull()?.let { ex ->
         if (ex is EvalException) state.errors.add(ex) else throw ex
     }
 
-    return ExprP.Call(e, args)
+    return Expr.Call(e, args)
 }
+

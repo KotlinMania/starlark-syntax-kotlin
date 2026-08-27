@@ -18,15 +18,14 @@ package io.github.kotlinmania.starlarksyntax.syntax.toplevelstmts
  * limitations under the License.
  */
 
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmtP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 
 /** List the top-level statements in the AST. */
-fun <P : AstPayload> topLevelStmts(top: AstStmtP<P>): List<AstStmtP<P>> {
-    fun f(ast: AstStmtP<P>, res: MutableList<AstStmtP<P>>) {
+internal fun topLevelStmts(top: AstStmt): List<AstStmt> {
+    fun f(ast: AstStmt, res: MutableList<AstStmt>) {
         when (val node = ast.node) {
-            is StmtP.Statements -> {
+            is Stmt.Statements -> {
                 for (x in node.stmts) {
                     f(x, res)
                 }
@@ -35,19 +34,19 @@ fun <P : AstPayload> topLevelStmts(top: AstStmtP<P>): List<AstStmtP<P>> {
         }
     }
 
-    val res = mutableListOf<AstStmtP<P>>()
+    val res = mutableListOf<AstStmt>()
     f(top, res)
     return res
 }
 
 /** List the top-level statements in the AST. */
-fun <P : AstPayload> topLevelStmtsMut(top: AstStmtP<P>): List<AstStmtP<P>> {
+internal fun topLevelStmtsMut(top: AstStmt): List<AstStmt> {
     // In Rust this returns `Vec<&mut AstStmtP<P>>`; the Kotlin port returns the same shape as
     // [topLevelStmts] because Kotlin doesn't distinguish `&mut` from `&` — mutation goes through
     // the returned references regardless.
-    fun f(ast: AstStmtP<P>, res: MutableList<AstStmtP<P>>) {
+    fun f(ast: AstStmt, res: MutableList<AstStmt>) {
         when (val node = ast.node) {
-            is StmtP.Statements -> {
+            is Stmt.Statements -> {
                 for (x in node.stmts) {
                     f(x, res)
                 }
@@ -56,7 +55,8 @@ fun <P : AstPayload> topLevelStmtsMut(top: AstStmtP<P>): List<AstStmtP<P>> {
         }
     }
 
-    val res = mutableListOf<AstStmtP<P>>()
+    val res = mutableListOf<AstStmt>()
     f(top, res)
     return res
 }
+

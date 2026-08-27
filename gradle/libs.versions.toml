@@ -9,6 +9,8 @@ vanniktech = "0.37.0"
 detekt = "1.23.8"
 ktlint = "14.2.0"
 kotlinxBenchmark = "0.4.17"
+lalrpopUtil = "0.1.1"
+starlarkmap = "0.1.3"
 
 [plugins]
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
@@ -27,6 +29,8 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "datetime" }
 collections-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "collectionsImmutable" }
 kotlinx-benchmark-runtime = { module = "org.jetbrains.kotlinx:kotlinx-benchmark-runtime", version.ref = "kotlinxBenchmark" }
+lalrpop-util = { module = "io.github.kotlinmania:lalrpop-util-kotlin", version.ref = "lalrpopUtil" }
+starlarkmap = { module = "io.github.kotlinmania:starlarkmap-kotlin", version.ref = "starlarkmap" }
 
 [bundles]
 starlark-syntax-kotlin-commonMain = [
@@ -35,4 +39,6 @@ starlark-syntax-kotlin-commonMain = [
   "kotlinx-serialization-json",
   "kotlinx-datetime",
   "collections-immutable",
+  "lalrpop-util",
+  "starlarkmap",
 ]

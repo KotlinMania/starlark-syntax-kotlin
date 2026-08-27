@@ -21,35 +21,38 @@ package io.github.kotlinmania.starlarksyntax.syntax.payloadmap
 /** Map AST payload. */
 
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignIdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignTargetP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstPayload
-import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgsP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ClauseP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.DefP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.FStringP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ForClauseP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ForP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.IdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LambdaP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArgP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ParameterP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExprP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Argument
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Assign
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignTarget
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstAssignTarget
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstFString
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstParameter
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstTypeExpr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Clause
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Def
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.FString
+import io.github.kotlinmania.starlarksyntax.syntax.ast.For
+import io.github.kotlinmania.starlarksyntax.syntax.ast.ForClause
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Ident
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Lambda
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Load
+import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArg
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Parameter
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
+import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExpr
 
 /**
- * A function-bundle that maps payload values from payload-type [A] to payload-type [B] across an
- * AST.
- *
- * The upstream uses associated types on its payload trait to type the payload values per kind.
- * Kotlin doesn't have associated types — this port carries each payload as `Any?` and the
- * concrete payload-bundle type provides the typed getters and setters.
+ * A function-bundle that maps payload values across an AST.
  */
-interface AstPayloadFunction<A : AstPayload, B : AstPayload> {
+internal interface AstPayloadFunction {
     fun mapLoad(importPath: String, a: Any?): Any?
     fun mapIdent(a: Any?): Any?
     fun mapIdentAssign(a: Any?): Any?
@@ -57,75 +60,75 @@ interface AstPayloadFunction<A : AstPayload, B : AstPayload> {
     fun mapTypeExpr(a: Any?): Any?
 }
 
-fun <A : AstPayload, B : AstPayload> LoadArgP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): LoadArgP<B> {
-    return LoadArgP(
+internal fun LoadArg.intoMapPayload(
+    f: AstPayloadFunction,
+): LoadArg {
+    return LoadArg(
         local = this.local.intoMapPayloadAssignIdent(f),
         their = this.their,
         comma = this.comma,
     )
 }
 
-fun <A : AstPayload, B : AstPayload> LoadP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): LoadP<B> {
+internal fun Load.intoMapPayload(
+    f: AstPayloadFunction,
+): Load {
     val payload = f.mapLoad(this.module.node, this.payload)
-    return LoadP(
+    return Load(
         module = this.module,
         args = this.args.map { it.intoMapPayload(f) },
         payload = payload,
     )
 }
 
-fun <A : AstPayload, B : AstPayload> AssignP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): AssignP<B> {
-    return AssignP(
+internal fun Assign.intoMapPayload(
+    f: AstPayloadFunction,
+): Assign {
+    return Assign(
         lhs = this.lhs.intoMapPayloadAssignTarget(f),
         ty = this.ty?.intoMapPayloadTypeExpr(f),
         rhs = this.rhs.intoMapPayloadExpr(f),
     )
 }
 
-fun <A : AstPayload, B : AstPayload> ForP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): ForP<B> {
-    return ForP(
+internal fun For.intoMapPayload(
+    f: AstPayloadFunction,
+): For {
+    return For(
         variable = this.variable.intoMapPayloadAssignTarget(f),
         over = this.over.intoMapPayloadExpr(f),
         body = this.body.intoMapPayloadStmt(f),
     )
 }
 
-fun <A : AstPayload, B : AstPayload> StmtP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): StmtP<B> {
+internal fun Stmt.intoMapPayload(
+    f: AstPayloadFunction,
+): Stmt {
     return when (val self = this) {
-        is StmtP.Break -> StmtP.Break()
-        is StmtP.Continue -> StmtP.Continue()
-        is StmtP.Pass -> StmtP.Pass()
-        is StmtP.Return -> StmtP.Return(self.value?.intoMapPayloadExpr(f))
-        is StmtP.Expression -> StmtP.Expression(self.expr.intoMapPayloadExpr(f))
-        is StmtP.Assign -> StmtP.Assign(self.assign.intoMapPayload(f))
-        is StmtP.AssignModify -> StmtP.AssignModify(
+        is Stmt.Break -> Stmt.Break()
+        is Stmt.Continue -> Stmt.Continue()
+        is Stmt.Pass -> Stmt.Pass()
+        is Stmt.Return -> Stmt.Return(self.value?.intoMapPayloadExpr(f))
+        is Stmt.Expression -> Stmt.Expression(self.expr.intoMapPayloadExpr(f))
+        is Stmt.Assign -> Stmt.Assign(self.assign.intoMapPayload(f))
+        is Stmt.AssignModify -> Stmt.AssignModify(
             lhs = self.lhs.intoMapPayloadAssignTarget(f),
             op = self.op,
             rhs = self.rhs.intoMapPayloadExpr(f),
         )
-        is StmtP.Statements -> StmtP.Statements(self.stmts.map { it.intoMapPayloadStmt(f) })
-        is StmtP.If -> StmtP.If(
+        is Stmt.Statements -> Stmt.Statements(self.stmts.map { it.intoMapPayloadStmt(f) })
+        is Stmt.If -> Stmt.If(
             cond = self.cond.intoMapPayloadExpr(f),
             suite = self.suite.intoMapPayloadStmt(f),
         )
-        is StmtP.IfElse -> StmtP.IfElse(
+        is Stmt.IfElse -> Stmt.IfElse(
             cond = self.cond.intoMapPayloadExpr(f),
             suite1 = self.suite1.intoMapPayloadStmt(f),
             suite2 = self.suite2.intoMapPayloadStmt(f),
         )
-        is StmtP.For -> StmtP.For(self.forStmt.intoMapPayload(f))
-        is StmtP.Def -> StmtP.Def(
-            DefP(
+        is Stmt.For -> Stmt.For(self.forStmt.intoMapPayload(f))
+        is Stmt.Def -> Stmt.Def(
+            Def(
                 name = self.def.name.intoMapPayloadAssignIdent(f),
                 params = self.def.params.map { it.intoMapPayloadParameter(f) },
                 returnType = self.def.returnType?.intoMapPayloadTypeExpr(f),
@@ -133,224 +136,218 @@ fun <A : AstPayload, B : AstPayload> StmtP<A>.intoMapPayload(
                 payload = f.mapDef(self.def.payload),
             )
         )
-        is StmtP.Load -> StmtP.Load(self.load.intoMapPayload(f))
+        is Stmt.Load -> Stmt.Load(self.load.intoMapPayload(f))
     }
 }
 
-fun <A : AstPayload, B : AstPayload> ExprP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): ExprP<B> {
+internal fun Expr.intoMapPayload(
+    f: AstPayloadFunction,
+): Expr {
     return when (val self = this) {
-        is ExprP.Tuple -> ExprP.Tuple(self.elems.map { it.intoMapPayloadExpr(f) })
-        is ExprP.Dot -> ExprP.Dot(target = self.target.intoMapPayloadExpr(f), attr = self.attr)
-        is ExprP.Call -> ExprP.Call(
+        is Expr.Tuple -> Expr.Tuple(self.elems.map { it.intoMapPayloadExpr(f) })
+        is Expr.Dot -> Expr.Dot(target = self.target.intoMapPayloadExpr(f), attr = self.attr)
+        is Expr.Call -> Expr.Call(
             target = self.target.intoMapPayloadExpr(f),
-            args = CallArgsP(args = self.args.args.map { it.intoMapPayloadArgument(f) }),
+            args = CallArgs(args = self.args.args.map { it.intoMapPayloadArgument(f) }),
         )
-        is ExprP.Index -> ExprP.Index(
+        is Expr.Index -> Expr.Index(
             target = self.target.intoMapPayloadExpr(f),
             index = self.index.intoMapPayloadExpr(f),
         )
-        is ExprP.Index2 -> ExprP.Index2(
+        is Expr.Index2 -> Expr.Index2(
             target = self.target.intoMapPayloadExpr(f),
             index0 = self.index0.intoMapPayloadExpr(f),
             index1 = self.index1.intoMapPayloadExpr(f),
         )
-        is ExprP.Slice -> ExprP.Slice(
+        is Expr.Slice -> Expr.Slice(
             target = self.target.intoMapPayloadExpr(f),
             start = self.start?.intoMapPayloadExpr(f),
             stop = self.stop?.intoMapPayloadExpr(f),
             step = self.step?.intoMapPayloadExpr(f),
         )
-        is ExprP.Identifier -> ExprP.Identifier(self.ident.intoMapPayloadIdent(f))
-        is ExprP.Lambda -> ExprP.Lambda(
-            LambdaP(
+        is Expr.Identifier -> Expr.Identifier(self.ident.intoMapPayloadIdent(f))
+        is Expr.Lambda -> Expr.Lambda(
+            Lambda(
                 params = self.lambda.params.map { it.intoMapPayloadParameter(f) },
                 body = self.lambda.body.intoMapPayloadExpr(f),
                 payload = f.mapDef(self.lambda.payload),
             )
         )
-        is ExprP.Literal -> ExprP.Literal(self.literal)
-        is ExprP.Not -> ExprP.Not(self.target.intoMapPayloadExpr(f))
-        is ExprP.Minus -> ExprP.Minus(self.target.intoMapPayloadExpr(f))
-        is ExprP.Plus -> ExprP.Plus(self.target.intoMapPayloadExpr(f))
-        is ExprP.BitNot -> ExprP.BitNot(self.target.intoMapPayloadExpr(f))
-        is ExprP.Op -> ExprP.Op(
+        is Expr.Literal -> Expr.Literal(self.literal)
+        is Expr.Not -> Expr.Not(self.target.intoMapPayloadExpr(f))
+        is Expr.Minus -> Expr.Minus(self.target.intoMapPayloadExpr(f))
+        is Expr.Plus -> Expr.Plus(self.target.intoMapPayloadExpr(f))
+        is Expr.BitNot -> Expr.BitNot(self.target.intoMapPayloadExpr(f))
+        is Expr.Op -> Expr.Op(
             left = self.left.intoMapPayloadExpr(f),
             op = self.op,
             right = self.right.intoMapPayloadExpr(f),
         )
-        is ExprP.If -> ExprP.If(
+        is Expr.If -> Expr.If(
             condition = self.condition.intoMapPayloadExpr(f),
             v1 = self.v1.intoMapPayloadExpr(f),
             v2 = self.v2.intoMapPayloadExpr(f),
         )
-        is ExprP.List -> ExprP.List(self.elems.map { it.intoMapPayloadExpr(f) })
-        is ExprP.Dict -> ExprP.Dict(
-            self.entries.map { (k, v) -> Pair(k.intoMapPayloadExpr(f), v.intoMapPayloadExpr(f)) }
+        is Expr.List -> Expr.List(self.elems.map { it.intoMapPayloadExpr(f) })
+        is Expr.Dict -> Expr.Dict(
+            self.entries.map { (k, v) -> Expr.DictEntry(k.intoMapPayloadExpr(f), v.intoMapPayloadExpr(f)) }
         )
-        is ExprP.ListComprehension -> ExprP.ListComprehension(
+        is Expr.ListComprehension -> Expr.ListComprehension(
             expr = self.expr.intoMapPayloadExpr(f),
             firstFor = self.firstFor.intoMapPayload(f),
             clauses = self.clauses.map { it.intoMapPayload(f) },
         )
-        is ExprP.DictComprehension -> ExprP.DictComprehension(
+        is Expr.DictComprehension -> Expr.DictComprehension(
             key = self.key.intoMapPayloadExpr(f),
             value = self.value.intoMapPayloadExpr(f),
             firstFor = self.firstFor.intoMapPayload(f),
             clauses = self.clauses.map { it.intoMapPayload(f) },
         )
-        is ExprP.FString -> ExprP.FString(self.fstring.intoMapPayloadFString(f))
+        is Expr.FString -> Expr.FString(self.fstring.intoMapPayloadFString(f))
     }
 }
 
-fun <A : AstPayload, B : AstPayload> TypeExprP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): TypeExprP<B> {
-    return TypeExprP(
+internal fun TypeExpr.intoMapPayload(
+    f: AstPayloadFunction,
+): TypeExpr {
+    return TypeExpr(
         expr = this.expr.intoMapPayloadExpr(f),
         payload = f.mapTypeExpr(this.payload),
     )
 }
 
-fun <A : AstPayload, B : AstPayload> AssignTargetP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): AssignTargetP<B> {
+internal fun AssignTarget.intoMapPayload(
+    f: AstPayloadFunction,
+): AssignTarget {
     return when (val self = this) {
-        is AssignTargetP.Tuple -> AssignTargetP.Tuple(
+        is AssignTarget.Tuple -> AssignTarget.Tuple(
             self.elems.map { it.intoMapPayloadAssignTarget(f) }
         )
-        is AssignTargetP.Index -> AssignTargetP.Index(
+        is AssignTarget.Index -> AssignTarget.Index(
             target = self.target.intoMapPayloadExpr(f),
             index = self.index.intoMapPayloadExpr(f),
         )
-        is AssignTargetP.Dot -> AssignTargetP.Dot(
+        is AssignTarget.Dot -> AssignTarget.Dot(
             target = self.target.intoMapPayloadExpr(f),
             attr = self.attr,
         )
-        is AssignTargetP.Identifier -> AssignTargetP.Identifier(
+        is AssignTarget.Identifier -> AssignTarget.Identifier(
             self.ident.intoMapPayloadAssignIdent(f)
         )
     }
 }
 
-fun <A : AstPayload, B : AstPayload> AssignIdentP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): AssignIdentP<B> {
-    return AssignIdentP(
+internal fun AssignIdent.intoMapPayload(
+    f: AstPayloadFunction,
+): AssignIdent {
+    return AssignIdent(
         ident = this.ident,
         payload = f.mapIdentAssign(this.payload),
     )
 }
 
-fun <A : AstPayload, B : AstPayload> IdentP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): IdentP<B> {
-    return IdentP(
+internal fun Ident.intoMapPayload(
+    f: AstPayloadFunction,
+): Ident {
+    return Ident(
         ident = this.ident,
         payload = f.mapIdent(this.payload),
     )
 }
 
-fun <A : AstPayload, B : AstPayload> ParameterP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): ParameterP<B> {
+internal fun Parameter.intoMapPayload(
+    f: AstPayloadFunction,
+): Parameter {
     return when (val self = this) {
-        is ParameterP.Normal -> ParameterP.Normal(
+        is Parameter.Normal -> Parameter.Normal(
             name = self.name.intoMapPayloadAssignIdent(f),
             type = self.type?.intoMapPayloadTypeExpr(f),
             default = self.default?.intoMapPayloadExpr(f),
         )
-        is ParameterP.NoArgs -> ParameterP.NoArgs()
-        is ParameterP.Slash -> ParameterP.Slash()
-        is ParameterP.Args -> ParameterP.Args(
+        is Parameter.NoArgs -> Parameter.NoArgs()
+        is Parameter.Slash -> Parameter.Slash()
+        is Parameter.Args -> Parameter.Args(
             name = self.name.intoMapPayloadAssignIdent(f),
             type = self.type?.intoMapPayloadTypeExpr(f),
         )
-        is ParameterP.KwArgs -> ParameterP.KwArgs(
+        is Parameter.KwArgs -> Parameter.KwArgs(
             name = self.name.intoMapPayloadAssignIdent(f),
             type = self.type?.intoMapPayloadTypeExpr(f),
         )
     }
 }
 
-fun <A : AstPayload, B : AstPayload> ArgumentP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): ArgumentP<B> {
+internal fun Argument.intoMapPayload(
+    f: AstPayloadFunction,
+): Argument {
     return when (val self = this) {
-        is ArgumentP.Positional -> ArgumentP.Positional(self.expr.intoMapPayloadExpr(f))
-        is ArgumentP.Named -> ArgumentP.Named(self.name, self.expr.intoMapPayloadExpr(f))
-        is ArgumentP.Args -> ArgumentP.Args(self.expr.intoMapPayloadExpr(f))
-        is ArgumentP.KwArgs -> ArgumentP.KwArgs(self.expr.intoMapPayloadExpr(f))
+        is Argument.Positional -> Argument.Positional(self.expr.intoMapPayloadExpr(f))
+        is Argument.Named -> Argument.Named(self.name, self.expr.intoMapPayloadExpr(f))
+        is Argument.Args -> Argument.Args(self.expr.intoMapPayloadExpr(f))
+        is Argument.KwArgs -> Argument.KwArgs(self.expr.intoMapPayloadExpr(f))
     }
 }
 
-fun <A : AstPayload, B : AstPayload> ClauseP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): ClauseP<B> {
+internal fun Clause.intoMapPayload(
+    f: AstPayloadFunction,
+): Clause {
     return when (val self = this) {
-        is ClauseP.For -> ClauseP.For(self.clause.intoMapPayload(f))
-        is ClauseP.If -> ClauseP.If(self.cond.intoMapPayloadExpr(f))
+        is Clause.For -> Clause.For(self.clause.intoMapPayload(f))
+        is Clause.If -> Clause.If(self.cond.intoMapPayloadExpr(f))
     }
 }
 
-fun <A : AstPayload, B : AstPayload> ForClauseP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): ForClauseP<B> {
-    return ForClauseP(
+internal fun ForClause.intoMapPayload(
+    f: AstPayloadFunction,
+): ForClause {
+    return ForClause(
         variable = this.variable.intoMapPayloadAssignTarget(f),
         over = this.over.intoMapPayloadExpr(f),
     )
 }
 
-fun <A : AstPayload, B : AstPayload> FStringP<A>.intoMapPayload(
-    f: AstPayloadFunction<A, B>,
-): FStringP<B> {
-    return FStringP(
+internal fun FString.intoMapPayload(
+    f: AstPayloadFunction,
+): FString {
+    return FString(
         format = this.format,
         expressions = this.expressions.map { it.intoMapPayloadExpr(f) },
     )
 }
 
-// The upstream uses a derive macro to emit per-wrapper payload-mapping adapters for each
-// Spanned<X<P>> AST node. Kotlin expresses the same with one generic extension per AST type.
+internal fun AstExpr.intoMapPayloadExpr(
+    f: AstPayloadFunction,
+): AstExpr = AstExpr(node = this.node.intoMapPayload(f), span = this.span)
 
-// Spanned<X<A>> wrappers: rename each by AST type to avoid JVM erasure clash on the
-// shared name. The upstream derive macro relies on Rust's monomorphization, which Kotlin
-// doesn't get on JVM after erasure.
+internal fun AstTypeExpr.intoMapPayloadTypeExpr(
+    f: AstPayloadFunction,
+): AstTypeExpr = AstTypeExpr(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<ExprP<A>>.intoMapPayloadExpr(
-    f: AstPayloadFunction<A, B>,
-): Spanned<ExprP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstAssignTarget.intoMapPayloadAssignTarget(
+    f: AstPayloadFunction,
+): AstAssignTarget = AstAssignTarget(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<TypeExprP<A>>.intoMapPayloadTypeExpr(
-    f: AstPayloadFunction<A, B>,
-): Spanned<TypeExprP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstAssignIdent.intoMapPayloadAssignIdent(
+    f: AstPayloadFunction,
+): AstAssignIdent = AstAssignIdent(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<AssignTargetP<A>>.intoMapPayloadAssignTarget(
-    f: AstPayloadFunction<A, B>,
-): Spanned<AssignTargetP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstIdent.intoMapPayloadIdent(
+    f: AstPayloadFunction,
+): AstIdent = AstIdent(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<AssignIdentP<A>>.intoMapPayloadAssignIdent(
-    f: AstPayloadFunction<A, B>,
-): Spanned<AssignIdentP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstParameter.intoMapPayloadParameter(
+    f: AstPayloadFunction,
+): AstParameter = AstParameter(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<IdentP<A>>.intoMapPayloadIdent(
-    f: AstPayloadFunction<A, B>,
-): Spanned<IdentP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstArgument.intoMapPayloadArgument(
+    f: AstPayloadFunction,
+): AstArgument = AstArgument(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<ParameterP<A>>.intoMapPayloadParameter(
-    f: AstPayloadFunction<A, B>,
-): Spanned<ParameterP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstStmt.intoMapPayloadStmt(
+    f: AstPayloadFunction,
+): AstStmt = AstStmt(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<ArgumentP<A>>.intoMapPayloadArgument(
-    f: AstPayloadFunction<A, B>,
-): Spanned<ArgumentP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
+internal fun AstFString.intoMapPayloadFString(
+    f: AstPayloadFunction,
+): AstFString = AstFString(node = this.node.intoMapPayload(f), span = this.span)
 
-fun <A : AstPayload, B : AstPayload> Spanned<StmtP<A>>.intoMapPayloadStmt(
-    f: AstPayloadFunction<A, B>,
-): Spanned<StmtP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)
-
-fun <A : AstPayload, B : AstPayload> Spanned<FStringP<A>>.intoMapPayloadFString(
-    f: AstPayloadFunction<A, B>,
-): Spanned<FStringP<B>> = Spanned(node = this.node.intoMapPayload(f), span = this.span)

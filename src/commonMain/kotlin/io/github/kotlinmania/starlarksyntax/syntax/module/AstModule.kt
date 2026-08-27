@@ -25,25 +25,26 @@ import io.github.kotlinmania.starlarksyntax.codemap.Spanned
 import io.github.kotlinmania.starlarkmap.smallmap.SmallMap
 import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ArgumentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AssignP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Argument
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Assign
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdent
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.ast.BinOp
-import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgsP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.DefP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ExprP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.ForP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.IdentP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArgP
-import io.github.kotlinmania.starlarksyntax.syntax.ast.StmtP
+import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Def
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
+import io.github.kotlinmania.starlarksyntax.syntax.ast.For
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Ident
+import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArg
+import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 import io.github.kotlinmania.starlarksyntax.syntax.astload.AstLoad
 import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressions
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.starlarksyntax.syntax.validate.validateModule
 
-data class AstModuleParts(
+internal data class AstModuleParts(
     val codemap: CodeMap,
     val statement: AstStmt,
     val dialect: Dialect,
@@ -61,7 +62,7 @@ data class AstModuleParts(
  */
 class AstModule internal constructor(
     val codemap: CodeMap,
-    var statement: AstStmt,
+    internal var statement: AstStmt,
     val dialect: Dialect,
     /**
      * Opt-in typecheck.
@@ -74,7 +75,7 @@ class AstModule internal constructor(
      */
     private val lintSuppressions: LintSuppressions,
 ) {
-    fun intoParts(): AstModuleParts =
+    internal fun intoParts(): AstModuleParts =
         AstModuleParts(codemap, statement, dialect, typecheck)
 
     companion object {
@@ -123,7 +124,7 @@ class AstModule internal constructor(
         val loads = mutableListOf<AstLoad>()
         fun walk(ast: AstStmt) {
             when (val node = ast.node) {
-                is StmtP.Load<AstNoPayload> -> {
+                is Stmt.Load -> {
                     val load = node.load
                     loads.add(
                         AstLoad(
@@ -137,7 +138,7 @@ class AstModule internal constructor(
                         )
                     )
                 }
-                is StmtP.Statements<AstNoPayload> -> {
+                is Stmt.Statements -> {
                     for (stmt in node.stmts) {
                         walk(stmt)
                     }
@@ -152,15 +153,13 @@ class AstModule internal constructor(
     /** Look up a [Span] contained in this module to a [FileSpan]. */
     fun fileSpan(span: Span): FileSpan = codemap.fileSpan(span)
 
-    /** Get back the AST statement for the module. */
-    fun statement(): AstStmt = statement
 
     /** Locations where statements occur. */
     fun stmtLocations(): List<FileSpan> {
         val res = mutableListOf<FileSpan>()
         fun walk(ast: AstStmt) {
             // These are not interesting statements that come up
-            if (ast.node !is StmtP.Statements<AstNoPayload>) {
+            if (ast.node !is Stmt.Statements) {
                 res.add(FileSpan(codemap, ast.span))
             }
             // Descend into nested statements.
@@ -192,14 +191,14 @@ class AstModule internal constructor(
 /** Visit immediate child statements of [stmt]. */
 private fun visitStmtChildren(stmt: AstStmt, f: (AstStmt) -> Unit) {
     when (val node = stmt.node) {
-        is StmtP.Statements<AstNoPayload> -> for (s in node.stmts) f(s)
-        is StmtP.If<AstNoPayload> -> f(node.suite)
-        is StmtP.IfElse<AstNoPayload> -> {
+        is Stmt.Statements -> for (s in node.stmts) f(s)
+        is Stmt.If -> f(node.suite)
+        is Stmt.IfElse -> {
             f(node.suite1)
             f(node.suite2)
         }
-        is StmtP.For<AstNoPayload> -> f(node.forStmt.body)
-        is StmtP.Def<AstNoPayload> -> f(node.def.body)
+        is Stmt.For -> f(node.forStmt.body)
+        is Stmt.Def -> f(node.def.body)
         else -> {}
     }
 }
@@ -239,105 +238,102 @@ private fun rewriteExpr(
     replace: Map<String, String>,
 ): AstExpr {
     val node = expr.node
-    val rewritten: ExprP<AstNoPayload> = when (node) {
-        is ExprP.Op<AstNoPayload> -> {
+    val rewritten: Expr = when (node) {
+        is Expr.Op -> {
             val func = replace[node.op.toSymbol()]
             if (func != null) {
                 // Replace: Op(lhs, op, rhs) -> Call(Identifier(func), [lhs, rhs])
                 val lhs = rewriteExpr(node.left, replace)
                 val rhs = rewriteExpr(node.right, replace)
-                ExprP.Call(
-                    target = Spanned(
-                        ExprP.Identifier(
-                            Spanned(IdentP<AstNoPayload>(func, Unit), expr.span)
+                Expr.Call(
+                    target = AstExpr(
+                        Expr.Identifier(
+                            AstIdent(Ident(func, Unit), expr.span)
                         ),
                         expr.span,
                     ),
-                    args = CallArgsP(
-                        listOf(
-                            Spanned(ArgumentP.Positional(lhs), lhs.span),
-                            Spanned(ArgumentP.Positional(rhs), rhs.span),
-                        )
+                    args = CallArgs(
+                        listOf(AstArgument(Argument.Positional(lhs), lhs.span), AstArgument(Argument.Positional(rhs), rhs.span))
                     ),
                 )
             } else {
                 // Keep Op but rewrite children
-                ExprP.Op(
+                Expr.Op(
                     rewriteExpr(node.left, replace),
                     node.op,
                     rewriteExpr(node.right, replace),
                 )
             }
         }
-        is ExprP.Call<AstNoPayload> -> ExprP.Call(
+        is Expr.Call -> Expr.Call(
             rewriteExpr(node.target, replace),
-            CallArgsP(
+            CallArgs(
                 node.args.args.map { arg ->
-                    Spanned(rewriteArg(arg.node, replace), arg.span)
+                    AstArgument(rewriteArg(arg.node, replace), arg.span)
                 }
             ),
         )
-        is ExprP.Tuple<AstNoPayload> -> ExprP.Tuple(node.elems.map { rewriteExpr(it, replace) })
-        is ExprP.Dot<AstNoPayload> -> ExprP.Dot(rewriteExpr(node.target, replace), node.attr)
-        is ExprP.Index<AstNoPayload> -> ExprP.Index(
+        is Expr.Tuple -> Expr.Tuple(node.elems.map { rewriteExpr(it, replace) })
+        is Expr.Dot -> Expr.Dot(rewriteExpr(node.target, replace), node.attr)
+        is Expr.Index -> Expr.Index(
             rewriteExpr(node.target, replace),
             rewriteExpr(node.index, replace),
         )
-        is ExprP.Index2<AstNoPayload> -> ExprP.Index2(
+        is Expr.Index2 -> Expr.Index2(
             rewriteExpr(node.target, replace),
             rewriteExpr(node.index0, replace),
             rewriteExpr(node.index1, replace),
         )
-        is ExprP.Slice<AstNoPayload> -> ExprP.Slice(
+        is Expr.Slice -> Expr.Slice(
             rewriteExpr(node.target, replace),
             node.start?.let { rewriteExpr(it, replace) },
             node.stop?.let { rewriteExpr(it, replace) },
             node.step?.let { rewriteExpr(it, replace) },
         )
-        is ExprP.Not<AstNoPayload> -> ExprP.Not(rewriteExpr(node.target, replace))
-        is ExprP.Minus<AstNoPayload> -> ExprP.Minus(rewriteExpr(node.target, replace))
-        is ExprP.Plus<AstNoPayload> -> ExprP.Plus(rewriteExpr(node.target, replace))
-        is ExprP.BitNot<AstNoPayload> -> ExprP.BitNot(rewriteExpr(node.target, replace))
-        is ExprP.If<AstNoPayload> -> ExprP.If(
+        is Expr.Not -> Expr.Not(rewriteExpr(node.target, replace))
+        is Expr.Minus -> Expr.Minus(rewriteExpr(node.target, replace))
+        is Expr.Plus -> Expr.Plus(rewriteExpr(node.target, replace))
+        is Expr.BitNot -> Expr.BitNot(rewriteExpr(node.target, replace))
+        is Expr.If -> Expr.If(
             rewriteExpr(node.condition, replace),
             rewriteExpr(node.v1, replace),
             rewriteExpr(node.v2, replace),
         )
-        is ExprP.List<AstNoPayload> -> ExprP.List(node.elems.map { rewriteExpr(it, replace) })
-        is ExprP.Dict<AstNoPayload> -> ExprP.Dict(
+        is Expr.List -> Expr.List(node.elems.map { rewriteExpr(it, replace) })
+        is Expr.Dict -> Expr.Dict(
             node.entries.map { (k, v) ->
-                Pair(rewriteExpr(k, replace), rewriteExpr(v, replace))
+                Expr.DictEntry(rewriteExpr(k, replace), rewriteExpr(v, replace))
             }
         )
-        is ExprP.ListComprehension<AstNoPayload> -> ExprP.ListComprehension(
+        is Expr.ListComprehension -> Expr.ListComprehension(
             rewriteExpr(node.expr, replace),
             node.firstFor,
             node.clauses,
         )
-        is ExprP.DictComprehension<AstNoPayload> -> ExprP.DictComprehension(
+        is Expr.DictComprehension -> Expr.DictComprehension(
             rewriteExpr(node.key, replace),
             rewriteExpr(node.value, replace),
             node.firstFor,
             node.clauses,
         )
         // Leaf nodes: no children to rewrite
-        is ExprP.Identifier<AstNoPayload> -> node
-        is ExprP.Lambda<AstNoPayload> -> node
-        is ExprP.Literal<AstNoPayload> -> node
-        is ExprP.FString<AstNoPayload> -> node
+        is Expr.Identifier -> node
+        is Expr.Lambda -> node
+        is Expr.Literal -> node
+        is Expr.FString -> node
     }
-    return Spanned(rewritten, expr.span)
+    return AstExpr(rewritten, expr.span)
 }
 
 private fun rewriteArg(
-    arg: ArgumentP<AstNoPayload>,
+    arg: Argument,
     replace: Map<String, String>,
-): ArgumentP<AstNoPayload> {
+): Argument {
     return when (arg) {
-        is ArgumentP.Positional<AstNoPayload> -> ArgumentP.Positional(rewriteExpr(arg.expr, replace))
-        is ArgumentP.Named<AstNoPayload> -> ArgumentP.Named(arg.name, rewriteExpr(arg.expr, replace))
-        is ArgumentP.Args<AstNoPayload> -> ArgumentP.Args(rewriteExpr(arg.expr, replace))
-        is ArgumentP.KwArgs<AstNoPayload> -> ArgumentP.KwArgs(rewriteExpr(arg.expr, replace))
+        is Argument.Positional -> Argument.Positional(rewriteExpr(arg.expr, replace))
+        is Argument.Named -> Argument.Named(arg.name, rewriteExpr(arg.expr, replace))
+        is Argument.Args -> Argument.Args(rewriteExpr(arg.expr, replace))
+        is Argument.KwArgs -> Argument.KwArgs(rewriteExpr(arg.expr, replace))
     }
 }
 
@@ -347,39 +343,39 @@ private fun rewriteStmt(
     replace: Map<String, String>,
 ): AstStmt {
     val node = stmt.node
-    val rewritten: StmtP<AstNoPayload> = when (node) {
-        is StmtP.Statements<AstNoPayload> -> StmtP.Statements(
+    val rewritten: Stmt = when (node) {
+        is Stmt.Statements -> Stmt.Statements(
             node.stmts.map { rewriteStmt(it, replace) },
         )
-        is StmtP.Expression<AstNoPayload> -> StmtP.Expression(
+        is Stmt.Expression -> Stmt.Expression(
             rewriteExpr(node.expr, replace),
         )
-        is StmtP.Return<AstNoPayload> -> StmtP.Return(
+        is Stmt.Return -> Stmt.Return(
             node.value?.let { rewriteExpr(it, replace) },
         )
-        is StmtP.If<AstNoPayload> -> StmtP.If(
+        is Stmt.If -> Stmt.If(
             rewriteExpr(node.cond, replace),
             rewriteStmt(node.suite, replace),
         )
-        is StmtP.IfElse<AstNoPayload> -> StmtP.IfElse(
+        is Stmt.IfElse -> Stmt.IfElse(
             rewriteExpr(node.cond, replace),
             rewriteStmt(node.suite1, replace),
             rewriteStmt(node.suite2, replace),
         )
-        is StmtP.For<AstNoPayload> -> {
+        is Stmt.For -> {
             val forStmt = node.forStmt
-            StmtP.For(
-                ForP(
+            Stmt.For(
+                For(
                     variable = forStmt.variable,
                     over = rewriteExpr(forStmt.over, replace),
                     body = rewriteStmt(forStmt.body, replace),
                 )
             )
         }
-        is StmtP.Def<AstNoPayload> -> {
+        is Stmt.Def -> {
             val def = node.def
-            StmtP.Def(
-                DefP(
+            Stmt.Def(
+                Def(
                     name = def.name,
                     params = def.params,
                     returnType = def.returnType,
@@ -388,25 +384,25 @@ private fun rewriteStmt(
                 )
             )
         }
-        is StmtP.Assign<AstNoPayload> -> {
+        is Stmt.Assign -> {
             val assign = node.assign
-            StmtP.Assign(
-                AssignP(
+            Stmt.Assign(
+                Assign(
                     lhs = assign.lhs,
                     ty = assign.ty,
                     rhs = rewriteExpr(assign.rhs, replace),
                 )
             )
         }
-        is StmtP.AssignModify<AstNoPayload> -> StmtP.AssignModify(
+        is Stmt.AssignModify -> Stmt.AssignModify(
             node.lhs,
             node.op,
             rewriteExpr(node.rhs, replace),
         )
-        is StmtP.Load<AstNoPayload> -> node
-        is StmtP.Break<AstNoPayload> -> node
-        is StmtP.Continue<AstNoPayload> -> node
-        is StmtP.Pass<AstNoPayload> -> node
+        is Stmt.Load -> node
+        is Stmt.Break -> node
+        is Stmt.Continue -> node
+        is Stmt.Pass -> node
     }
-    return Spanned(rewritten, stmt.span)
+    return AstStmt(rewritten, stmt.span)
 }
