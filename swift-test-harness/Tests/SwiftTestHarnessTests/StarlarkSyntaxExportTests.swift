@@ -4,6 +4,6 @@ import StarlarkSyntax
 @Suite("StarlarkSyntaxExportTests")
 struct StarlarkSyntaxExportTests {
     @Test func testSwiftModuleLoads() throws {
-        #expect(true, "StarlarkSyntax swift module imported cleanly")
+        #expect(Bool(true), "StarlarkSyntax swift module imported cleanly")
     }
 }
