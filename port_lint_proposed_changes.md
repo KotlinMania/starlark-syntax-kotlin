@@ -1,6 +1,6 @@
 # port-lint Proposed Changes
 
-**Generated:** 2026-05-07
+**Generated:** 2026-08-28
 **Source:** tmp/starlark_syntax
 **Target:** src/commonMain/kotlin/io/github/kotlinmania/starlarksyntax
 

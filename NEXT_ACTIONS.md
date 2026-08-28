@@ -1,22 +1,17 @@
 # Immediate Actions - High-Value Files
 
-## Target Exclusions & Impossibilities
-
-- **watchosDeviceArm64**: Excluded due to upstream dependency `com.ionspin.kotlin:bignum:0.3.10` not publishing a `watchosDeviceArm64` variant.
-
 Based on AST analysis, here are the concrete next steps.
-
 
 ## Summary
 
 - **Files Present:** 32/37 (86.5%)
-- **Function parity:** 240/387 matched (target 444) — 62.0%
-- **Class/type parity:** 125/142 matched (target 314) — 88.0%
-- **Combined symbol parity:** 365/529 matched (target 758) — 69.0%
-- **Average inline-code cosine:** 0.51 (function body across 27 matched files)
-- **Average documentation cosine:** 0.85 (doc text across 27 matched files)
-- **Cheat-zeroed Files:** 12
-- **Critical Issues:** 19 files with <0.60 function similarity
+- **Function parity:** 242/387 matched (target 467) — 62.5%
+- **Class/type parity:** 123/142 matched (target 320) — 86.6%
+- **Combined symbol parity:** 365/529 matched (target 787) — 69.0%
+- **Average inline-code cosine:** 0.59 (function body across 28 matched files)
+- **Average documentation cosine:** 0.84 (doc text across 28 matched files)
+- **Cheat-zeroed Files:** 7
+- **Critical Issues:** 17 files with <0.60 function similarity
 
 ## Priority 1: Fix Incomplete High-Dependency Files
 
@@ -24,7 +19,7 @@ Based on AST analysis, here are the concrete next steps.
 - **Similarity:** 0.75 (needs 10% improvement)
 - **Dependencies:** 14
 - **Priority Score:** 14047302.0
-- **Functions:** 54/56 matched (target 103)
+- **Functions:** 54/56 matched (target 108)
 - **Missing functions:** `len`, `from`
 - **Types:** 15/17 matched (target 18)
 - **Missing types:** `Output`, `Target`
@@ -48,7 +43,7 @@ Every matched file is listed below with function and type symbol parity.
 - **Similarity:** 0.75
 - **Dependents:** 14
 - **Priority Score:** 14047302.0
-- **Functions:** 54/56 matched (target 103)
+- **Functions:** 54/56 matched (target 108)
 - **Missing functions:** `len`, `from`
 - **Types:** 15/17 matched (target 18)
 - **Missing types:** `Output`, `Target`
@@ -81,9 +76,9 @@ Every matched file is listed below with function and type symbol parity.
 - **Target:** `faststring.FastString [ZERO] [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.00
 - **Dependents:** 3
-- **Priority Score:** 3062210.0
-- **Functions:** 14/19 matched (target 18)
-- **Missing functions:** `is_1bytes`, `f`, `sub`, `add`, `none_ors`
+- **Priority Score:** 3042210.0
+- **Functions:** 16/19 matched (target 21)
+- **Missing functions:** `sub`, `add`, `none_ors`
 - **Types:** 2/3 matched
 - **Missing types:** `Output`
 - **Tests:** 3/4 matched
@@ -173,30 +168,19 @@ Every matched file is listed below with function and type symbol parity.
 - **Types:** 1/1 matched
 - **Missing types:** _none_
 
-### 12. syntax.lint_suppressions
-
-- **Target:** `lintsuppressions.LintSuppressions [ZERO]`
-- **Similarity:** 0.00
-- **Dependents:** 1
-- **Priority Score:** 1011210.0
-- **Functions:** 7/8 matched (target 7)
-- **Missing functions:** `new`
-- **Types:** 4/4 matched
-- **Missing types:** _none_
-
-### 13. syntax.type_expr
+### 12. syntax.type_expr
 
 - **Target:** `typeexpr.TypeExpr [STUB]`
 - **Similarity:** 0.00
 - **Dependents:** 1
-- **Priority Score:** 1010810.0
+- **Priority Score:** 1030810.0
 - **Functions:** 4/5 matched
 - **Missing functions:** `from`
-- **Types:** 3/3 matched (target 16)
-- **Missing types:** _none_
+- **Types:** 1/3 matched (target 16)
+- **Missing types:** `TypePathP`, `TypeExprUnpackP`
 - **TODOs:** 2
 
-### 14. frame
+### 13. frame
 
 - **Target:** `frame.Frame [PROVENANCE-FALLBACK]`
 - **Similarity:** 0.54
@@ -211,6 +195,17 @@ Every matched file is listed below with function and type symbol parity.
 - **Proposed provenance header:** `// port-lint: tests frame.rs` (current: `// port-lint: tests frame.rs`)
 - **Lint issues:** 1
 
+### 14. syntax.lint_suppressions
+
+- **Target:** `lintsuppressions.LintSuppressions`
+- **Similarity:** 0.74
+- **Dependents:** 1
+- **Priority Score:** 1001202.6
+- **Functions:** 8/8 matched
+- **Missing functions:** _none_
+- **Types:** 4/4 matched
+- **Missing types:** _none_
+
 ### 15. convert_indices
 
 - **Target:** `convertindices.ConvertIndices`
@@ -224,10 +219,10 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 16. span_display
 
-- **Target:** `spandisplay.SpanDisplay [ZERO]`
-- **Similarity:** 0.00
+- **Target:** `spandisplay.SpanDisplay`
+- **Similarity:** 0.92
 - **Dependents:** 1
-- **Priority Score:** 1000210.0
+- **Priority Score:** 1000200.8
 - **Functions:** 2/2 matched (target 4)
 - **Missing functions:** _none_
 - **Types:** 0/0 matched (target 6)
@@ -236,9 +231,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 17. syntax.def
 
 - **Target:** `def.Def`
-- **Similarity:** 0.18
+- **Similarity:** 0.17
 - **Dependents:** 0
-- **Priority Score:** 152608.2
+- **Priority Score:** 152608.3
 - **Functions:** 5/20 matched (target 5)
 - **Missing functions:** `fails_dialect`, `fails`, `passes`, `test_params_unpack`, `test_params_noargs`, `test_star_cannot_be_last`, `test_star_then_args`, `test_star_then_kwargs`, `test_positional_only`, `test_positional_only_cannot_be_first`, `test_slash_slash`, `test_named_only_in_standard_dialect_def`, `test_named_only_in_standard_dialect_lambda`, `test_positional_only_in_standard_dialect_def`, `test_positional_only_in_standard_dialect_lambda`
 - **Types:** 6/6 matched (target 9)
@@ -247,13 +242,13 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 18. syntax.module
 
-- **Target:** `module.AstModule [ZERO]`
-- **Similarity:** 0.00
+- **Target:** `module.AstModule`
+- **Similarity:** 0.25
 - **Dependents:** 0
-- **Priority Score:** 101810.0
-- **Functions:** 7/16 matched (target 15)
-- **Missing functions:** `codemap`, `dialect`, `create`, `parse_file`, `parse`, `f`, `go`, `test_locations`, `get`
-- **Types:** 1/2 matched (target 3)
+- **Priority Score:** 111807.5
+- **Functions:** 6/16 matched (target 14)
+- **Missing functions:** `codemap`, `statement`, `dialect`, `create`, `parse_file`, `parse`, `f`, `go`, `test_locations`, `get`
+- **Types:** 1/2 matched
 - **Missing types:** `AstModuleFields`
 - **Tests:** 0/2 matched
 
@@ -270,15 +265,14 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 20. syntax.ast
 
-- **Target:** `ast.Ast [STUB]`
-- **Similarity:** 0.00
+- **Target:** `ast.Ast`
+- **Similarity:** 0.58
 - **Dependents:** 0
-- **Priority Score:** 67510.0
-- **Functions:** 12/12 matched (target 38)
+- **Priority Score:** 67504.2
+- **Functions:** 12/12 matched (target 53)
 - **Missing functions:** _none_
-- **Types:** 57/63 matched (target 99)
+- **Types:** 57/63 matched (target 106)
 - **Missing types:** `LoadPayload`, `IdentPayload`, `IdentAssignPayload`, `DefPayload`, `TypeExprPayload`, `ToAst`
-- **TODOs:** 2
 
 ### 21. dot_format_parser
 
@@ -358,9 +352,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 27. syntax.validate
 
 - **Target:** `validate.Validate`
-- **Similarity:** 0.86
+- **Similarity:** 0.89
 - **Dependents:** 0
-- **Priority Score:** 501.4
+- **Priority Score:** 501.1
 - **Functions:** 5/5 matched
 - **Missing functions:** _none_
 - **Types:** 0/0 matched
@@ -369,9 +363,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 28. syntax.top_level_stmts
 
 - **Target:** `toplevelstmts.TopLevelStmts`
-- **Similarity:** 0.84
+- **Similarity:** 0.72
 - **Dependents:** 0
-- **Priority Score:** 301.6
+- **Priority Score:** 302.8
 - **Functions:** 3/3 matched (target 4)
 - **Missing functions:** _none_
 - **Types:** 0/0 matched
@@ -380,9 +374,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 29. syntax.call
 
 - **Target:** `call.Call`
-- **Similarity:** 0.91
+- **Similarity:** 0.90
 - **Dependents:** 0
-- **Priority Score:** 300.9
+- **Priority Score:** 301.0
 - **Functions:** 1/1 matched
 - **Missing functions:** _none_
 - **Types:** 2/2 matched
@@ -390,10 +384,10 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 30. syntax.payload_map
 
-- **Target:** `payloadmap.PayloadMap [ZERO]`
-- **Similarity:** 0.00
+- **Target:** `payloadmap.PayloadMap`
+- **Similarity:** 0.57
 - **Dependents:** 0
-- **Priority Score:** 210.0
+- **Priority Score:** 204.3
 - **Functions:** 1/1 matched (target 24)
 - **Missing functions:** _none_
 - **Types:** 1/1 matched
@@ -430,16 +424,6 @@ For each file to be considered "complete":
 - Documentation ported
 - port-lint header present
 
-## Next Commands
-
-```bash
-# Initialize task queue for systematic porting
-cd tools/ast_distance
-./ast_distance --init-tasks ../../tmp/starlark_syntax rust ../../src/commonMain/kotlin/io/github/kotlinmania/starlarksyntax kotlin tasks.json ../../AGENTS.md
-
-# Get next high-priority task
-./ast_distance --assign tasks.json <agent-id>
-```
 ## Reexport / Wiring Modules
 
 These files match `reexport_modules` patterns in `.ast_distance_config.json`. They are filtered out of
