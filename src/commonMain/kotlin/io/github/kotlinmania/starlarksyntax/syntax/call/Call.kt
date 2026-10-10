@@ -58,6 +58,7 @@ internal class CallArgsUnpack(
                             numPos += 1
                         }
                     }
+
                     is Argument.Named -> {
                         if (stage > ArgsStage.NAMED) {
                             return err(arg.span, "named argument after *args or **kwargs")
@@ -69,6 +70,7 @@ internal class CallArgsUnpack(
                             numNamed += 1
                         }
                     }
+
                     is Argument.Args -> {
                         if (stage > ArgsStage.NAMED) {
                             return err(arg.span, "Args array after another args or kwargs")
@@ -80,12 +82,13 @@ internal class CallArgsUnpack(
                                         "Multiple *args in arguments",
                                         arg.span,
                                         codemap,
-                                    )
+                                    ),
                                 )
                             }
                             star = arg
                         }
                     }
+
                     is Argument.KwArgs -> {
                         if (stage == ArgsStage.KWARGS) {
                             return err(arg.span, "Multiple kwargs dictionary in arguments")
@@ -97,7 +100,7 @@ internal class CallArgsUnpack(
                                         "Multiple **kwargs in arguments",
                                         arg.span,
                                         codemap,
-                                    )
+                                    ),
                                 )
                             }
                             starStar = arg
@@ -114,7 +117,7 @@ internal class CallArgsUnpack(
                         "Argument count mismatch",
                         Span.mergeAll(argList.map { it.span }),
                         codemap,
-                    )
+                    ),
                 )
             }
 
@@ -124,7 +127,7 @@ internal class CallArgsUnpack(
                     named = argList.subList(numPos, numPos + numNamed),
                     star = star,
                     starStar = starStar,
-                )
+                ),
             )
         }
     }
@@ -136,4 +139,3 @@ private enum class ArgsStage {
     ARGS,
     KWARGS,
 }
-

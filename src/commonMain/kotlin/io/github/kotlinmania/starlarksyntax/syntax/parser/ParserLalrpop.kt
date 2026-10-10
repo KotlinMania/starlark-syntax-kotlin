@@ -18,9 +18,8 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
  * limitations under the License.
  */
 
-//! LALRPOP-backed [Parser] implementation.
+// ! LALRPOP-backed [Parser] implementation.
 
-import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
@@ -29,6 +28,7 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.grammar.StarlarkParser
 import io.github.kotlinmania.starlarksyntax.syntax.parseerror.ParseError
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
+import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 
 private fun oneOf(expected: List<String>): String {
     val result = StringBuilder()
@@ -48,12 +48,15 @@ private fun oneOf(expected: List<String>): String {
 internal fun lalrpopErrorToParseError(
     err: LuParseError<Int, Token, EvalException>,
     eofPos: Int,
-): ParseError {
-    return when (err) {
-        is LuParseError.InvalidToken -> ParseError.Error(
-            message = "Parse error: invalid token",
-            span = Span.new(Pos.new(err.location), Pos.new(err.location)),
-        )
+): ParseError =
+    when (err) {
+        is LuParseError.InvalidToken -> {
+            ParseError.Error(
+                message = "Parse error: invalid token",
+                span = Span.new(Pos.new(err.location), Pos.new(err.location)),
+            )
+        }
+
         is LuParseError.UnrecognizedToken -> {
             val (x, t, y) = err.token
             ParseError.Error(
@@ -61,10 +64,14 @@ internal fun lalrpopErrorToParseError(
                 span = Span.new(Pos.new(x), Pos.new(y)),
             )
         }
-        is LuParseError.UnrecognizedEof -> ParseError.Error(
-            message = "Parse error: unexpected end of file",
-            span = Span.new(Pos.new(eofPos), Pos.new(eofPos)),
-        )
+
+        is LuParseError.UnrecognizedEof -> {
+            ParseError.Error(
+                message = "Parse error: unexpected end of file",
+                span = Span.new(Pos.new(eofPos), Pos.new(eofPos)),
+            )
+        }
+
         is LuParseError.ExtraToken -> {
             val (x, t, y) = err.token
             ParseError.Error(
@@ -72,9 +79,11 @@ internal fun lalrpopErrorToParseError(
                 span = Span.new(Pos.new(x), Pos.new(y)),
             )
         }
-        is LuParseError.User -> ParseError.EvalExceptionError(err.error)
+
+        is LuParseError.User -> {
+            ParseError.EvalExceptionError(err.error)
+        }
     }
-}
 
 /** LALRPOP-backed parser. */
 internal class LalrpopParser : Parser {
@@ -82,10 +91,9 @@ internal class LalrpopParser : Parser {
         state: ParserState,
         tokens: Iterator<Lexeme>,
         eofPos: Int,
-    ): Result<AstStmt, ParseError> {
-        return when (val parsed = StarlarkParser().parse(state, tokens)) {
+    ): Result<AstStmt, ParseError> =
+        when (val parsed = StarlarkParser().parse(state, tokens)) {
             is Result.Ok -> Result.Ok(parsed.value)
             is Result.Err -> Result.Err(lalrpopErrorToParseError(parsed.error, eofPos))
         }
-    }
 }

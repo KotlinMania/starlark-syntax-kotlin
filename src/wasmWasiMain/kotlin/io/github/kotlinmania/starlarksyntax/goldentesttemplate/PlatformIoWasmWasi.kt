@@ -1,5 +1,6 @@
 // port-lint: source src/golden_test_template.rs
 @file:OptIn(kotlin.wasm.ExperimentalWasmInterop::class)
+
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 /*
@@ -35,7 +36,7 @@ internal external fun path_open(
     fsRightsBase: Long,
     fsRightsInheriting: Long,
     fdFlags: Short,
-    resultPtr: Int
+    resultPtr: Int,
 ): Int
 
 @WasmImport("wasi_snapshot_preview1", "fd_read")
@@ -43,7 +44,7 @@ internal external fun fd_read(
     fd: Int,
     iovecsPtr: Int,
     iovecsLen: Int,
-    resultPtr: Int
+    resultPtr: Int,
 ): Int
 
 @WasmImport("wasi_snapshot_preview1", "fd_write")
@@ -51,7 +52,7 @@ internal external fun fd_write(
     fd: Int,
     iovecsPtr: Int,
     iovecsLen: Int,
-    resultPtr: Int
+    resultPtr: Int,
 ): Int
 
 @WasmImport("wasi_snapshot_preview1", "fd_close")
@@ -140,17 +141,18 @@ internal actual fun platformReadUtf8File(path: String): String {
             (pathBuffer + i).storeByte(pathBytes[i])
         }
 
-        val openRes = path_open(
-            fd = 3,
-            dirflags = 1,
-            pathPtr = pathBuffer.address.toInt(),
-            pathLen = pathBytes.size,
-            oflags = 0,
-            fsRightsBase = 2L,
-            fsRightsInheriting = 0L,
-            fdFlags = 0,
-            resultPtr = fdPtr.address.toInt()
-        )
+        val openRes =
+            path_open(
+                fd = 3,
+                dirflags = 1,
+                pathPtr = pathBuffer.address.toInt(),
+                pathLen = pathBytes.size,
+                oflags = 0,
+                fsRightsBase = 2L,
+                fsRightsInheriting = 0L,
+                fdFlags = 0,
+                resultPtr = fdPtr.address.toInt(),
+            )
         if (openRes != 0) {
             error("Failed to open file $path via WASI path_open, errno: $openRes")
         }
@@ -166,12 +168,13 @@ internal actual fun platformReadUtf8File(path: String): String {
             val output = mutableListOf<Byte>()
 
             while (true) {
-                val readRes = fd_read(
-                    fd = fileFd,
-                    iovecsPtr = iovec.address.toInt(),
-                    iovecsLen = 1,
-                    resultPtr = bytesReadPtr.address.toInt()
-                )
+                val readRes =
+                    fd_read(
+                        fd = fileFd,
+                        iovecsPtr = iovec.address.toInt(),
+                        iovecsLen = 1,
+                        resultPtr = bytesReadPtr.address.toInt(),
+                    )
                 if (readRes != 0) {
                     error("Failed to read file $path via WASI fd_read, errno: $readRes")
                 }
@@ -200,17 +203,18 @@ internal actual fun platformWriteUtf8File(path: String, content: String) {
             (pathBuffer + i).storeByte(pathBytes[i])
         }
 
-        val openRes = path_open(
-            fd = 3,
-            dirflags = 1,
-            pathPtr = pathBuffer.address.toInt(),
-            pathLen = pathBytes.size,
-            oflags = 9,
-            fsRightsBase = 192L,
-            fsRightsInheriting = 0L,
-            fdFlags = 0,
-            resultPtr = fdPtr.address.toInt()
-        )
+        val openRes =
+            path_open(
+                fd = 3,
+                dirflags = 1,
+                pathPtr = pathBuffer.address.toInt(),
+                pathLen = pathBytes.size,
+                oflags = 9,
+                fsRightsBase = 192L,
+                fsRightsInheriting = 0L,
+                fdFlags = 0,
+                resultPtr = fdPtr.address.toInt(),
+            )
         if (openRes != 0) {
             error("Failed to open file $path for writing via WASI path_open, errno: $openRes")
         }
@@ -228,12 +232,13 @@ internal actual fun platformWriteUtf8File(path: String, content: String) {
             iovec.storeInt(4, contentBytes.size)
 
             val bytesWrittenPtr = allocator.allocateInt()
-            val writeRes = fd_write(
-                fd = fileFd,
-                iovecsPtr = iovec.address.toInt(),
-                iovecsLen = 1,
-                resultPtr = bytesWrittenPtr.address.toInt()
-            )
+            val writeRes =
+                fd_write(
+                    fd = fileFd,
+                    iovecsPtr = iovec.address.toInt(),
+                    iovecsLen = 1,
+                    resultPtr = bytesWrittenPtr.address.toInt(),
+                )
             if (writeRes != 0) {
                 error("Failed to write to file $path via WASI fd_write, errno: $writeRes")
             }

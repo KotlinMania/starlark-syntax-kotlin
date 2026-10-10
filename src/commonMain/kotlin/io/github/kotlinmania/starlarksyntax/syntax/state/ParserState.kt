@@ -18,9 +18,9 @@ package io.github.kotlinmania.starlarksyntax.syntax.state
  * limitations under the License.
  */
 
+import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Span
-import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 
 internal class ParserState(

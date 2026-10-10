@@ -19,18 +19,18 @@ package io.github.kotlinmania.starlarksyntax.syntax.grammar
  * limitations under the License.
  */
 
-import io.github.kotlinmania.starlarksyntax.codemap.Pos as Pos
-import io.github.kotlinmania.starlarksyntax.codemap.Span as Span
-import io.github.kotlinmania.starlarksyntax.codemap.Spanned as Spanned
-import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
+import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
-import io.github.kotlinmania.starlarksyntax.lexer.Token
-import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
-import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.parser.Lexeme
 import io.github.kotlinmania.starlarksyntax.syntax.parser.Result
+import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
+import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
+import io.github.kotlinmania.starlarksyntax.codemap.Pos as Pos
+import io.github.kotlinmania.starlarksyntax.codemap.Span as Span
+import io.github.kotlinmania.starlarksyntax.codemap.Spanned as Spanned
 
 /**
  * LR(1) parser driven by pre-computed ACTION/GOTO tables from GrammarState.
@@ -54,19 +54,21 @@ internal object Parser {
         while (true) {
             val currentState = states.last()
 
-            val action: Int = if (lookahead != null) {
-                val (_, token, _) = lookahead
-                Grammar.__action(currentState, token.toInteger())
-            } else {
-                GrammarState.EOF_ACTION[currentState].toInt()
-            }
+            val action: Int =
+                if (lookahead != null) {
+                    val (_, token, _) = lookahead
+                    Grammar.__action(currentState, token.toInteger())
+                } else {
+                    GrammarState.EOF_ACTION[currentState].toInt()
+                }
 
             when {
                 action > 0 -> {
                     // Shift: push state (action - 1), push token as symbol.
                     // LALRPOP convention: shift target state = action - 1.
-                    val (start, token, end) = lookahead
-                        ?: throw parseError(state, currentState, null)
+                    val (start, token, end) =
+                        lookahead
+                            ?: throw parseError(state, currentState, null)
                     states.add(action - 1)
                     symbols.add(Triple(start, token.toSymbol(), end))
                     lookahead = if (tokens.hasNext()) tokens.next() else null
@@ -87,9 +89,13 @@ internal object Parser {
 
                     val lookaheadStart = lookahead?.first
 
-                    val (consumed, nt) = GrammarReducers.reduce(
-                        ruleId, symbols, state, lookaheadStart
-                    )
+                    val (consumed, nt) =
+                        GrammarReducers.reduce(
+                            ruleId,
+                            symbols,
+                            state,
+                            lookaheadStart,
+                        )
 
                     // Pop consumed states
                     for (i in 0 until consumed) {
@@ -113,19 +119,34 @@ internal object Parser {
     private fun parseError(
         parserState: ParserState,
         _currentLRState: Int,
-        lookahead: Triple<Int, Token, Int>?
+        lookahead: Triple<Int, Token, Int>?,
     ): EvalException {
-        val msg = if (lookahead != null) {
-            val (start, token, end) = lookahead
-            "Parse error: unexpected ${token}"
-        } else {
-            "Parse error: unexpected end of file"
-        }
-        val span = if (lookahead != null) {
-            Span(Pos(lookahead.first), Pos(lookahead.third))
-        } else {
-            Span(Pos(parserState.codemap.fullSpan().end().value), Pos(parserState.codemap.fullSpan().end().value))
-        }
+        val msg =
+            if (lookahead != null) {
+                val (start, token, end) = lookahead
+                "Parse error: unexpected $token"
+            } else {
+                "Parse error: unexpected end of file"
+            }
+        val span =
+            if (lookahead != null) {
+                Span(Pos(lookahead.first), Pos(lookahead.third))
+            } else {
+                Span(
+                    Pos(
+                        parserState.codemap
+                            .fullSpan()
+                            .end()
+                            .value,
+                    ),
+                    Pos(
+                        parserState.codemap
+                            .fullSpan()
+                            .end()
+                            .value,
+                    ),
+                )
+            }
         return EvalException.newAnyhow(Throwable(msg), span, parserState.codemap)
     }
 }
@@ -135,16 +156,18 @@ internal class StarlarkParser {
         state: ParserState,
         tokens: Iterator<Lexeme>,
     ): Result<AstStmt, LuParseError<Int, Token, EvalException>> {
-        val tokenIterator = object : Iterator<Triple<Int, Token, Int>> {
-            override fun hasNext(): Boolean = tokens.hasNext()
+        val tokenIterator =
+            object : Iterator<Triple<Int, Token, Int>> {
+                override fun hasNext(): Boolean = tokens.hasNext()
 
-            override fun next(): Triple<Int, Token, Int> {
-                return when (val token = tokens.next()) {
-                    is Result.Ok -> token.value
-                    is Result.Err -> throw token.error
+                override fun next(): Triple<Int, Token, Int> {
+                    if (!hasNext()) throw NoSuchElementException()
+                    return when (val token = tokens.next()) {
+                        is Result.Ok -> token.value
+                        is Result.Err -> throw token.error
+                    }
                 }
             }
-        }
         return try {
             Result.Ok(Parser.parse(state, tokenIterator))
         } catch (e: EvalException) {

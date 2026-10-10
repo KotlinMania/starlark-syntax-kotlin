@@ -72,50 +72,53 @@ fun spanDisplay(
     annotationLabel: String,
     color: Boolean,
 ): String {
-    fun convertSpanToSlice(span: FileSpanRef): Slice {
-        val region = span.resolveSpan()
+    fun convertSpanToSlice(s: FileSpanRef): Slice {
+        val region = s.resolveSpan()
 
         // we want the source span to capture any whitespace ahead of the diagnostic span to
         // get the column numbers correct in the rendered output, and any trailing source code
         // on the last line for context.
-        val firstLineSpan = span.file.lineSpan(region.begin.line)
-        val lastLineSpan = span.file.lineSpan(region.end.line)
-        val sourceSpan = span.span.merge(firstLineSpan).merge(lastLineSpan)
-        val source = span.file.sourceSpan(sourceSpan)
+        val firstLineSpan = s.file.lineSpan(region.begin.line)
+        val lastLineSpan = s.file.lineSpan(region.end.line)
+        val sourceSpan = s.span.merge(firstLineSpan).merge(lastLineSpan)
+        val source = s.file.sourceSpan(sourceSpan)
 
         // We want to highlight the span, which needs to be relative to source, and in
         // characters.
         // Our spans are in terms of bytes, but our resolved spans in terms of characters.
         val rangeStartChars = region.begin.column
-        val rangeLenChars = len(span.sourceSpan()).value
+        val rangeLenChars = len(s.sourceSpan()).value
 
         return Slice(
             source = source,
             lineStart = 1 + region.begin.line,
-            origin = span.file.filename(),
+            origin = s.file.filename(),
             fold = false,
-            annotations = listOf(
-                SourceAnnotation(
-                    label = "",
-                    annotationType = AnnotationType.Error,
-                    range = Pair(rangeStartChars, rangeStartChars + rangeLenChars),
-                )
-            ),
+            annotations =
+                listOf(
+                    SourceAnnotation(
+                        label = "",
+                        annotationType = AnnotationType.Error,
+                        range = Pair(rangeStartChars, rangeStartChars + rangeLenChars),
+                    ),
+                ),
         )
     }
 
     val slice = span?.let { convertSpanToSlice(it) }
 
-    val snippet = Snippet(
-        title = Annotation(
-            label = annotationLabel,
-            id = null,
-            annotationType = AnnotationType.Error,
-        ),
-        footer = emptyList(),
-        slices = if (slice != null) listOf(slice) else emptyList(),
-        opt = FormatOptions(color = color),
-    )
+    val snippet =
+        Snippet(
+            title =
+                Annotation(
+                    label = annotationLabel,
+                    id = null,
+                    annotationType = AnnotationType.Error,
+                ),
+            footer = emptyList(),
+            slices = if (slice != null) listOf(slice) else emptyList(),
+            opt = FormatOptions(color = color),
+        )
 
     return formatSnippet(snippet)
 }
@@ -147,8 +150,11 @@ private fun formatSnippet(snippet: Snippet): String {
     }
     for (slice in snippet.slices) {
         if (slice.origin != null) {
-            out.append(" --> ").append(slice.origin)
-                .append(':').append(slice.lineStart)
+            out
+                .append(" --> ")
+                .append(slice.origin)
+                .append(':')
+                .append(slice.lineStart)
             if (slice.annotations.isNotEmpty()) {
                 out.append(':').append(slice.annotations[0].range.first + 1)
             }
@@ -163,13 +169,19 @@ private fun formatSnippet(snippet: Snippet): String {
         val lineNoWidth = (lineNo + lines.size).toString().length
         out.append(" ".repeat(lineNoWidth + 1)).append('|').append('\n')
         for (line in lines) {
-            out.append(lineNo.toString().padStart(lineNoWidth)).append(" | ").append(line).append('\n')
+            out
+                .append(lineNo.toString().padStart(lineNoWidth))
+                .append(" | ")
+                .append(line)
+                .append('\n')
             lineNo += 1
         }
         for (annotation in slice.annotations) {
             val (start, end) = annotation.range
             val caretCount = (end - start).coerceAtLeast(1)
-            out.append(" ".repeat(lineNoWidth + 1)).append("| ")
+            out
+                .append(" ".repeat(lineNoWidth + 1))
+                .append("| ")
                 .append(" ".repeat(start))
                 .append("^".repeat(caretCount))
             if (annotation.label.isNotEmpty()) {
@@ -192,10 +204,11 @@ private fun formatSnippet(snippet: Snippet): String {
     return out.toString()
 }
 
-private fun AnnotationType.label(): String = when (this) {
-    AnnotationType.Error -> "error"
-    AnnotationType.Warning -> "warning"
-    AnnotationType.Info -> "info"
-    AnnotationType.Note -> "note"
-    AnnotationType.Help -> "help"
-}
+private fun AnnotationType.label(): String =
+    when (this) {
+        AnnotationType.Error -> "error"
+        AnnotationType.Warning -> "warning"
+        AnnotationType.Info -> "info"
+        AnnotationType.Note -> "note"
+        AnnotationType.Help -> "help"
+    }

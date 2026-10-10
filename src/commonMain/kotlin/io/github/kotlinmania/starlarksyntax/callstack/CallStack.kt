@@ -35,14 +35,10 @@ data class CallStack(
     val frames: List<Frame> = emptyList(),
 ) {
     /** Is the call stack empty? */
-    fun isEmpty(): Boolean {
-        return frames.isEmpty()
-    }
+    fun isEmpty(): Boolean = frames.isEmpty()
 
     /** Take the contained frames. */
-    fun intoFrames(): List<Frame> {
-        return frames
-    }
+    fun intoFrames(): List<Frame> = frames
 
     fun fmt(f: StringBuilder) {
         if (frames.isEmpty()) {

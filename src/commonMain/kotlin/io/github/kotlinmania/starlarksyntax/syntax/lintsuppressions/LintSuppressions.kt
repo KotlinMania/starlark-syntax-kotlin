@@ -119,9 +119,10 @@ internal class LintSuppressionsBuilder {
         // In case the suppression comment has preceding whitespace
         val sourceBeforeToken =
             codemap.sourceSpan(Span.new(effectiveSpan.begin(), tokenSpan.begin()))
-        val suppressNextLine = numberOfTokens > 1
-            || effectiveSpan == tokenSpan
-            || (effectiveSpan.end() == tokenSpan.end() && sourceBeforeToken.trim().isEmpty())
+        val suppressNextLine =
+            numberOfTokens > 1 ||
+                effectiveSpan == tokenSpan ||
+                (effectiveSpan.end() == tokenSpan.end() && sourceBeforeToken.trim().isEmpty())
         if (suppressNextLine) {
             // Expand the span to include the next line,
             // in case suppression was put on the line before the issue
@@ -139,7 +140,7 @@ internal class LintSuppressionsBuilder {
                         tokenSpan = tokenSpan,
                         effectiveSpan = effectiveSpan,
                         suppressNextLine = suppressNextLine,
-                    )
+                    ),
                 )
         }
     }

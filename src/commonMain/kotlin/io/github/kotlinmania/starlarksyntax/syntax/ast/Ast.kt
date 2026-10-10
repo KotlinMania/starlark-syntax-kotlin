@@ -18,7 +18,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.ast
  * limitations under the License.
  */
 
-//! AST for parsed starlark files.
+// ! AST for parsed starlark files.
 
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
@@ -40,21 +40,80 @@ class Comma
 
 // Boxed types used for storing information from the parsing will be used
 // especially for the location of the AST item
-class AstExpr(override val node: Expr, override val span: Span) : Spanned<Expr>(node, span)
-class AstTypeExpr(override val node: TypeExpr, override val span: Span) : Spanned<TypeExpr>(node, span)
-class AstAssignTarget(override val node: AssignTarget, override val span: Span) : Spanned<AssignTarget>(node, span)
-class AstAssignIdent(override val node: AssignIdent, override val span: Span) : Spanned<AssignIdent>(node, span)
-class AstIdent(override val node: Ident, override val span: Span) : Spanned<Ident>(node, span)
-class AstArgument(override val node: Argument, override val span: Span) : Spanned<Argument>(node, span)
-class AstString(override val node: String, override val span: Span) : Spanned<String>(node, span)
-class AstParameter(override val node: Parameter, override val span: Span) : Spanned<Parameter>(node, span)
-class AstInt(override val node: TokenInt, override val span: Span) : Spanned<TokenInt>(node, span)
-class AstFloat(override val node: Double, override val span: Span) : Spanned<Double>(node, span)
-class AstFString(override val node: FString, override val span: Span) : Spanned<FString>(node, span)
-class AstStmt(override val node: Stmt, override val span: Span) : Spanned<Stmt>(node, span)
-class AstClause(override val node: Clause, override val span: Span) : Spanned<Clause>(node, span)
-class AstForClause(override val node: ForClause, override val span: Span) : Spanned<ForClause>(node, span)
-class AstComma(override val node: Comma, override val span: Span) : Spanned<Comma>(node, span)
+class AstExpr(
+    override val node: Expr,
+    override val span: Span,
+) : Spanned<Expr>(node, span)
+
+class AstTypeExpr(
+    override val node: TypeExpr,
+    override val span: Span,
+) : Spanned<TypeExpr>(node, span)
+
+class AstAssignTarget(
+    override val node: AssignTarget,
+    override val span: Span,
+) : Spanned<AssignTarget>(node, span)
+
+class AstAssignIdent(
+    override val node: AssignIdent,
+    override val span: Span,
+) : Spanned<AssignIdent>(node, span)
+
+class AstIdent(
+    override val node: Ident,
+    override val span: Span,
+) : Spanned<Ident>(node, span)
+
+class AstArgument(
+    override val node: Argument,
+    override val span: Span,
+) : Spanned<Argument>(node, span)
+
+class AstString(
+    override val node: String,
+    override val span: Span,
+) : Spanned<String>(node, span)
+
+class AstParameter(
+    override val node: Parameter,
+    override val span: Span,
+) : Spanned<Parameter>(node, span)
+
+class AstInt(
+    override val node: TokenInt,
+    override val span: Span,
+) : Spanned<TokenInt>(node, span)
+
+class AstFloat(
+    override val node: Double,
+    override val span: Span,
+) : Spanned<Double>(node, span)
+
+class AstFString(
+    override val node: FString,
+    override val span: Span,
+) : Spanned<FString>(node, span)
+
+class AstStmt(
+    override val node: Stmt,
+    override val span: Span,
+) : Spanned<Stmt>(node, span)
+
+class AstClause(
+    override val node: Clause,
+    override val span: Span,
+) : Spanned<Clause>(node, span)
+
+class AstForClause(
+    override val node: ForClause,
+    override val span: Span,
+) : Spanned<ForClause>(node, span)
+
+class AstComma(
+    override val node: Comma,
+    override val span: Span,
+) : Spanned<Comma>(node, span)
 
 // Backward compatibility typealiases
 typealias ArgumentP<P> = Argument
@@ -87,52 +146,84 @@ typealias AstStmtP<P> = AstStmt
 typealias AstFStringP<P> = AstFString
 
 // A trait rather than a function to allow .ast() chaining in the parser.
+
 /** Wrap a value with a [Span] computed from `begin..end` byte offsets. */
 fun Expr.ast(begin: Int, end: Int): AstExpr = AstExpr(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun TypeExpr.ast(begin: Int, end: Int): AstTypeExpr = AstTypeExpr(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun AssignTarget.ast(begin: Int, end: Int): AstAssignTarget = AstAssignTarget(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun AssignIdent.ast(begin: Int, end: Int): AstAssignIdent = AstAssignIdent(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Ident.ast(begin: Int, end: Int): AstIdent = AstIdent(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Argument.ast(begin: Int, end: Int): AstArgument = AstArgument(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun String.ast(begin: Int, end: Int): AstString = AstString(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Parameter.ast(begin: Int, end: Int): AstParameter = AstParameter(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun TokenInt.ast(begin: Int, end: Int): AstInt = AstInt(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Double.ast(begin: Int, end: Int): AstFloat = AstFloat(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun FString.ast(begin: Int, end: Int): AstFString = AstFString(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Stmt.ast(begin: Int, end: Int): AstStmt = AstStmt(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Clause.ast(begin: Int, end: Int): AstClause = AstClause(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun ForClause.ast(begin: Int, end: Int): AstForClause = AstForClause(this, Span.new(Pos.new(begin), Pos.new(end)))
+
 fun Comma.ast(begin: Int, end: Int): AstComma = AstComma(this, Span.new(Pos.new(begin), Pos.new(end)))
-fun <T> T.ast(begin: Int, end: Int): Spanned<T> = Spanned(
-    node = this,
-    span = Span.new(Pos.new(begin), Pos.new(end)),
-)
+
+fun <T> T.ast(begin: Int, end: Int): Spanned<T> =
+    Spanned(
+        node = this,
+        span = Span.new(Pos.new(begin), Pos.new(end)),
+    )
 
 sealed class Argument {
-    class Positional(val expr: AstExpr) : Argument()
-    class Named(val name: AstString, val expr: AstExpr) : Argument()
-    class Args(val expr: AstExpr) : Argument()
-    class KwArgs(val expr: AstExpr) : Argument()
+    class Positional(
+        val expr: AstExpr,
+    ) : Argument()
 
-    fun expr(): AstExpr = when (this) {
-        is Positional -> expr
-        is Named -> expr
-        is Args -> expr
-        is KwArgs -> expr
-    }
+    class Named(
+        val name: AstString,
+        val expr: AstExpr,
+    ) : Argument()
 
-    fun exprMut(): AstExpr = when (this) {
-        is Positional -> expr
-        is Named -> expr
-        is Args -> expr
-        is KwArgs -> expr
-    }
+    class Args(
+        val expr: AstExpr,
+    ) : Argument()
+
+    class KwArgs(
+        val expr: AstExpr,
+    ) : Argument()
+
+    fun expr(): AstExpr =
+        when (this) {
+            is Positional -> expr
+            is Named -> expr
+            is Args -> expr
+            is KwArgs -> expr
+        }
+
+    fun exprMut(): AstExpr =
+        when (this) {
+            is Positional -> expr
+            is Named -> expr
+            is Args -> expr
+            is KwArgs -> expr
+        }
 
     /** Argument name if it is named. */
-    fun name(): String? = when (this) {
-        is Named -> name.node
-        else -> null
-    }
+    fun name(): String? =
+        when (this) {
+            is Named -> name.node
+            else -> null
+        }
 
     override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
@@ -152,23 +243,41 @@ sealed class Parameter {
 
     /** `*` marker. */
     class NoArgs : Parameter()
-    class Args(val name: AstAssignIdent, val type: AstTypeExpr?) : Parameter()
-    class KwArgs(val name: AstAssignIdent, val type: AstTypeExpr?) : Parameter()
 
-    fun ident(): AstAssignIdent? = when (this) {
-        is Normal -> name
-        is Args -> name
-        is KwArgs -> name
-        is NoArgs, is Slash -> null
-    }
+    class Args(
+        val name: AstAssignIdent,
+        val type: AstTypeExpr?,
+    ) : Parameter()
+
+    class KwArgs(
+        val name: AstAssignIdent,
+        val type: AstTypeExpr?,
+    ) : Parameter()
+
+    fun ident(): AstAssignIdent? =
+        when (this) {
+            is Normal -> name
+            is Args -> name
+            is KwArgs -> name
+            is NoArgs, is Slash -> null
+        }
 
     override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
 
 sealed class AstLiteral {
-    class IntLiteral(val value: AstInt) : AstLiteral()
-    class FloatLiteral(val value: AstFloat) : AstLiteral()
-    class StringLiteral(val value: AstString) : AstLiteral()
+    class IntLiteral(
+        val value: AstInt,
+    ) : AstLiteral()
+
+    class FloatLiteral(
+        val value: AstFloat,
+    ) : AstLiteral()
+
+    class StringLiteral(
+        val value: AstString,
+    ) : AstLiteral()
+
     class EllipsisLiteral : AstLiteral()
 
     override fun toString(): kotlin.String = StringBuilder().also { fmt(it, this) }.toString()
@@ -179,61 +288,120 @@ class Lambda(
     val body: AstExpr,
     val payload: Any? = null,
 ) {
-    fun signatureSpan(): Span {
-        return params
+    fun signatureSpan(): Span =
+        params
             .map { it.span }
             .reduceOrNull { a, b -> a.merge(b) }
             ?: body.span
-    }
 }
 
-class CallArgs(val args: kotlin.collections.List<AstArgument> = emptyList())
+class CallArgs(
+    val args: kotlin.collections.List<AstArgument> = emptyList(),
+)
 
 sealed class Expr {
-    class Tuple(val elems: kotlin.collections.List<AstExpr>) : Expr()
-    class Dot(val target: AstExpr, val attr: AstString) : Expr()
-    class Call(val target: AstExpr, val args: CallArgs) : Expr()
-    class Index(val target: AstExpr, val index: AstExpr) : Expr()
+    class Tuple(
+        val elems: kotlin.collections.List<AstExpr>,
+    ) : Expr()
+
+    class Dot(
+        val target: AstExpr,
+        val attr: AstString,
+    ) : Expr()
+
+    class Call(
+        val target: AstExpr,
+        val args: CallArgs,
+    ) : Expr()
+
+    class Index(
+        val target: AstExpr,
+        val index: AstExpr,
+    ) : Expr()
+
     class Index2(
         val target: AstExpr,
         val index0: AstExpr,
         val index1: AstExpr,
     ) : Expr()
+
     class Slice(
         val target: AstExpr,
         val start: AstExpr?,
         val stop: AstExpr?,
         val step: AstExpr?,
     ) : Expr()
-    class Identifier(val ident: AstIdent) : Expr()
-    class Lambda(val lambda: io.github.kotlinmania.starlarksyntax.syntax.ast.Lambda) : Expr()
-    class Literal(val literal: AstLiteral) : Expr()
-    class Not(val target: AstExpr) : Expr()
-    class Minus(val target: AstExpr) : Expr()
-    class Plus(val target: AstExpr) : Expr()
-    class BitNot(val target: AstExpr) : Expr()
-    class Op(val left: AstExpr, val op: BinOp, val right: AstExpr) : Expr()
+
+    class Identifier(
+        val ident: AstIdent,
+    ) : Expr()
+
+    class Lambda(
+        val lambda: io.github.kotlinmania.starlarksyntax.syntax.ast.Lambda,
+    ) : Expr()
+
+    class Literal(
+        val literal: AstLiteral,
+    ) : Expr()
+
+    class Not(
+        val target: AstExpr,
+    ) : Expr()
+
+    class Minus(
+        val target: AstExpr,
+    ) : Expr()
+
+    class Plus(
+        val target: AstExpr,
+    ) : Expr()
+
+    class BitNot(
+        val target: AstExpr,
+    ) : Expr()
+
+    class Op(
+        val left: AstExpr,
+        val op: BinOp,
+        val right: AstExpr,
+    ) : Expr()
+
     /** Order: condition, v1, v2 — `v1 if condition else v2`. */
     class If(
         val condition: AstExpr,
         val v1: AstExpr,
         val v2: AstExpr,
     ) : Expr()
-    class List(val elems: kotlin.collections.List<AstExpr>) : Expr()
-    data class DictEntry(val key: AstExpr, val value: AstExpr)
-    class Dict(val entries: kotlin.collections.List<DictEntry>) : Expr()
+
+    class List(
+        val elems: kotlin.collections.List<AstExpr>,
+    ) : Expr()
+
+    data class DictEntry(
+        val key: AstExpr,
+        val value: AstExpr,
+    )
+
+    class Dict(
+        val entries: kotlin.collections.List<DictEntry>,
+    ) : Expr()
+
     class ListComprehension(
         val expr: AstExpr,
         val firstFor: ForClause,
         val clauses: kotlin.collections.List<Clause>,
     ) : Expr()
+
     class DictComprehension(
         val key: AstExpr,
         val value: AstExpr,
         val firstFor: ForClause,
         val clauses: kotlin.collections.List<Clause>,
     ) : Expr()
-    class FString(val fstring: AstFString) : Expr()
+
+    class FString(
+        val fstring: AstFString,
+    ) : Expr()
 
     override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
@@ -248,10 +416,23 @@ class TypeExpr(
 
 /** In some places e.g. AssignModify, the Tuple case is not allowed. */
 sealed class AssignTarget {
-    class Tuple(val elems: kotlin.collections.List<AstAssignTarget>) : AssignTarget()
-    class Index(val target: AstExpr, val index: AstExpr) : AssignTarget()
-    class Dot(val target: AstExpr, val attr: AstString) : AssignTarget()
-    class Identifier(val ident: AstAssignIdent) : AssignTarget()
+    class Tuple(
+        val elems: kotlin.collections.List<AstAssignTarget>,
+    ) : AssignTarget()
+
+    class Index(
+        val target: AstExpr,
+        val index: AstExpr,
+    ) : AssignTarget()
+
+    class Dot(
+        val target: AstExpr,
+        val attr: AstString,
+    ) : AssignTarget()
+
+    class Identifier(
+        val ident: AstAssignIdent,
+    ) : AssignTarget()
 
     override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
@@ -318,8 +499,13 @@ class ForClause(
 }
 
 sealed class Clause {
-    class For(val clause: ForClause) : Clause()
-    class If(val cond: AstExpr) : Clause()
+    class For(
+        val clause: ForClause,
+    ) : Clause()
+
+    class If(
+        val cond: AstExpr,
+    ) : Clause()
 
     override fun toString(): String = StringBuilder().also { fmt(it, this) }.toString()
 }
@@ -345,59 +531,63 @@ enum class BinOp {
     BitOr,
     BitXor,
     LeftShift,
-    RightShift;
+    RightShift,
+    ;
 
-    override fun toString(): String = when (this) {
-        Or -> " or "
-        And -> " and "
-        Equal -> " == "
-        NotEqual -> " != "
-        Less -> " < "
-        Greater -> " > "
-        LessOrEqual -> " <= "
-        GreaterOrEqual -> " >= "
-        In -> " in "
-        NotIn -> " not in "
-        Subtract -> " - "
-        Add -> " + "
-        Multiply -> " * "
-        Percent -> " % "
-        Divide -> " / "
-        FloorDivide -> " // "
-        BitAnd -> " & "
-        BitOr -> " | "
-        BitXor -> " ^ "
-        LeftShift -> " << "
-        RightShift -> " >> "
-    }
+    override fun toString(): String =
+        when (this) {
+            Or -> " or "
+            And -> " and "
+            Equal -> " == "
+            NotEqual -> " != "
+            Less -> " < "
+            Greater -> " > "
+            LessOrEqual -> " <= "
+            GreaterOrEqual -> " >= "
+            In -> " in "
+            NotIn -> " not in "
+            Subtract -> " - "
+            Add -> " + "
+            Multiply -> " * "
+            Percent -> " % "
+            Divide -> " / "
+            FloorDivide -> " // "
+            BitAnd -> " & "
+            BitOr -> " | "
+            BitXor -> " ^ "
+            LeftShift -> " << "
+            RightShift -> " >> "
+        }
 }
 
 enum class AssignOp {
-    Add,         // +=
-    Subtract,    // -=
-    Multiply,    // *=
-    Divide,      // /=
+    Add, // +=
+    Subtract, // -=
+    Multiply, // *=
+    Divide, // /=
     FloorDivide, // //=
-    Percent,     // %=
-    BitAnd,      // &=
-    BitOr,      // |=
-    BitXor,      // ^=
-    LeftShift,   // <<=
-    RightShift;  // >>=
+    Percent, // %=
+    BitAnd, // &=
+    BitOr, // |=
+    BitXor, // ^=
+    LeftShift, // <<=
+    RightShift, // >>=
+    ;
 
-    override fun toString(): String = when (this) {
-        Add -> " += "
-        Subtract -> " -= "
-        Multiply -> " *= "
-        Divide -> " /= "
-        FloorDivide -> " //= "
-        Percent -> " %= "
-        BitAnd -> " &= "
-        BitOr -> " |= "
-        BitXor -> " ^= "
-        LeftShift -> " <<= "
-        RightShift -> " >>= "
-    }
+    override fun toString(): String =
+        when (this) {
+            Add -> " += "
+            Subtract -> " -= "
+            Multiply -> " *= "
+            Divide -> " /= "
+            FloorDivide -> " //= "
+            Percent -> " %= "
+            BitAnd -> " &= "
+            BitOr -> " |= "
+            BitXor -> " ^= "
+            LeftShift -> " <<= "
+            RightShift -> " >>= "
+        }
 }
 
 enum class Visibility {
@@ -440,29 +630,58 @@ class FString(
 
 sealed class Stmt {
     class Break : Stmt()
+
     class Continue : Stmt()
+
     class Pass : Stmt()
-    class Return(val value: AstExpr?) : Stmt()
-    class Expression(val expr: AstExpr) : Stmt()
-    class Assign(val assign: io.github.kotlinmania.starlarksyntax.syntax.ast.Assign) : Stmt()
+
+    class Return(
+        val value: AstExpr?,
+    ) : Stmt()
+
+    class Expression(
+        val expr: AstExpr,
+    ) : Stmt()
+
+    class Assign(
+        val assign: io.github.kotlinmania.starlarksyntax.syntax.ast.Assign,
+    ) : Stmt()
+
     class AssignModify(
         val lhs: AstAssignTarget,
         val op: AssignOp,
         val rhs: AstExpr,
     ) : Stmt()
-    class Statements(val stmts: kotlin.collections.List<AstStmt>) : Stmt()
-    class If(val cond: AstExpr, val suite: AstStmt) : Stmt()
+
+    class Statements(
+        val stmts: kotlin.collections.List<AstStmt>,
+    ) : Stmt()
+
+    class If(
+        val cond: AstExpr,
+        val suite: AstStmt,
+    ) : Stmt()
+
     class IfElse(
         val cond: AstExpr,
         val suite1: AstStmt,
         val suite2: AstStmt,
     ) : Stmt()
-    class For(val forStmt: io.github.kotlinmania.starlarksyntax.syntax.ast.For) : Stmt()
-    class Def(val def: io.github.kotlinmania.starlarksyntax.syntax.ast.Def) : Stmt()
-    class Load(val load: io.github.kotlinmania.starlarksyntax.syntax.ast.Load) : Stmt()
+
+    class For(
+        val forStmt: io.github.kotlinmania.starlarksyntax.syntax.ast.For,
+    ) : Stmt()
+
+    class Def(
+        val def: io.github.kotlinmania.starlarksyntax.syntax.ast.Def,
+    ) : Stmt()
+
+    class Load(
+        val load: io.github.kotlinmania.starlarksyntax.syntax.ast.Load,
+    ) : Stmt()
 
     override fun toString(): String =
-        StringBuilder().also { fmtWithTab(it, this, "") }.toString()
+        StringBuilder().also { fmt(it, this) }.toString()
 }
 
 private fun <I> commaSeparatedFmt(
@@ -506,45 +725,49 @@ private fun fmt(out: StringBuilder, self: AstLiteral) {
 }
 
 private fun fmt(out: StringBuilder, self: BinOp) {
-    out.append(when (self) {
-        BinOp.Or -> " or "
-        BinOp.And -> " and "
-        BinOp.Equal -> " == "
-        BinOp.NotEqual -> " != "
-        BinOp.Less -> " < "
-        BinOp.Greater -> " > "
-        BinOp.LessOrEqual -> " <= "
-        BinOp.GreaterOrEqual -> " >= "
-        BinOp.In -> " in "
-        BinOp.NotIn -> " not in "
-        BinOp.Subtract -> " - "
-        BinOp.Add -> " + "
-        BinOp.Multiply -> " * "
-        BinOp.Percent -> " % "
-        BinOp.Divide -> " / "
-        BinOp.FloorDivide -> " // "
-        BinOp.BitAnd -> " & "
-        BinOp.BitOr -> " | "
-        BinOp.BitXor -> " ^ "
-        BinOp.LeftShift -> " << "
-        BinOp.RightShift -> " >> "
-    })
+    out.append(
+        when (self) {
+            BinOp.Or -> " or "
+            BinOp.And -> " and "
+            BinOp.Equal -> " == "
+            BinOp.NotEqual -> " != "
+            BinOp.Less -> " < "
+            BinOp.Greater -> " > "
+            BinOp.LessOrEqual -> " <= "
+            BinOp.GreaterOrEqual -> " >= "
+            BinOp.In -> " in "
+            BinOp.NotIn -> " not in "
+            BinOp.Subtract -> " - "
+            BinOp.Add -> " + "
+            BinOp.Multiply -> " * "
+            BinOp.Percent -> " % "
+            BinOp.Divide -> " / "
+            BinOp.FloorDivide -> " // "
+            BinOp.BitAnd -> " & "
+            BinOp.BitOr -> " | "
+            BinOp.BitXor -> " ^ "
+            BinOp.LeftShift -> " << "
+            BinOp.RightShift -> " >> "
+        },
+    )
 }
 
 private fun fmt(out: StringBuilder, self: AssignOp) {
-    out.append(when (self) {
-        AssignOp.Add -> " += "
-        AssignOp.Subtract -> " -= "
-        AssignOp.Multiply -> " *= "
-        AssignOp.Divide -> " /= "
-        AssignOp.FloorDivide -> " //= "
-        AssignOp.Percent -> " %= "
-        AssignOp.BitAnd -> " &= "
-        AssignOp.BitOr -> " |= "
-        AssignOp.BitXor -> " ^= "
-        AssignOp.LeftShift -> " <<= "
-        AssignOp.RightShift -> " >>= "
-    })
+    out.append(
+        when (self) {
+            AssignOp.Add -> " += "
+            AssignOp.Subtract -> " -= "
+            AssignOp.Multiply -> " *= "
+            AssignOp.Divide -> " /= "
+            AssignOp.FloorDivide -> " //= "
+            AssignOp.Percent -> " %= "
+            AssignOp.BitAnd -> " &= "
+            AssignOp.BitOr -> " |= "
+            AssignOp.BitXor -> " ^= "
+            AssignOp.LeftShift -> " <<= "
+            AssignOp.RightShift -> " >>= "
+        },
+    )
 }
 
 private fun fmt(out: StringBuilder, self: AssignIdent) {
@@ -566,10 +789,12 @@ private fun fmt(out: StringBuilder, self: Expr) {
             commaSeparatedFmt(out, self.elems, { x, f -> fmt(f, x.node) }, true)
             out.append(")")
         }
+
         is Expr.Dot -> {
             fmt(out, self.target.node)
             out.append('.').append(self.attr.node)
         }
+
         is Expr.Lambda -> {
             val l = self.lambda
             out.append("(lambda ")
@@ -578,6 +803,7 @@ private fun fmt(out: StringBuilder, self: Expr) {
             fmt(out, l.body.node)
             out.append(")")
         }
+
         is Expr.Call -> {
             fmt(out, self.target.node)
             out.append('(')
@@ -587,12 +813,14 @@ private fun fmt(out: StringBuilder, self: Expr) {
             }
             out.append(')')
         }
+
         is Expr.Index -> {
             fmt(out, self.target.node)
             out.append('[')
             fmt(out, self.index.node)
             out.append(']')
         }
+
         is Expr.Index2 -> {
             fmt(out, self.target.node)
             out.append('[')
@@ -601,6 +829,7 @@ private fun fmt(out: StringBuilder, self: Expr) {
             fmt(out, self.index1.node)
             out.append(']')
         }
+
         is Expr.Slice -> {
             fmt(out, self.target.node)
             out.append("[]")
@@ -618,31 +847,40 @@ private fun fmt(out: StringBuilder, self: Expr) {
                 fmt(out, self.step.node)
             }
         }
-        is Expr.Identifier -> out.append(self.ident.node.ident)
+
+        is Expr.Identifier -> {
+            fmt(out, self.ident.node)
+        }
+
         is Expr.Not -> {
             out.append("(not ")
             fmt(out, self.target.node)
             out.append(')')
         }
+
         is Expr.Minus -> {
             out.append('-')
             fmt(out, self.target.node)
         }
+
         is Expr.Plus -> {
             out.append('+')
             fmt(out, self.target.node)
         }
+
         is Expr.BitNot -> {
             out.append('~')
             fmt(out, self.target.node)
         }
+
         is Expr.Op -> {
             out.append('(')
             fmt(out, self.left.node)
-            out.append(self.op.toString())
+            fmt(out, self.op)
             fmt(out, self.right.node)
             out.append(')')
         }
+
         is Expr.If -> {
             out.append('(')
             fmt(out, self.v1.node)
@@ -652,11 +890,13 @@ private fun fmt(out: StringBuilder, self: Expr) {
             fmt(out, self.v2.node)
             out.append(')')
         }
+
         is Expr.List -> {
             out.append('[')
             commaSeparatedFmt(out, self.elems, { x, f -> fmt(f, x.node) }, false)
             out.append(']')
         }
+
         is Expr.Dict -> {
             out.append('{')
             commaSeparatedFmt(out, self.entries, { x, f ->
@@ -666,6 +906,7 @@ private fun fmt(out: StringBuilder, self: Expr) {
             }, false)
             out.append('}')
         }
+
         is Expr.ListComprehension -> {
             out.append('[')
             fmt(out, self.expr.node)
@@ -675,6 +916,7 @@ private fun fmt(out: StringBuilder, self: Expr) {
             }
             out.append(']')
         }
+
         is Expr.DictComprehension -> {
             out.append('{')
             fmt(out, self.key.node)
@@ -686,7 +928,11 @@ private fun fmt(out: StringBuilder, self: Expr) {
             }
             out.append('}')
         }
-        is Expr.Literal -> fmt(out, self.literal)
+
+        is Expr.Literal -> {
+            fmt(out, self.literal)
+        }
+
         is Expr.FString -> {
             val f = self.fstring.node
             // Write out the desugared form.
@@ -708,31 +954,41 @@ private fun fmt(out: StringBuilder, self: AssignTarget) {
             commaSeparatedFmt(out, self.elems, { x, f -> fmt(f, x.node) }, true)
             out.append(')')
         }
+
         is AssignTarget.Dot -> {
             fmt(out, self.target.node)
             out.append('.').append(self.attr.node)
         }
+
         is AssignTarget.Index -> {
             fmt(out, self.target.node)
             out.append('[')
             fmt(out, self.index.node)
             out.append(']')
         }
-        is AssignTarget.Identifier -> out.append(self.ident.node.ident)
+
+        is AssignTarget.Identifier -> {
+            fmt(out, self.ident.node)
+        }
     }
 }
 
 private fun fmt(out: StringBuilder, self: Argument) {
     when (self) {
-        is Argument.Positional -> fmt(out, self.expr.node)
+        is Argument.Positional -> {
+            fmt(out, self.expr.node)
+        }
+
         is Argument.Named -> {
             out.append(self.name.node).append(" = ")
             fmt(out, self.expr.node)
         }
+
         is Argument.Args -> {
             out.append('*')
             fmt(out, self.expr.node)
         }
+
         is Argument.KwArgs -> {
             out.append("**")
             fmt(out, self.expr.node)
@@ -742,8 +998,16 @@ private fun fmt(out: StringBuilder, self: Argument) {
 
 private fun fmt(out: StringBuilder, self: Parameter) {
     when (self) {
-        is Parameter.Slash -> { out.append('/'); return }
-        is Parameter.NoArgs -> { out.append('*'); return }
+        is Parameter.Slash -> {
+            out.append('/')
+            return
+        }
+
+        is Parameter.NoArgs -> {
+            out.append('*')
+            return
+        }
+
         is Parameter.Normal -> {
             out.append(self.name.node.ident)
             if (self.type != null) {
@@ -755,6 +1019,7 @@ private fun fmt(out: StringBuilder, self: Parameter) {
                 fmt(out, self.default.node)
             }
         }
+
         is Parameter.Args -> {
             out.append('*').append(self.name.node.ident)
             if (self.type != null) {
@@ -762,6 +1027,7 @@ private fun fmt(out: StringBuilder, self: Parameter) {
                 fmt(out, self.type.node)
             }
         }
+
         is Parameter.KwArgs -> {
             out.append("**").append(self.name.node.ident)
             if (self.type != null) {
@@ -781,7 +1047,10 @@ private fun fmt(out: StringBuilder, self: ForClause) {
 
 private fun fmt(out: StringBuilder, self: Clause) {
     when (self) {
-        is Clause.For -> fmt(out, self.clause)
+        is Clause.For -> {
+            fmt(out, self.clause)
+        }
+
         is Clause.If -> {
             out.append(" if ")
             fmt(out, self.cond.node)
@@ -791,9 +1060,18 @@ private fun fmt(out: StringBuilder, self: Clause) {
 
 private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
     when (self) {
-        is Stmt.Break -> { out.append(tab).append("break\n") }
-        is Stmt.Continue -> { out.append(tab).append("continue\n") }
-        is Stmt.Pass -> { out.append(tab).append("pass\n") }
+        is Stmt.Break -> {
+            out.append(tab).append("break\n")
+        }
+
+        is Stmt.Continue -> {
+            out.append(tab).append("continue\n")
+        }
+
+        is Stmt.Pass -> {
+            out.append(tab).append("pass\n")
+        }
+
         is Stmt.Return -> {
             if (self.value != null) {
                 out.append(tab).append("return ")
@@ -803,11 +1081,13 @@ private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
                 out.append(tab).append("return\n")
             }
         }
+
         is Stmt.Expression -> {
             out.append(tab)
             fmt(out, self.expr.node)
             out.append('\n')
         }
+
         is Stmt.Assign -> {
             val a = self.assign
             out.append(tab)
@@ -822,24 +1102,28 @@ private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
             fmt(out, a.rhs.node)
             out.append('\n')
         }
+
         is Stmt.AssignModify -> {
             out.append(tab)
             fmt(out, self.lhs.node)
-            out.append(self.op.toString())
+            fmt(out, self.op)
             fmt(out, self.rhs.node)
             out.append('\n')
         }
+
         is Stmt.Statements -> {
             for (st in self.stmts) {
                 fmtWithTab(out, st.node, tab)
             }
         }
+
         is Stmt.If -> {
             out.append(tab).append("if ")
             fmt(out, self.cond.node)
             out.append(":\n")
             fmtWithTab(out, self.suite.node, tab + "  ")
         }
+
         is Stmt.IfElse -> {
             out.append(tab).append("if ")
             fmt(out, self.cond.node)
@@ -848,6 +1132,7 @@ private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
             out.append(tab).append("else:\n")
             fmtWithTab(out, self.suite2.node, tab + "  ")
         }
+
         is Stmt.For -> {
             val f = self.forStmt
             out.append(tab).append("for ")
@@ -857,9 +1142,14 @@ private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
             out.append(":\n")
             fmtWithTab(out, f.body.node, tab + "  ")
         }
+
         is Stmt.Def -> {
             val d = self.def
-            out.append(tab).append("def ").append(d.name.node.ident).append('(')
+            out
+                .append(tab)
+                .append("def ")
+                .append(d.name.node.ident)
+                .append('(')
             commaSeparatedFmt(out, d.params, { x, ff -> fmt(ff, x.node) }, false)
             out.append(')')
             if (d.returnType != null) {
@@ -869,6 +1159,7 @@ private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
             out.append(":\n")
             fmtWithTab(out, d.body.node, tab + "  ")
         }
+
         is Stmt.Load -> {
             val load = self.load
             out.append(tab).append("load(")
@@ -882,6 +1173,3 @@ private fun fmtWithTab(out: StringBuilder, self: Stmt, tab: String) {
         }
     }
 }
-
-
-

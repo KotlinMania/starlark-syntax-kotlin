@@ -57,7 +57,7 @@ private fun skipAtMost1Byte(x: String, n: Int): Int {
     // (c.f. https://github.com/haskell-foundation/foundation/blob/master/foundation/cbits/foundation_utf8.c)
 
     // Same function, but returning the end offset.
-    fun f(n: Int): Int {
+    fun f(): Int {
         val leading = min(8, n)
         val trailing = (n - leading) % 8
         val loops = (n - leading) / 8
@@ -93,7 +93,7 @@ private fun skipAtMost1Byte(x: String, n: Int): Int {
         return p
     }
 
-    return f(n)
+    return f()
 }
 
 /** Find the character at position `i`. */
@@ -152,13 +152,11 @@ private fun codepointCount(s: String): Int {
  * If the needle represents a complete character, this will be equivalent to doing
  * search for that character in the string.
  */
-fun countMatchesByte(x: String, needle: Byte): Int {
-    return x.encodeToByteArray().count { it == needle }
-}
+fun countMatchesByte(x: String, needle: Byte): Int = x.encodeToByteArray().count { it == needle }
 
 /** Find the number of times a `needle` occurs within a string, non-overlapping. */
-fun countMatches(x: String, needle: String): Int {
-    return if (needle.length == 1) {
+fun countMatches(x: String, needle: String): Int =
+    if (needle.length == 1) {
         // If we are searching for a 1-byte string, we can provide a much faster path.
         // Since it is one byte, given how UTF8 works, all the resultant slices must be UTF8 too.
         countMatchesByte(x, needle.encodeToByteArray()[0])
@@ -175,7 +173,6 @@ fun countMatches(x: String, needle: String): Int {
         }
         count
     }
-}
 
 /** Result of applying `start` and `end` to a string. */
 data class StrIndices(
@@ -212,12 +209,11 @@ fun splitAt(x: String, i: CharIndex): Pair<String, String>? {
 }
 
 /** Perform the Starlark operation `x[:i]` (`i` is an unsigned integer here). */
-private fun splitAtEnd(x: String, i: CharIndex): String {
-    return when (val pair = splitAt(x, i)) {
+private fun splitAtEnd(x: String, i: CharIndex): String =
+    when (val pair = splitAt(x, i)) {
         null -> x
         else -> pair.first
     }
-}
 
 private fun convertStrIndicesSlow(
     s: String,
@@ -229,9 +225,9 @@ private fun convertStrIndicesSlow(
     check((start != null && start < 0) || (end != null && end < 0))
     // If both indices are negative, we should have ruled `start > end` case before.
     check(
-        (start != null && end != null && (start >= 0 || end >= 0 || start <= end))
-            || start == null
-            || end == null
+        (start != null && end != null && (start >= 0 || end >= 0 || start <= end)) ||
+            start == null ||
+            end == null,
     )
     val len = len(s)
     val (cstart, cend) = convertIndices(len.value, start, end)
@@ -242,15 +238,16 @@ private fun convertStrIndicesSlow(
     val endIdx = CharIndex(cend)
     check(endIdx <= len)
     val sBytes = s.encodeToByteArray()
-    val haystack = if (len.value == sBytes.size) {
-        // ASCII fast path: if char len is equal to byte len,
-        // we know the string is ASCII.
-        sBytes.decodeToString(startIdx.value, endIdx.value)
-    } else {
-        val (_, tail) = splitAt(s, startIdx)!!
-        val (head, _) = splitAt(tail, endIdx - startIdx)!!
-        head
-    }
+    val haystack =
+        if (len.value == sBytes.size) {
+            // ASCII fast path: if char len is equal to byte len,
+            // we know the string is ASCII.
+            sBytes.decodeToString(startIdx.value, endIdx.value)
+        } else {
+            val (_, tail) = splitAt(s, startIdx)!!
+            val (head, _) = splitAt(tail, endIdx - startIdx)!!
+            head
+        }
     return StrIndices(startIdx, haystack)
 }
 
@@ -263,22 +260,33 @@ fun convertStrIndices(
     return when {
         // Following cases but last optimize index computation
         // by avoiding computing the length of the string.
-        start == null && end == null -> StrIndices(CharIndex(0), s)
+        start == null && end == null -> {
+            StrIndices(CharIndex(0), s)
+        }
+
         start != null && end == null && start >= 0 -> {
             val (_, tail) = splitAt(s, CharIndex(start)) ?: return null
             StrIndices(CharIndex(start), tail)
         }
+
         start == null && end != null && end >= 0 -> {
             val tail = splitAtEnd(s, CharIndex(end))
             StrIndices(CharIndex(0), tail)
         }
+
         start != null && end != null && start >= 0 && end >= start -> {
             val (_, tail) = splitAt(s, CharIndex(start)) ?: return null
             val sub = splitAtEnd(tail, CharIndex(end - start))
             StrIndices(CharIndex(start), sub)
         }
-        start != null && end != null && (start >= 0) == (end >= 0) && start > end -> null
-        else -> convertStrIndicesSlow(s, start, end)
+
+        start != null && end != null && (start >= 0) == (end >= 0) && start > end -> {
+            null
+        }
+
+        else -> {
+            convertStrIndicesSlow(s, start, end)
+        }
     }
 }
 
@@ -322,8 +330,12 @@ fun contains(haystack: String, needle: String): Boolean {
  * Index of a char in a string.
  * This is different from string byte offset.
  */
-data class CharIndex(val value: Int) : Comparable<CharIndex> {
+data class CharIndex(
+    val value: Int,
+) : Comparable<CharIndex> {
     operator fun minus(rhs: CharIndex): CharIndex = CharIndex(value - rhs.value)
+
     operator fun plus(rhs: CharIndex): CharIndex = CharIndex(value + rhs.value)
+
     override fun compareTo(other: CharIndex): Int = value.compareTo(other.value)
 }

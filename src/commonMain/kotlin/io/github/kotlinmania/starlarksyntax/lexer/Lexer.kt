@@ -18,60 +18,78 @@ package io.github.kotlinmania.starlarksyntax.lexer
  * limitations under the License.
  */
 
+import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.cursors.CursorBytes
 import io.github.kotlinmania.starlarksyntax.cursors.CursorChars
-import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.error.Error
 import io.github.kotlinmania.starlarksyntax.error.ErrorKind
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParseResult
 
-sealed class LexemeError(val message: String) {
+sealed class LexemeError(
+    val message: String,
+) {
     data object Indentation : LexemeError("Parse error: incorrect indentation")
-    data class InvalidInput(val input: String) : LexemeError("Parse error: invalid input `$input`")
+
+    data class InvalidInput(
+        val input: String,
+    ) : LexemeError("Parse error: invalid input `$input`")
+
     data object InvalidTab : LexemeError("Parse error: tabs are not allowed")
+
     data object UnfinishedStringLiteral : LexemeError("Parse error: unfinished string literal")
-    data class InvalidEscapeSequence(val seq: String) :
-        LexemeError("Parse error: invalid string escape sequence `$seq`")
+
+    data class InvalidEscapeSequence(
+        val seq: String,
+    ) : LexemeError("Parse error: invalid string escape sequence `$seq`")
 
     data object EmptyEscapeSequence :
         LexemeError("Parse error: missing string escape sequence, only saw `\\`")
 
-    data class ReservedKeyword(val keyword: String) :
-        LexemeError("Parse error: cannot use reserved keyword `$keyword`")
+    data class ReservedKeyword(
+        val keyword: String,
+    ) : LexemeError("Parse error: cannot use reserved keyword `$keyword`")
 
-    data class StartsZero(val literal: String) :
-        LexemeError("Parse error: integer cannot have leading 0, got `$literal`")
+    data class StartsZero(
+        val literal: String,
+    ) : LexemeError("Parse error: integer cannot have leading 0, got `$literal`")
 
-    data class IntParse(val literal: String) :
-        LexemeError("Parse error: failed to parse integer: `$literal`")
+    data class IntParse(
+        val literal: String,
+    ) : LexemeError("Parse error: failed to parse integer: `$literal`")
 
     data object CommentSpanComputedIncorrectly :
         LexemeError("Comment span is computed incorrectly (internal error)")
 
-    data class CannotParse(val literal: String, val base: Int) :
-        LexemeError("Cannot parse `$literal` as an integer in base $base")
+    data class CannotParse(
+        val literal: String,
+        val base: Int,
+    ) : LexemeError("Cannot parse `$literal` as an integer in base $base")
 }
 
-private class LexemeErrorException(private val err: LexemeError) : Exception(err.message) {
+private class LexemeErrorException(
+    private val err: LexemeError,
+) : Exception(err.message) {
     override fun toString(): String = err.message
 }
 
 private typealias LexemeT<T> = ParseResult<Triple<Int, T, Int>, EvalException>
 internal typealias Lexeme = LexemeT<Token>
 
-private fun <T1, T2> mapLexemeT(lexeme: LexemeT<T1>, f: (T1) -> T2): LexemeT<T2> {
-    return when (lexeme) {
+private fun <T1, T2> mapLexemeT(lexeme: LexemeT<T1>, f: (T1) -> T2): LexemeT<T2> =
+    when (lexeme) {
         is ParseResult.Ok -> {
             val (l, t, r) = lexeme.value
             ParseResult.Ok(Triple(l, f(t), r))
         }
-        is ParseResult.Err -> ParseResult.Err(lexeme.error)
+
+        is ParseResult.Err -> {
+            ParseResult.Err(lexeme.error)
+        }
     }
-}
 
 internal class Lexer(
     input: String,
@@ -91,28 +109,24 @@ internal class Lexer(
         }
     }
 
-    private fun errPos(msg: LexemeError, pos: Int): EvalException {
-        return errSpan(msg, pos, pos)
-    }
+    private fun errPos(msg: LexemeError, pos: Int): EvalException = errSpan(msg, pos, pos)
 
-    private fun errSpan(msg: LexemeError, start: Int, end: Int): EvalException {
-        return EvalException.new(
+    private fun errSpan(msg: LexemeError, start: Int, end: Int): EvalException =
+        EvalException.new(
             Error.newKind(ErrorKind.Parser(LexemeErrorException(msg))),
             Span.new(Pos.new(start), Pos.new(end)),
             codemap,
         )
-    }
 
-    private fun errNow(msg: (String) -> LexemeError): EvalException {
-        return errSpan(
+    private fun errNow(msg: (String) -> LexemeError): EvalException =
+        errSpan(
             msg(lexer.slice()),
             lexer.spanStart(),
             lexer.spanEnd(),
         )
-    }
 
-    /// Comment tokens are produced by either the token lexer for comments after code,
-    /// or explicitly on lines which are only comments. This function is used in the latter case.
+    // / Comment tokens are produced by either the token lexer for comments after code,
+    // / or explicitly on lines which are only comments. This function is used in the latter case.
     private fun makeComment(start: Int, end: Int): Lexeme {
         val comment = lexer.sliceFromSource(start, end)
         if (!comment.startsWith('#')) {
@@ -130,8 +144,8 @@ internal class Lexer(
         return ParseResult.Ok(Triple(start, Token.Comment(text), actualEnd))
     }
 
-    /// We have just seen a newline, read how many indents we have
-    /// and then set self.indent properly.
+    // / We have just seen a newline, read how many indents we have
+    // / and then set self.indent properly.
     private fun calculateIndent(): EvalException? {
         // Consume tabs and spaces, output the indentation levels.
         val it = CursorBytes(lexer.remainder())
@@ -145,17 +159,26 @@ internal class Lexer(
                     lexer.bump(it.pos())
                     return null
                 }
-                ' ' -> spaces += 1
-                '\t' -> tabs += 1
+
+                ' ' -> {
+                    spaces += 1
+                }
+
+                '\t' -> {
+                    tabs += 1
+                }
+
                 '\n' -> {
                     // A line that is entirely blank gets emitted as a newline, and then
                     // we don't consume the subsequent newline character.
                     lexer.bump(it.pos() - 1)
                     return null
                 }
+
                 '\r' -> {
                     // We just ignore these entirely.
                 }
+
                 '#' -> {
                     // A line that is all comments, only emits comment tokens.
                     // Skip until the next newline.
@@ -171,7 +194,11 @@ internal class Lexer(
                                 lexer.bump(it.pos())
                                 return null
                             }
-                            '\n' -> break
+
+                            '\n' -> {
+                                break
+                            }
+
                             else -> {}
                         }
                     }
@@ -179,7 +206,10 @@ internal class Lexer(
                     buffer.addLast(makeComment(start, end))
                     indentStart = lexer.spanEnd() + it.pos()
                 }
-                else -> break
+
+                else -> {
+                    break
+                }
             }
         }
 
@@ -215,9 +245,7 @@ internal class Lexer(
         return null
     }
 
-    private fun wrap(token: Token): Lexeme {
-        return ParseResult.Ok(Triple(lexer.spanStart(), token, lexer.spanEnd()))
-    }
+    private fun wrap(token: Token): Lexeme = ParseResult.Ok(Triple(lexer.spanStart(), token, lexer.spanEnd()))
 
     // We've potentially seen one character, now consume between min and max elements of iterator
     // and treat it as an int in base radix.
@@ -252,49 +280,73 @@ internal class Lexer(
     // We have seen a '\' character, now parse what comes next.
     private fun escape(it: CursorChars, res: StringBuilder): Boolean {
         return when (val c = it.next()) {
-            null -> false
+            null -> {
+                false
+            }
+
             'n'.code -> {
-                res.append('\n'); true
+                res.append('\n')
+                true
             }
+
             'r'.code -> {
-                res.append('\r'); true
+                res.append('\r')
+                true
             }
+
             't'.code -> {
-                res.append('\t'); true
+                res.append('\t')
+                true
             }
+
             'a'.code -> {
-                res.append('\u0007'); true
+                res.append('\u0007')
+                true
             }
+
             'b'.code -> {
-                res.append('\u0008'); true
+                res.append('\u0008')
+                true
             }
+
             'f'.code -> {
-                res.append('\u000c'); true
+                res.append('\u000c')
+                true
             }
+
             'v'.code -> {
-                res.append('\u000b'); true
+                res.append('\u000b')
+                true
             }
-            '\n'.code -> true
+
+            '\n'.code -> {
+                true
+            }
+
             '\r'.code -> {
                 // Windows newline incoming, we expect a \n next, which we can ignore.
                 it.next() == '\n'.code
             }
+
             'x'.code -> {
                 // Rust uses `char::from_u32` for these escapes, so they must be valid Unicode scalar values.
                 val ch = escapeChar(it, 2, 2, 16) ?: return false
                 res.appendCodePoint(ch)
                 true
             }
+
             'u'.code -> {
                 val ch = escapeChar(it, 4, 4, 16) ?: return false
                 res.appendCodePoint(ch)
                 true
             }
+
             'U'.code -> {
                 val ch = escapeChar(it, 8, 8, 16) ?: return false
                 res.appendCodePoint(ch)
                 true
             }
+
             else -> {
                 when (c) {
                     in '0'.code..'7'.code -> {
@@ -303,10 +355,12 @@ internal class Lexer(
                         res.appendCodePoint(ch)
                         true
                     }
+
                     '"'.code, '\''.code, '\\'.code -> {
                         res.appendCodePoint(c)
                         true
                     }
+
                     else -> {
                         res.append('\\')
                         res.appendCodePoint(c)
@@ -317,9 +371,9 @@ internal class Lexer(
         }
     }
 
-    /// Parse a String. Return the String, and the offset where it starts.
-    /// String parsing is a hot-spot, so parameterise by a `stop` function which gets
-    /// specialised for each variant.
+    // / Parse a String. Return the String, and the offset where it starts.
+    // / String parsing is a hot-spot, so parameterise by a `stop` function which gets
+    // / specialised for each variant.
     private fun string(
         triple: Boolean,
         raw: Boolean,
@@ -401,9 +455,11 @@ internal class Lexer(
                         out.append('\n')
                     }
                 }
+
                 '\r'.code -> {
                     // We just ignore these in all modes.
                 }
+
                 '\\'.code -> {
                     if (raw) {
                         val next = itSlow.next() ?: break
@@ -421,7 +477,10 @@ internal class Lexer(
                         }
                     }
                 }
-                else -> out.appendCodePoint(c)
+
+                else -> {
+                    out.appendCodePoint(c)
+                }
             }
         }
 
@@ -429,14 +488,13 @@ internal class Lexer(
         return ParseResult.Err(errSpan(LexemeError.UnfinishedStringLiteral, stringStart, stringEnd + itSlow.pos()))
     }
 
-    private fun int(s: String, radix: Int): Lexeme {
-        return try {
+    private fun int(s: String, radix: Int): Lexeme =
+        try {
             val i = TokenInt.fromStrRadix(s, radix)
             ParseResult.Ok(Triple(lexer.spanStart(), Token.IntToken(i), lexer.spanEnd()))
         } catch (e: Exception) {
             ParseResult.Err(errNow { LexemeError.IntParse(it) })
         }
-    }
 
     override fun hasNext(): Boolean {
         if (buffer.isNotEmpty()) return true
@@ -465,6 +523,7 @@ internal class Lexer(
                     indentLevels.clear()
                     return wrap(Token.Newline)
                 }
+
                 is ParseResult.Ok -> {
                     val token = next.value
                     when (token) {
@@ -472,6 +531,7 @@ internal class Lexer(
                             buffer.addLast(ParseResult.Err(errPos(LexemeError.InvalidTab, lexer.spanStart())))
                             continue
                         }
+
                         Token.Newline -> {
                             if (parens == 0) {
                                 val spanStart = lexer.spanStart()
@@ -485,7 +545,11 @@ internal class Lexer(
                                 continue
                             }
                         }
-                        Token.Reserved -> return ParseResult.Err(errNow { LexemeError.ReservedKeyword(it) })
+
+                        Token.Reserved -> {
+                            return ParseResult.Err(errNow { LexemeError.ReservedKeyword(it) })
+                        }
+
                         Token.RawDecInt -> {
                             val s = lexer.slice()
                             if (s.length > 1 && s.startsWith("0")) {
@@ -493,32 +557,44 @@ internal class Lexer(
                             }
                             return int(s, 10)
                         }
+
                         Token.RawOctInt -> {
                             val s = lexer.slice()
                             return int(s.substring(2), 8)
                         }
+
                         Token.RawHexInt -> {
                             val s = lexer.slice()
                             return int(s.substring(2), 16)
                         }
+
                         Token.RawBinInt -> {
                             val s = lexer.slice()
                             return int(s.substring(2), 2)
                         }
-                        is Token.IntToken -> error("Lexer does not produce Int tokens")
+
+                        is Token.IntToken -> {
+                            error("Lexer does not produce Int tokens")
+                        }
+
                         Token.RawDoubleQuote -> {
                             val raw = (lexer.spanEnd() - lexer.spanStart()) == 2
                             val lex = parseDoubleQuotedString(raw)
                             if (lex == null) continue
                             return mapLexemeT(lex) { (s, _offset) -> Token.StringToken(s) }
                         }
+
                         Token.RawSingleQuote -> {
                             val raw = (lexer.spanEnd() - lexer.spanStart()) == 2
                             val lex = parseSingleQuotedString(raw)
                             if (lex == null) continue
                             return mapLexemeT(lex) { (s, _offset) -> Token.StringToken(s) }
                         }
-                        is Token.StringToken -> error("The lexer does not produce String")
+
+                        is Token.StringToken -> {
+                            error("The lexer does not produce String")
+                        }
+
                         Token.RawFStringDoubleQuote -> {
                             val spanLen = lexer.spanEnd() - lexer.spanStart()
                             val raw = spanLen == 3
@@ -533,6 +609,7 @@ internal class Lexer(
                                 )
                             }
                         }
+
                         Token.RawFStringSingleQuote -> {
                             val spanLen = lexer.spanEnd() - lexer.spanStart()
                             val raw = spanLen == 3
@@ -547,18 +624,27 @@ internal class Lexer(
                                 )
                             }
                         }
-                        is Token.FStringToken -> error("The lexer does not produce FString")
+
+                        is Token.FStringToken -> {
+                            error("The lexer does not produce FString")
+                        }
+
                         Token.OpeningCurly, Token.OpeningRound, Token.OpeningSquare -> {
                             parens += 1
                             return wrap(token)
                         }
+
                         Token.ClosingCurly, Token.ClosingRound, Token.ClosingSquare -> {
                             parens -= 1
                             return wrap(token)
                         }
-                        else -> return wrap(token)
+
+                        else -> {
+                            return wrap(token)
+                        }
                     }
                 }
+
                 is ParseResult.Err -> {
                     return ParseResult.Err(errNow { LexemeError.InvalidInput(it) })
                 }
@@ -566,8 +652,8 @@ internal class Lexer(
         }
     }
 
-    private fun parseDoubleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? {
-        return if (lexer.remainder().startsWith("\"\"")) {
+    private fun parseDoubleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? =
+        if (lexer.remainder().startsWith("\"\"")) {
             val qs = IntArray(1)
             string(
                 triple = true,
@@ -587,10 +673,9 @@ internal class Lexer(
         } else {
             string(triple = false, raw = raw, stop = { c -> c == '"'.code })
         }
-    }
 
-    private fun parseSingleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? {
-        return if (lexer.remainder().startsWith("''")) {
+    private fun parseSingleQuotedString(raw: Boolean): LexemeT<Pair<String, Int>>? =
+        if (lexer.remainder().startsWith("''")) {
             val qs = IntArray(1)
             string(
                 triple = true,
@@ -610,7 +695,6 @@ internal class Lexer(
         } else {
             string(triple = false, raw = raw, stop = { c -> c == '\''.code })
         }
-    }
 }
 
 private fun digitToInt(c: Int, radix: Int): Int? {
@@ -626,7 +710,10 @@ private fun digitToInt(c: Int, radix: Int): Int? {
 
 private fun StringBuilder.appendCodePoint(codePoint: Int) {
     when {
-        codePoint <= 0xffff -> append(codePoint.toChar())
+        codePoint <= 0xffff -> {
+            append(codePoint.toChar())
+        }
+
         else -> {
             val cp = codePoint - 0x1_0000
             val high = 0xd800 + (cp ushr 10)
@@ -637,7 +724,9 @@ private fun StringBuilder.appendCodePoint(codePoint: Int) {
     }
 }
 
-private class TokenLexer(private val source: String) {
+private class TokenLexer(
+    private val source: String,
+) {
     private val utf8: Utf8Index = Utf8Index(source)
     private var pos: Int = 0
     private var spanStart: Int = 0
@@ -645,18 +734,16 @@ private class TokenLexer(private val source: String) {
     private var slice: String = ""
 
     fun spanStart(): Int = spanStart
+
     fun spanEnd(): Int = spanEnd
+
     fun slice(): String = slice
 
     fun remainder(): String = utf8.substringFromByte(pos)
 
-    fun remainderSlice(start: Int, end: Int): String {
-        return utf8.substringFromByte(pos + start, pos + end)
-    }
+    fun remainderSlice(start: Int, end: Int): String = utf8.substringFromByte(pos + start, pos + end)
 
-    fun sliceFromSource(start: Int, end: Int): String {
-        return utf8.substringFromByte(start, end)
-    }
+    fun sliceFromSource(start: Int, end: Int): String = utf8.substringFromByte(start, end)
 
     fun bump(bytes: Int) {
         pos += bytes
@@ -676,9 +763,9 @@ private class TokenLexer(private val source: String) {
             }
             if (
                 pos + 2 < utf8.byteLen &&
-                    utf8.byteAt(pos) == '\\'.code &&
-                    utf8.byteAt(pos + 1) == '\r'.code &&
-                    utf8.byteAt(pos + 2) == '\n'.code
+                utf8.byteAt(pos) == '\\'.code &&
+                utf8.byteAt(pos + 1) == '\r'.code &&
+                utf8.byteAt(pos + 2) == '\n'.code
             ) {
                 pos += 3
                 continue
@@ -971,20 +1058,16 @@ private class TokenLexer(private val source: String) {
             ?: match(")", Token.ClosingRound)
     }
 
-    private fun isHexByte(b: Int): Boolean {
-        return b in '0'.code..'9'.code || b in 'a'.code..'f'.code || b in 'A'.code..'F'.code
-    }
+    private fun isHexByte(b: Int): Boolean = b in '0'.code..'9'.code || b in 'a'.code..'f'.code || b in 'A'.code..'F'.code
 
-    private fun isIdentStartByte(b: Int): Boolean {
-        return b == '_'.code || b in 'a'.code..'z'.code || b in 'A'.code..'Z'.code
-    }
+    private fun isIdentStartByte(b: Int): Boolean = b == '_'.code || b in 'a'.code..'z'.code || b in 'A'.code..'Z'.code
 
-    private fun isIdentContByte(b: Int): Boolean {
-        return isIdentStartByte(b) || b in '0'.code..'9'.code
-    }
+    private fun isIdentContByte(b: Int): Boolean = isIdentStartByte(b) || b in '0'.code..'9'.code
 }
 
-private class Utf8Index(private val source: String) {
+private class Utf8Index(
+    private val source: String,
+) {
     private val bytes: ByteArray = source.encodeToByteArray()
     private val byteToChar: IntArray = buildByteToCharMap(source)
 
@@ -1043,14 +1126,13 @@ private class Utf8Index(private val source: String) {
         return c1
     }
 
-    private fun utf8Len(codePoint: Int): Int {
-        return when {
+    private fun utf8Len(codePoint: Int): Int =
+        when {
             codePoint <= 0x7f -> 1
             codePoint <= 0x7ff -> 2
             codePoint <= 0xffff -> 3
             else -> 4
         }
-    }
 }
 
 fun lexExactlyOneIdentifier(s: String): String? {

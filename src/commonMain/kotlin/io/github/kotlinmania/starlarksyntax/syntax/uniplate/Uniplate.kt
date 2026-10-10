@@ -37,8 +37,13 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExpr
  * `Visit<'a, P>`.
  */
 internal sealed class Visit {
-    class Stmt(val stmt: AstStmt) : Visit()
-    class Expr(val expr: AstExpr) : Visit()
+    class Stmt(
+        val stmt: AstStmt,
+    ) : Visit()
+
+    class Expr(
+        val expr: AstExpr,
+    ) : Visit()
 
     fun visitChildren(f: (Visit) -> Unit) {
         when (this) {
@@ -47,18 +52,22 @@ internal sealed class Visit {
         }
     }
 
-    fun <E : Throwable> visitChildrenErr(f: (Visit) -> kotlin.Result<Unit>): kotlin.Result<Unit> {
-        return when (this) {
+    fun <E : Throwable> visitChildrenErr(f: (Visit) -> kotlin.Result<Unit>): kotlin.Result<Unit> =
+        when (this) {
             is Stmt -> stmt.node.visitChildrenErr(f)
             is Expr -> expr.node.visitExprErr { x -> f(Expr(x)) }
         }
-    }
 }
 
 /** Mutable visit variant; in Kotlin this carries the same shape as [Visit]. */
 internal sealed class VisitMut {
-    class Stmt(val stmt: AstStmt) : VisitMut()
-    class Expr(val expr: AstExpr) : VisitMut()
+    class Stmt(
+        val stmt: AstStmt,
+    ) : VisitMut()
+
+    class Expr(
+        val expr: AstExpr,
+    ) : VisitMut()
 }
 
 // ----- Def visit helpers -----
@@ -92,54 +101,79 @@ internal fun Def.visitChildrenErr(
 
 internal fun Stmt.visitChildren(f: (Visit) -> Unit) {
     when (val self = this) {
-        is Stmt.Statements -> for (x in self.stmts) f(Visit.Stmt(x))
+        is Stmt.Statements -> {
+            for (x in self.stmts) f(Visit.Stmt(x))
+        }
+
         is Stmt.If -> {
             f(Visit.Expr(self.cond))
             f(Visit.Stmt(self.suite))
         }
+
         is Stmt.IfElse -> {
             f(Visit.Expr(self.cond))
             f(Visit.Stmt(self.suite1))
             f(Visit.Stmt(self.suite2))
         }
-        is Stmt.Def -> self.def.visitChildren(f)
+
+        is Stmt.Def -> {
+            self.def.visitChildren(f)
+        }
+
         is Stmt.For -> {
-            self.forStmt.variable.node.visitExpr { e -> f(Visit.Expr(e)) }
+            self.forStmt.variable.node
+                .visitExpr { e -> f(Visit.Expr(e)) }
             f(Visit.Expr(self.forStmt.over))
             f(Visit.Stmt(self.forStmt.body))
         }
+
         is Stmt.Break -> {}
+
         is Stmt.Continue -> {}
+
         is Stmt.Pass -> {}
+
         is Stmt.Return -> {
             self.value?.let { f(Visit.Expr(it)) }
         }
-        is Stmt.Expression -> f(Visit.Expr(self.expr))
+
+        is Stmt.Expression -> {
+            f(Visit.Expr(self.expr))
+        }
+
         is Stmt.Assign -> {
-            self.assign.lhs.node.visitExpr { e -> f(Visit.Expr(e)) }
+            self.assign.lhs.node
+                .visitExpr { e -> f(Visit.Expr(e)) }
             self.assign.ty?.let { it.node.visitExpr { e -> f(Visit.Expr(e)) } }
             f(Visit.Expr(self.assign.rhs))
         }
+
         is Stmt.AssignModify -> {
             self.lhs.node.visitExpr { e -> f(Visit.Expr(e)) }
             f(Visit.Expr(self.rhs))
         }
+
         is Stmt.Load -> {}
     }
 }
 
 internal fun Stmt.visitChildrenMut(f: (VisitMut) -> Unit) {
     when (val self = this) {
-        is Stmt.Statements -> for (x in self.stmts) f(VisitMut.Stmt(x))
+        is Stmt.Statements -> {
+            for (x in self.stmts) f(VisitMut.Stmt(x))
+        }
+
         is Stmt.If -> {
             f(VisitMut.Expr(self.cond))
             f(VisitMut.Stmt(self.suite))
         }
+
         is Stmt.IfElse -> {
             f(VisitMut.Expr(self.cond))
             f(VisitMut.Stmt(self.suite1))
             f(VisitMut.Stmt(self.suite2))
         }
+
         is Stmt.Def -> {
             for (x in self.def.params) {
                 x.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
@@ -147,27 +181,40 @@ internal fun Stmt.visitChildrenMut(f: (VisitMut) -> Unit) {
             self.def.returnType?.let { it.node.visitExprMut { e -> f(VisitMut.Expr(e)) } }
             f(VisitMut.Stmt(self.def.body))
         }
+
         is Stmt.For -> {
-            self.forStmt.variable.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
+            self.forStmt.variable.node
+                .visitExprMut { e -> f(VisitMut.Expr(e)) }
             f(VisitMut.Expr(self.forStmt.over))
             f(VisitMut.Stmt(self.forStmt.body))
         }
+
         is Stmt.Break -> {}
+
         is Stmt.Continue -> {}
+
         is Stmt.Pass -> {}
+
         is Stmt.Return -> {
             self.value?.let { f(VisitMut.Expr(it)) }
         }
-        is Stmt.Expression -> f(VisitMut.Expr(self.expr))
+
+        is Stmt.Expression -> {
+            f(VisitMut.Expr(self.expr))
+        }
+
         is Stmt.Assign -> {
-            self.assign.lhs.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
+            self.assign.lhs.node
+                .visitExprMut { e -> f(VisitMut.Expr(e)) }
             self.assign.ty?.let { it.node.visitExprMut { e -> f(VisitMut.Expr(e)) } }
             f(VisitMut.Expr(self.assign.rhs))
         }
+
         is Stmt.AssignModify -> {
             self.lhs.node.visitExprMut { e -> f(VisitMut.Expr(e)) }
             f(VisitMut.Expr(self.rhs))
         }
+
         is Stmt.Load -> {}
     }
 }
@@ -199,7 +246,10 @@ internal fun Stmt.visitChildrenErrMut(
 internal fun Stmt.visitStmt(f: (AstStmt) -> Unit) {
     visitChildren { x ->
         when (x) {
-            is Visit.Stmt -> f(x.stmt)
+            is Visit.Stmt -> {
+                f(x.stmt)
+            }
+
             is Visit.Expr -> {}
         }
     }
@@ -208,7 +258,10 @@ internal fun Stmt.visitStmt(f: (AstStmt) -> Unit) {
 internal fun Stmt.visitStmtMut(f: (AstStmt) -> Unit) {
     visitChildrenMut { x ->
         when (x) {
-            is VisitMut.Stmt -> f(x.stmt)
+            is VisitMut.Stmt -> {
+                f(x.stmt)
+            }
+
             is VisitMut.Expr -> {}
         }
     }
@@ -280,6 +333,7 @@ internal fun Stmt.visitTypeExprErrMut(
                 if (r.isFailure) return r
             }
         }
+
         is Stmt.Assign -> {
             val ty = self.assign.ty
             if (ty != null) {
@@ -287,6 +341,7 @@ internal fun Stmt.visitTypeExprErrMut(
                 if (r.isFailure) return r
             }
         }
+
         else -> {}
     }
     return visitChildrenErrMut { visit ->
@@ -299,21 +354,18 @@ internal fun Stmt.visitTypeExprErrMut(
 
 internal fun Stmt.visitIdent(
     f: (AstIdent) -> kotlin.Result<Unit>,
-): kotlin.Result<Unit> {
-    return visitExprResult { expr -> expr.node.visitIdent(f) }
-}
+): kotlin.Result<Unit> = visitExprResult { expr -> expr.node.visitIdent(f) }
 
 // ----- Parameter helpers -----
 
-internal fun Parameter.split(): Triple<AstAssignIdent?, AstTypeExpr?, AstExpr?> {
-    return when (val self = this) {
+internal fun Parameter.split(): Triple<AstAssignIdent?, AstTypeExpr?, AstExpr?> =
+    when (val self = this) {
         is Parameter.Normal -> Triple(self.name, self.type, self.default)
         is Parameter.Args -> Triple(self.name, self.type, null)
         is Parameter.KwArgs -> Triple(self.name, self.type, null)
         is Parameter.NoArgs -> Triple(null, null, null)
         is Parameter.Slash -> Triple(null, null, null)
     }
-}
 
 internal fun Parameter.splitMut(): Triple<AstAssignIdent?, AstTypeExpr?, AstExpr?> = split()
 
@@ -333,62 +385,97 @@ internal fun Parameter.visitExprMut(f: (AstExpr) -> Unit) {
 
 internal fun Expr.visitExpr(f: (AstExpr) -> Unit) {
     when (val self = this) {
-        is Expr.Tuple -> for (x in self.elems) f(x)
-        is Expr.Dot -> f(self.target)
+        is Expr.Tuple -> {
+            for (x in self.elems) f(x)
+        }
+
+        is Expr.Dot -> {
+            f(self.target)
+        }
+
         is Expr.Call -> {
             f(self.target)
             for (x in self.args.args) f(x.node.expr())
         }
+
         is Expr.Index -> {
             f(self.target)
             f(self.index)
         }
+
         is Expr.Index2 -> {
             f(self.target)
             f(self.index0)
             f(self.index1)
         }
+
         is Expr.Slice -> {
             f(self.target)
             self.start?.let(f)
             self.stop?.let(f)
             self.step?.let(f)
         }
+
         is Expr.Identifier -> {}
+
         is Expr.Lambda -> {
             for (x in self.lambda.params) x.node.visitExpr(f)
             f(self.lambda.body)
         }
+
         is Expr.Literal -> {}
-        is Expr.Not -> f(self.target)
-        is Expr.Minus -> f(self.target)
-        is Expr.Plus -> f(self.target)
-        is Expr.BitNot -> f(self.target)
+
+        is Expr.Not -> {
+            f(self.target)
+        }
+
+        is Expr.Minus -> {
+            f(self.target)
+        }
+
+        is Expr.Plus -> {
+            f(self.target)
+        }
+
+        is Expr.BitNot -> {
+            f(self.target)
+        }
+
         is Expr.Op -> {
             f(self.left)
             f(self.right)
         }
+
         is Expr.If -> {
             f(self.condition)
             f(self.v1)
             f(self.v2)
         }
-        is Expr.List -> for (x in self.elems) f(x)
-        is Expr.Dict -> for ((k, v) in self.entries) {
-            f(k)
-            f(v)
+
+        is Expr.List -> {
+            for (x in self.elems) f(x)
         }
+
+        is Expr.Dict -> {
+            for ((k, v) in self.entries) {
+                f(k)
+                f(v)
+            }
+        }
+
         is Expr.ListComprehension -> {
             self.firstFor.visitExpr(f)
             for (x in self.clauses) x.visitExpr(f)
             f(self.expr)
         }
+
         is Expr.DictComprehension -> {
             self.firstFor.visitExpr(f)
             for (x in self.clauses) x.visitExpr(f)
             f(self.key)
             f(self.value)
         }
+
         is Expr.FString -> {
             for (expr in self.fstring.node.expressions) {
                 f(expr)
@@ -465,12 +552,19 @@ internal fun TypeExpr.visitExprMut(f: (AstExpr) -> Unit) {
 internal fun AssignTarget.visitExpr(f: (AstExpr) -> Unit) {
     fun recurse(x: AssignTarget) {
         when (x) {
-            is AssignTarget.Tuple -> for (y in x.elems) recurse(y.node)
-            is AssignTarget.Dot -> f(x.target)
+            is AssignTarget.Tuple -> {
+                for (y in x.elems) recurse(y.node)
+            }
+
+            is AssignTarget.Dot -> {
+                f(x.target)
+            }
+
             is AssignTarget.Index -> {
                 f(x.target)
                 f(x.index)
             }
+
             is AssignTarget.Identifier -> {}
         }
     }
@@ -482,8 +576,14 @@ internal fun AssignTarget.visitExprMut(f: (AstExpr) -> Unit) = visitExpr(f)
 internal fun AssignTarget.visitLvalue(f: (AstAssignIdent) -> Unit) {
     fun recurse(x: AssignTarget) {
         when (x) {
-            is AssignTarget.Identifier -> f(x.ident)
-            is AssignTarget.Tuple -> for (y in x.elems) recurse(y.node)
+            is AssignTarget.Identifier -> {
+                f(x.ident)
+            }
+
+            is AssignTarget.Tuple -> {
+                for (y in x.elems) recurse(y.node)
+            }
+
             else -> {}
         }
     }
@@ -514,4 +614,3 @@ internal fun Clause.visitExpr(f: (AstExpr) -> Unit) {
 }
 
 internal fun Clause.visitExprMut(f: (AstExpr) -> Unit) = visitExpr(f)
-

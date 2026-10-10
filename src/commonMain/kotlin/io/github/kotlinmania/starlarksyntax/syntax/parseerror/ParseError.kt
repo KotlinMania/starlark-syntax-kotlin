@@ -33,23 +33,32 @@ import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
  */
 internal sealed class ParseError {
     /** An error with a message and span, to be rendered as a diagnostic. */
-    class Error(val message: String, val span: Span) : ParseError()
+    class Error(
+        val message: String,
+        val span: Span,
+    ) : ParseError()
 
     /**
      * An error that already has full diagnostic information (e.g. from
      * user-defined error callbacks in the parser state).
      */
-    class EvalExceptionError(val evalException: EvalException) : ParseError()
+    class EvalExceptionError(
+        val evalException: EvalException,
+    ) : ParseError()
 
     /** Convert this parse error into a [Error] with source location. */
-    fun intoCrateError(codemap: CodeMap): io.github.kotlinmania.starlarksyntax.error.Error {
-        return when (this) {
-            is ParseError.Error -> io.github.kotlinmania.starlarksyntax.error.Error.newSpanned(
-                ErrorKind.Parser(Exception(message)),
-                span,
-                codemap,
-            )
-            is ParseError.EvalExceptionError -> evalException.intoError()
+    fun intoCrateError(codemap: CodeMap): io.github.kotlinmania.starlarksyntax.error.Error =
+        when (this) {
+            is ParseError.Error -> {
+                io.github.kotlinmania.starlarksyntax.error.Error.newSpanned(
+                    ErrorKind.Parser(Exception(message)),
+                    span,
+                    codemap,
+                )
+            }
+
+            is ParseError.EvalExceptionError -> {
+                evalException.intoError()
+            }
         }
-    }
 }

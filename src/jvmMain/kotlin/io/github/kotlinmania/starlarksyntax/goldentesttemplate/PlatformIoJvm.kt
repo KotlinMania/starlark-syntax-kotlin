@@ -20,9 +20,8 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 internal actual fun platformGetEnv(name: String): String? = System.getenv(name)
 
-internal actual fun platformReadUtf8File(path: String): String {
-    return java.io.File(path).readText()
-}
+internal actual fun platformReadUtf8File(path: String): String =
+    java.io.File(path).readText()
 
 internal actual fun platformWriteUtf8File(path: String, content: String) {
     java.io.File(path).writeText(content)

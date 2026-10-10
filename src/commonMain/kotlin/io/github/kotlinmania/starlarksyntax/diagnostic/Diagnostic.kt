@@ -41,45 +41,43 @@ class WithDiagnostic<T> internal constructor(
     private val inner: WithDiagnosticInner<T>,
 ) {
     companion object {
-        fun <T> newSpanned(t: T, span: Span, codemap: CodeMap): WithDiagnostic<T> {
-            return WithDiagnostic(
+        fun <T> newSpanned(t: T, span: Span, codemap: CodeMap): WithDiagnostic<T> =
+            WithDiagnostic(
                 WithDiagnosticInner(
                     t = t,
-                    diagnostic = Diagnostic(
-                        span = codemap.fileSpan(span),
-                        callStack = CallStack(),
-                    ),
-                )
+                    diagnostic =
+                        Diagnostic(
+                            span = codemap.fileSpan(span),
+                            callStack = CallStack(),
+                        ),
+                ),
             )
-        }
 
         /**
          * The contract of this type is normally that it actually contains diagnostic information.
          * However, [io.github.kotlinmania.starlarksyntax.error.Error] doesn't guarantee that, but it'd be convenient to use this type
          * for it anyway. So we make an exception. Don't use this function for anything else.
          */
-        internal fun <T> newEmpty(t: T): WithDiagnostic<T> {
-            return WithDiagnostic(
+        internal fun <T> newEmpty(t: T): WithDiagnostic<T> =
+            WithDiagnostic(
                 WithDiagnosticInner(
                     t = t,
                     diagnostic = Diagnostic(),
-                )
+                ),
             )
-        }
     }
 
     fun inner(): T = inner.t
 
     fun intoInner(): T = inner.t
 
-    fun <U> map(f: (T) -> U): WithDiagnostic<U> {
-        return WithDiagnostic(
+    fun <U> map(f: (T) -> U): WithDiagnostic<U> =
+        WithDiagnostic(
             WithDiagnosticInner(
                 t = f(inner.t),
                 diagnostic = inner.diagnostic,
-            )
+            ),
         )
-    }
 
     fun span(): FileSpan? = inner.diagnostic.span
 
@@ -124,16 +122,15 @@ internal class Diagnostic(
     var callStack: CallStack = CallStack(),
 ) {
     /** Gets annotated snippets for a [Diagnostic]. */
-    fun getDisplayList(annotationLabel: String, color: Boolean): String {
-        return spanDisplay(
+    fun getDisplayList(annotationLabel: String, color: Boolean): String =
+        spanDisplay(
             span?.asRef(),
             annotationLabel,
             color,
         )
-    }
 }
 
-/////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////
 // DISPLAY RELATED UTILITIES
 // Since formatting these types is difficult, we reuse the Rust compiler
 // variants by doing a conversion using annotate-snippets

@@ -45,9 +45,7 @@ class EvalException internal constructor(
          * Sometimes we need to construct `EvalException`, but span is not available,
          * so this function can be used. Avoid this function if possible.
          */
-        fun newUnknownSpan(error: Error): EvalException {
-            return EvalException(error)
-        }
+        fun newUnknownSpan(error: Error): EvalException = EvalException(error)
 
         fun newWithCallstack(
             error: Error,
@@ -60,33 +58,29 @@ class EvalException internal constructor(
             return EvalException(error)
         }
 
-        fun newAnyhow(error: Throwable, span: Span, codemap: CodeMap): EvalException {
-            return EvalException(
+        fun newAnyhow(error: Throwable, span: Span, codemap: CodeMap): EvalException =
+            EvalException(
                 Error.newSpanned(
                     ErrorKind.Other(error),
                     span,
                     codemap,
-                )
+                ),
             )
-        }
 
-        fun internalError(error: Any, span: Span, codemap: CodeMap): EvalException {
-            return new(internalError(error.toString()), span, codemap)
-        }
+        fun internalError(error: Any, span: Span, codemap: CodeMap): EvalException = new(internalError(error.toString()), span, codemap)
 
         internal fun parserError(
             error: Any,
             span: Span,
             codemap: CodeMap,
-        ): EvalException {
-            return EvalException(
+        ): EvalException =
+            EvalException(
                 Error.newSpanned(
                     ErrorKind.Parser(Exception(error.toString())),
                     span,
                     codemap,
-                )
+                ),
             )
-        }
 
         fun testingLoc(err: Error): ResolvedFileSpan {
             val d = err.span()
@@ -101,8 +95,5 @@ class EvalException internal constructor(
 
     fun intoError(): Error = error
 
-    fun intoInternalError(): EvalException {
-        return EvalException(error.intoInternalError())
-    }
-
+    fun intoInternalError(): EvalException = EvalException(error.intoInternalError())
 }

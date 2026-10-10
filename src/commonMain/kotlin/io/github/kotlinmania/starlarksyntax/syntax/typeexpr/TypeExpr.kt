@@ -27,33 +27,34 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.AstLiteral
 import io.github.kotlinmania.starlarksyntax.syntax.ast.BinOp
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
 
-internal sealed class TypeExprUnpackError(message: String) : Exception(message) {
+internal sealed class TypeExprUnpackError(
+    message: String,
+) : Exception(message) {
     /** `{0} expression is not allowed in type expression` */
-    class InvalidType(val kind: String) :
-        TypeExprUnpackError("$kind expression is not allowed in type expression")
+    class InvalidType(
+        val kind: String,
+    ) : TypeExprUnpackError("$kind expression is not allowed in type expression")
 
     /** `Empty list is not allowed in type expression` */
     class EmptyListInType : TypeExprUnpackError("Empty list is not allowed in type expression")
 
     /** `Only dot expression of form `ident.ident` is allowed in type expression` */
-    class DotInType :
-        TypeExprUnpackError("Only dot expression of form `ident.ident` is allowed in type expression")
+    class DotInType : TypeExprUnpackError("Only dot expression of form `ident.ident` is allowed in type expression")
 
     /** `Expecting path like `a.b.c`` */
     class ExpectingPath : TypeExprUnpackError("Expecting path like `a.b.c`")
 
     /** `` `{0}.type` is not allowed in type expression, use `{0}` instead `` */
-    class DotTypeBan(val name: String) :
-        TypeExprUnpackError("`$name.type` is not allowed in type expression, use `$name` instead")
+    class DotTypeBan(
+        val name: String,
+    ) : TypeExprUnpackError("`$name.type` is not allowed in type expression, use `$name` instead")
 }
 
 /**
  * Types that are `""` or start with `"_"` are wildcard - they match everything
  * (also deprecated).
  */
-internal fun typeStrLiteralIsWildcard(s: String): Boolean {
-    return s == "" || s.startsWith('_')
-}
+internal fun typeStrLiteralIsWildcard(s: String): Boolean = s == "" || s.startsWith('_')
 
 /** Path component of type. */
 internal data class TypePath(
@@ -64,7 +65,10 @@ internal data class TypePath(
 /** This type should be used instead of [TypeExpr], but a lot of code needs to be updated. */
 internal sealed class TypeExprUnpack {
     class Ellipsis : TypeExprUnpack()
-    data class Path(val path: TypePath) : TypeExprUnpack()
+
+    data class Path(
+        val path: TypePath,
+    ) : TypeExprUnpack()
 
     /** `list[str]`. */
     data class Index(
@@ -98,14 +102,18 @@ internal sealed class TypeExprUnpack {
             codemap: CodeMap,
         ): Spanned<TypePath> {
             val span = expr.span
-            return when (val node = expr.node) {
-                is Expr.Identifier -> Spanned(
-                    node = TypePath(
-                        first = node.ident,
-                        rem = emptyList(),
-                    ),
-                    span = span,
-                )
+            when (val node = expr.node) {
+                is Expr.Identifier -> {
+                    return Spanned(
+                        node =
+                            TypePath(
+                                first = node.ident,
+                                rem = emptyList(),
+                            ),
+                        span = span,
+                    )
+                }
+
                 is Expr.Dot -> {
                     var current: AstExpr = node.target
                     val rem: MutableList<Spanned<String>> =
@@ -116,6 +124,7 @@ internal sealed class TypeExprUnpack {
                                 current = cur.target
                                 rem.add(Spanned(node = cur.attr.node, span = cur.attr.span))
                             }
+
                             is Expr.Identifier -> {
                                 rem.reverse()
                                 val last = rem.lastOrNull()
@@ -132,7 +141,7 @@ internal sealed class TypeExprUnpack {
                                             TypeExprUnpackError.DotTypeBan(fullPath),
                                             current.span,
                                             codemap,
-                                        )
+                                        ),
                                     )
                                 }
                                 return Spanned(
@@ -140,24 +149,29 @@ internal sealed class TypeExprUnpack {
                                     span = span,
                                 )
                             }
-                            else -> throw WithDiagnosticException(
-                                WithDiagnostic.newSpanned(
-                                    TypeExprUnpackError.DotInType(),
-                                    current.span,
-                                    codemap,
+
+                            else -> {
+                                throw WithDiagnosticException(
+                                    WithDiagnostic.newSpanned(
+                                        TypeExprUnpackError.DotInType(),
+                                        current.span,
+                                        codemap,
+                                    ),
                                 )
-                            )
+                            }
                         }
                     }
-                    error("unreachable")
                 }
-                else -> throw WithDiagnosticException(
-                    WithDiagnostic.newSpanned(
-                        TypeExprUnpackError.ExpectingPath(),
-                        expr.span,
-                        codemap,
+
+                else -> {
+                    throw WithDiagnosticException(
+                        WithDiagnostic.newSpanned(
+                            TypeExprUnpackError.ExpectingPath(),
+                            expr.span,
+                            codemap,
+                        ),
                     )
-                )
+                }
             }
         }
 
@@ -174,7 +188,10 @@ internal sealed class TypeExprUnpack {
                         span = span,
                     )
                 }
-                else -> unpack(expr, codemap)
+
+                else -> {
+                    unpack(expr, codemap)
+                }
             }
         }
 
@@ -183,26 +200,30 @@ internal sealed class TypeExprUnpack {
             codemap: CodeMap,
         ): Spanned<TypeExprUnpack> {
             val span = expr.span
-            fun err(t: String): Nothing {
-                throw WithDiagnosticException(
-                    WithDiagnostic.newSpanned(
-                        TypeExprUnpackError.InvalidType(t),
-                        expr.span,
-                        codemap,
-                    )
-                )
-            }
+
+            fun err(t: String): Nothing = throw WithDiagnosticException(
+                WithDiagnostic.newSpanned(
+                    TypeExprUnpackError.InvalidType(t),
+                    expr.span,
+                    codemap,
+                ),
+            )
 
             return when (val node = expr.node) {
                 is Expr.Tuple -> {
                     val xs = node.elems.map { x -> unpack(x, codemap) }
                     Spanned(node = Tuple(xs), span = span)
                 }
+
                 is Expr.Dot -> {
                     val path = unpackPath(expr, codemap)
                     Spanned(node = Path(path.node), span = span)
                 }
-                is Expr.Call -> err("call")
+
+                is Expr.Call -> {
+                    err("call")
+                }
+
                 is Expr.Index -> {
                     val a = node.target
                     val i = node.index
@@ -214,9 +235,13 @@ internal sealed class TypeExprUnpack {
                                 span = span,
                             )
                         }
-                        else -> err("array indirection where array is not an identifier")
+
+                        else -> {
+                            err("array indirection where array is not an identifier")
+                        }
                     }
                 }
+
                 is Expr.Index2 -> {
                     val a = node.target
                     val i0 = node.index0
@@ -229,24 +254,50 @@ internal sealed class TypeExprUnpack {
                         span = span,
                     )
                 }
-                is Expr.Slice -> err("slice")
+
+                is Expr.Slice -> {
+                    err("slice")
+                }
+
                 is Expr.Identifier -> {
                     val path = unpackPath(expr, codemap)
                     Spanned(node = Path(path.node), span = span)
                 }
-                is Expr.Lambda -> err("lambda")
-                is Expr.Literal -> when (node.literal) {
-                    // TODO(nga): eventually this should be allowed for self-referential types:
-                    //   https://www.internalfb.com/tasks/?t=184482361
-                    is AstLiteral.StringLiteral -> err("string literal")
-                    is AstLiteral.IntLiteral -> err("int")
-                    is AstLiteral.FloatLiteral -> err("float")
-                    is AstLiteral.EllipsisLiteral -> Spanned(node = Ellipsis(), span = span)
+
+                is Expr.Lambda -> {
+                    err("lambda")
                 }
-                is Expr.Not -> err("not")
-                is Expr.Minus -> err("minus")
-                is Expr.Plus -> err("plus")
-                is Expr.BitNot -> err("bit not")
+
+                is Expr.Literal -> {
+                    when (node.literal) {
+                        // TODO(nga): eventually this should be allowed for self-referential types:
+                        //   https://www.internalfb.com/tasks/?t=184482361
+                        is AstLiteral.StringLiteral -> err("string literal")
+
+                        is AstLiteral.IntLiteral -> err("int")
+
+                        is AstLiteral.FloatLiteral -> err("float")
+
+                        is AstLiteral.EllipsisLiteral -> Spanned(node = Ellipsis(), span = span)
+                    }
+                }
+
+                is Expr.Not -> {
+                    err("not")
+                }
+
+                is Expr.Minus -> {
+                    err("minus")
+                }
+
+                is Expr.Plus -> {
+                    err("plus")
+                }
+
+                is Expr.BitNot -> {
+                    err("bit not")
+                }
+
                 is Expr.Op -> {
                     if (node.op == BinOp.BitOr) {
                         val a = unpack(node.left, codemap)
@@ -256,7 +307,11 @@ internal sealed class TypeExprUnpack {
                         err("bin op except `|`")
                     }
                 }
-                is Expr.If -> err("if")
+
+                is Expr.If -> {
+                    err("if")
+                }
+
                 is Expr.List -> {
                     val xs = node.elems
                     if (xs.isEmpty()) {
@@ -265,7 +320,7 @@ internal sealed class TypeExprUnpack {
                                 TypeExprUnpackError.EmptyListInType(),
                                 expr.span,
                                 codemap,
-                            )
+                            ),
                         )
                     } else if (xs.size == 1) {
                         err("list of 1 element")
@@ -274,10 +329,22 @@ internal sealed class TypeExprUnpack {
                         Spanned(node = Union(unpacked), span = span)
                     }
                 }
-                is Expr.Dict -> err("dict")
-                is Expr.ListComprehension -> err("list comprehension")
-                is Expr.DictComprehension -> err("dict comprehension")
-                is Expr.FString -> err("f-string")
+
+                is Expr.Dict -> {
+                    err("dict")
+                }
+
+                is Expr.ListComprehension -> {
+                    err("list comprehension")
+                }
+
+                is Expr.DictComprehension -> {
+                    err("dict comprehension")
+                }
+
+                is Expr.FString -> {
+                    err("f-string")
+                }
             }
         }
     }
@@ -290,5 +357,3 @@ internal sealed class TypeExprUnpack {
 internal class WithDiagnosticException(
     val diagnostic: WithDiagnostic<TypeExprUnpackError>,
 ) : Exception(diagnostic.inner().message)
-
-

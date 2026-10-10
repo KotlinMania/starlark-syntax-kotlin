@@ -23,7 +23,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class DotFormatParserTest {
-
     @Test
     fun testParserPosition() {
         val s = "foo{x}bar{yz}baz{w!s}qux{v!r}quux"

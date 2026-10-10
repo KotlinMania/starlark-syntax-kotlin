@@ -18,15 +18,14 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
  * limitations under the License.
  */
 
-import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 
 class ParserLalrpopTest {
-
     @Test
     fun testLalrpopErrorToParseError() {
         val codemap = CodeMap.new("test.bzl", "pass")

@@ -19,6 +19,7 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  */
 
 private const val CARGO_MANIFEST_DIR_BROWSER_FALLBACK: String = "."
+
 // Karma serves project files under `/base` during browser test execution.
 private const val KARMA_BROWSER_BASE_PATH_PREFIX: String = "/base/"
 

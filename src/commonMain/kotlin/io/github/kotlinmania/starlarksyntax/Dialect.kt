@@ -90,43 +90,46 @@ data class Dialect(
          *
          * This is also returned by [default].
          */
-        val Standard: Dialect = Dialect(
-            enableDef = true,
-            enableLambda = true,
-            enableLoad = true,
-            enableKeywordOnlyArguments = false,
-            enablePositionalOnlyArguments = false,
-            enableTypes = DialectTypes.Disable,
-            enableLoadReexport = true, // But they plan to change it
-            enableTopLevelStmt = false,
-            enableFStrings = false,
-        )
+        val Standard: Dialect =
+            Dialect(
+                enableDef = true,
+                enableLambda = true,
+                enableLoad = true,
+                enableKeywordOnlyArguments = false,
+                enablePositionalOnlyArguments = false,
+                enableTypes = DialectTypes.Disable,
+                enableLoadReexport = true, // But they plan to change it
+                enableTopLevelStmt = false,
+                enableFStrings = false,
+            )
 
         /** This option is deprecated. Extend Standard instead. */
-        val Extended: Dialect = Dialect(
-            enableDef = true,
-            enableLambda = true,
-            enableLoad = true,
-            enableKeywordOnlyArguments = true,
-            enablePositionalOnlyArguments = false,
-            enableTypes = DialectTypes.Enable,
-            enableLoadReexport = true,
-            enableTopLevelStmt = true,
-            enableFStrings = false,
-        )
+        val Extended: Dialect =
+            Dialect(
+                enableDef = true,
+                enableLambda = true,
+                enableLoad = true,
+                enableKeywordOnlyArguments = true,
+                enablePositionalOnlyArguments = false,
+                enableTypes = DialectTypes.Enable,
+                enableLoadReexport = true,
+                enableTopLevelStmt = true,
+                enableFStrings = false,
+            )
 
         /** Only for starlark-kotlin self tests. */
-        val AllOptionsInternal: Dialect = Dialect(
-            enableDef = true,
-            enableLambda = true,
-            enableLoad = true,
-            enableKeywordOnlyArguments = true,
-            enablePositionalOnlyArguments = true,
-            enableTypes = DialectTypes.Enable,
-            enableLoadReexport = true,
-            enableTopLevelStmt = true,
-            enableFStrings = true,
-        )
+        val AllOptionsInternal: Dialect =
+            Dialect(
+                enableDef = true,
+                enableLambda = true,
+                enableLoad = true,
+                enableKeywordOnlyArguments = true,
+                enablePositionalOnlyArguments = true,
+                enableTypes = DialectTypes.Enable,
+                enableLoadReexport = true,
+                enableTopLevelStmt = true,
+                enableFStrings = true,
+            )
 
         fun default(): Dialect = Standard
     }

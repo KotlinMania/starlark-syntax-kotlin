@@ -23,7 +23,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class FastStringTest {
-
     @Test
     fun testConvertStrIndices() {
         assertEquals(

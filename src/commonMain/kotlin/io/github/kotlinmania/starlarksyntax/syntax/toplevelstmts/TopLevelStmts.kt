@@ -30,7 +30,10 @@ internal fun topLevelStmts(top: AstStmt): List<AstStmt> {
                     f(x, res)
                 }
             }
-            else -> res.add(ast)
+
+            else -> {
+                res.add(ast)
+            }
         }
     }
 
@@ -51,7 +54,10 @@ internal fun topLevelStmtsMut(top: AstStmt): List<AstStmt> {
                     f(x, res)
                 }
             }
-            else -> res.add(ast)
+
+            else -> {
+                res.add(ast)
+            }
         }
     }
 
@@ -59,4 +65,3 @@ internal fun topLevelStmtsMut(top: AstStmt): List<AstStmt> {
     f(top, res)
     return res
 }
-

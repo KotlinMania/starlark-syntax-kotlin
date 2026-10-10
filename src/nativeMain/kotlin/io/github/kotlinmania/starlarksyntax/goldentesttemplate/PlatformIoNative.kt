@@ -1,5 +1,6 @@
 // port-lint: source src/golden_test_template.rs
 @file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class, kotlin.experimental.ExperimentalNativeApi::class)
+
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 /*
@@ -20,32 +21,38 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  */
 
 import kotlinx.cinterop.toKString
-import kotlin.native.OsFamily
-import kotlin.native.Platform
 import platform.posix.EOF
 import platform.posix.fclose
 import platform.posix.fgetc
 import platform.posix.fopen
 import platform.posix.fputc
 import platform.posix.getenv
+import kotlin.native.OsFamily
+import kotlin.native.Platform
 
 internal actual fun platformGetEnv(name: String): String? {
-    val v = getenv(name) ?: return null
+    val v = getenv(name) ?: getenv("SIMCTL_CHILD_$name") ?: return null
     return v.toKString()
 }
 
 internal actual fun platformReadUtf8File(path: String): String {
-    val f = fopen(path, "rb") ?: error("Unable to open file: $path")
+    var f = fopen(path, "rb")
+    if (f == null && !path.startsWith("/")) {
+        val cleanPath = path.removePrefix("./")
+        val candidate = "/Volumes/stuff/Projects/kotlinmania/starlark-syntax-kotlin/$cleanPath"
+        f = fopen(candidate, "rb")
+    }
+    val fileHandle = f ?: error("Unable to open file: $path")
     try {
         val bytes = ArrayList<Byte>()
         while (true) {
-            val c = fgetc(f)
+            val c = fgetc(fileHandle)
             if (c == EOF) break
             bytes.add(c.toByte())
         }
         return bytes.toByteArray().decodeToString()
     } finally {
-        fclose(f)
+        fclose(fileHandle)
     }
 }
 
