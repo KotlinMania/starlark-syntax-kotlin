@@ -18,18 +18,18 @@ package io.github.kotlinmania.starlarksyntax.syntax.module
  * limitations under the License.
  */
 
+import io.github.kotlinmania.starlarkmap.smallmap.SmallMap
+import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.FileSpan
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
-import io.github.kotlinmania.starlarkmap.smallmap.SmallMap
-import io.github.kotlinmania.starlarksyntax.Dialect
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Argument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Assign
+import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstIdent
-import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.ast.BinOp
 import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
@@ -109,7 +109,7 @@ class AstModule internal constructor(
                     dialect = dialect,
                     typecheck = typecheck,
                     lintSuppressions = lintSuppressions,
-                )
+                ),
             )
         }
     }
@@ -122,6 +122,7 @@ class AstModule internal constructor(
         // We know that `load` statements must be at the top-level, so no need to descend inside `if`, `for`, `def` etc.
         // There is a suggestion that `load` statements should be at the top of a file, but we tolerate that not being true.
         val loads = mutableListOf<AstLoad>()
+
         fun walk(ast: AstStmt) {
             when (val node = ast.node) {
                 is Stmt.Load -> {
@@ -130,19 +131,22 @@ class AstModule internal constructor(
                         AstLoad(
                             span = FileSpan(codemap, load.module.span),
                             moduleId = load.module.node,
-                            symbols = SmallMap.fromIterator(
-                                load.args.map { arg ->
-                                    arg.local.node.ident to arg.their.node
-                                },
-                            ),
-                        )
+                            symbols =
+                                SmallMap.fromIterator(
+                                    load.args.map { arg ->
+                                        arg.local.node.ident to arg.their.node
+                                    },
+                                ),
+                        ),
                     )
                 }
+
                 is Stmt.Statements -> {
                     for (stmt in node.stmts) {
                         walk(stmt)
                     }
                 }
+
                 else -> {}
             }
         }
@@ -153,10 +157,10 @@ class AstModule internal constructor(
     /** Look up a [Span] contained in this module to a [FileSpan]. */
     fun fileSpan(span: Span): FileSpan = codemap.fileSpan(span)
 
-
     /** Locations where statements occur. */
     fun stmtLocations(): List<FileSpan> {
         val res = mutableListOf<FileSpan>()
+
         fun walk(ast: AstStmt) {
             // These are not interesting statements that come up
             if (ast.node !is Stmt.Statements) {
@@ -181,9 +185,7 @@ class AstModule internal constructor(
     }
 
     /** Check if a given Lint short name and span is suppressed in this module. */
-    fun isSuppressed(issueShortName: String, issueSpan: Span): Boolean {
-        return lintSuppressions.isSuppressed(issueShortName, issueSpan)
-    }
+    fun isSuppressed(issueShortName: String, issueSpan: Span): Boolean = lintSuppressions.isSuppressed(issueShortName, issueSpan)
 }
 
 // --- traversal helpers used by [AstModule.stmtLocations] / [AstModule.replaceBinaryOperators] ---
@@ -191,42 +193,56 @@ class AstModule internal constructor(
 /** Visit immediate child statements of [stmt]. */
 private fun visitStmtChildren(stmt: AstStmt, f: (AstStmt) -> Unit) {
     when (val node = stmt.node) {
-        is Stmt.Statements -> for (s in node.stmts) f(s)
-        is Stmt.If -> f(node.suite)
+        is Stmt.Statements -> {
+            for (s in node.stmts) f(s)
+        }
+
+        is Stmt.If -> {
+            f(node.suite)
+        }
+
         is Stmt.IfElse -> {
             f(node.suite1)
             f(node.suite2)
         }
-        is Stmt.For -> f(node.forStmt.body)
-        is Stmt.Def -> f(node.def.body)
+
+        is Stmt.For -> {
+            f(node.forStmt.body)
+        }
+
+        is Stmt.Def -> {
+            f(node.def.body)
+        }
+
         else -> {}
     }
 }
 
 /** Convert a [BinOp] to its operator symbol string (trimmed, no surrounding spaces). */
-private fun BinOp.toSymbol(): String = when (this) {
-    BinOp.Or -> "or"
-    BinOp.And -> "and"
-    BinOp.Equal -> "=="
-    BinOp.NotEqual -> "!="
-    BinOp.Less -> "<"
-    BinOp.Greater -> ">"
-    BinOp.LessOrEqual -> "<="
-    BinOp.GreaterOrEqual -> ">="
-    BinOp.In -> "in"
-    BinOp.NotIn -> "not in"
-    BinOp.Subtract -> "-"
-    BinOp.Add -> "+"
-    BinOp.Multiply -> "*"
-    BinOp.Percent -> "%"
-    BinOp.Divide -> "/"
-    BinOp.FloorDivide -> "//"
-    BinOp.BitAnd -> "&"
-    BinOp.BitOr -> "|"
-    BinOp.BitXor -> "^"
-    BinOp.LeftShift -> "<<"
-    BinOp.RightShift -> ">>"
-}
+private fun BinOp.toSymbol(): String =
+    when (this) {
+        BinOp.Or -> "or"
+        BinOp.And -> "and"
+        BinOp.Equal -> "=="
+        BinOp.NotEqual -> "!="
+        BinOp.Less -> "<"
+        BinOp.Greater -> ">"
+        BinOp.LessOrEqual -> "<="
+        BinOp.GreaterOrEqual -> ">="
+        BinOp.In -> "in"
+        BinOp.NotIn -> "not in"
+        BinOp.Subtract -> "-"
+        BinOp.Add -> "+"
+        BinOp.Multiply -> "*"
+        BinOp.Percent -> "%"
+        BinOp.Divide -> "/"
+        BinOp.FloorDivide -> "//"
+        BinOp.BitAnd -> "&"
+        BinOp.BitOr -> "|"
+        BinOp.BitXor -> "^"
+        BinOp.LeftShift -> "<<"
+        BinOp.RightShift -> ">>"
+    }
 
 /**
  * Rewrite an expression, replacing binary operators according to the [replace] map.
@@ -238,104 +254,163 @@ private fun rewriteExpr(
     replace: Map<String, String>,
 ): AstExpr {
     val node = expr.node
-    val rewritten: Expr = when (node) {
-        is Expr.Op -> {
-            val func = replace[node.op.toSymbol()]
-            if (func != null) {
-                // Replace: Op(lhs, op, rhs) -> Call(Identifier(func), [lhs, rhs])
-                val lhs = rewriteExpr(node.left, replace)
-                val rhs = rewriteExpr(node.right, replace)
+    val rewritten: Expr =
+        when (node) {
+            is Expr.Op -> {
+                val func = replace[node.op.toSymbol()]
+                if (func != null) {
+                    // Replace: Op(lhs, op, rhs) -> Call(Identifier(func), [lhs, rhs])
+                    val lhs = rewriteExpr(node.left, replace)
+                    val rhs = rewriteExpr(node.right, replace)
+                    Expr.Call(
+                        target =
+                            AstExpr(
+                                Expr.Identifier(
+                                    AstIdent(Ident(func, Unit), expr.span),
+                                ),
+                                expr.span,
+                            ),
+                        args =
+                            CallArgs(
+                                listOf(AstArgument(Argument.Positional(lhs), lhs.span), AstArgument(Argument.Positional(rhs), rhs.span)),
+                            ),
+                    )
+                } else {
+                    // Keep Op but rewrite children
+                    Expr.Op(
+                        rewriteExpr(node.left, replace),
+                        node.op,
+                        rewriteExpr(node.right, replace),
+                    )
+                }
+            }
+
+            is Expr.Call -> {
                 Expr.Call(
-                    target = AstExpr(
-                        Expr.Identifier(
-                            AstIdent(Ident(func, Unit), expr.span)
-                        ),
-                        expr.span,
-                    ),
-                    args = CallArgs(
-                        listOf(AstArgument(Argument.Positional(lhs), lhs.span), AstArgument(Argument.Positional(rhs), rhs.span))
+                    rewriteExpr(node.target, replace),
+                    CallArgs(
+                        node.args.args.map { arg ->
+                            AstArgument(rewriteArg(arg.node, replace), arg.span)
+                        },
                     ),
                 )
-            } else {
-                // Keep Op but rewrite children
-                Expr.Op(
-                    rewriteExpr(node.left, replace),
-                    node.op,
-                    rewriteExpr(node.right, replace),
+            }
+
+            is Expr.Tuple -> {
+                Expr.Tuple(node.elems.map { rewriteExpr(it, replace) })
+            }
+
+            is Expr.Dot -> {
+                Expr.Dot(rewriteExpr(node.target, replace), node.attr)
+            }
+
+            is Expr.Index -> {
+                Expr.Index(
+                    rewriteExpr(node.target, replace),
+                    rewriteExpr(node.index, replace),
                 )
+            }
+
+            is Expr.Index2 -> {
+                Expr.Index2(
+                    rewriteExpr(node.target, replace),
+                    rewriteExpr(node.index0, replace),
+                    rewriteExpr(node.index1, replace),
+                )
+            }
+
+            is Expr.Slice -> {
+                Expr.Slice(
+                    rewriteExpr(node.target, replace),
+                    node.start?.let { rewriteExpr(it, replace) },
+                    node.stop?.let { rewriteExpr(it, replace) },
+                    node.step?.let { rewriteExpr(it, replace) },
+                )
+            }
+
+            is Expr.Not -> {
+                Expr.Not(rewriteExpr(node.target, replace))
+            }
+
+            is Expr.Minus -> {
+                Expr.Minus(rewriteExpr(node.target, replace))
+            }
+
+            is Expr.Plus -> {
+                Expr.Plus(rewriteExpr(node.target, replace))
+            }
+
+            is Expr.BitNot -> {
+                Expr.BitNot(rewriteExpr(node.target, replace))
+            }
+
+            is Expr.If -> {
+                Expr.If(
+                    rewriteExpr(node.condition, replace),
+                    rewriteExpr(node.v1, replace),
+                    rewriteExpr(node.v2, replace),
+                )
+            }
+
+            is Expr.List -> {
+                Expr.List(node.elems.map { rewriteExpr(it, replace) })
+            }
+
+            is Expr.Dict -> {
+                Expr.Dict(
+                    node.entries.map { (k, v) ->
+                        Expr.DictEntry(rewriteExpr(k, replace), rewriteExpr(v, replace))
+                    },
+                )
+            }
+
+            is Expr.ListComprehension -> {
+                Expr.ListComprehension(
+                    rewriteExpr(node.expr, replace),
+                    node.firstFor,
+                    node.clauses,
+                )
+            }
+
+            is Expr.DictComprehension -> {
+                Expr.DictComprehension(
+                    rewriteExpr(node.key, replace),
+                    rewriteExpr(node.value, replace),
+                    node.firstFor,
+                    node.clauses,
+                )
+            }
+
+            // Leaf nodes: no children to rewrite
+            is Expr.Identifier -> {
+                node
+            }
+
+            is Expr.Lambda -> {
+                node
+            }
+
+            is Expr.Literal -> {
+                node
+            }
+
+            is Expr.FString -> {
+                node
             }
         }
-        is Expr.Call -> Expr.Call(
-            rewriteExpr(node.target, replace),
-            CallArgs(
-                node.args.args.map { arg ->
-                    AstArgument(rewriteArg(arg.node, replace), arg.span)
-                }
-            ),
-        )
-        is Expr.Tuple -> Expr.Tuple(node.elems.map { rewriteExpr(it, replace) })
-        is Expr.Dot -> Expr.Dot(rewriteExpr(node.target, replace), node.attr)
-        is Expr.Index -> Expr.Index(
-            rewriteExpr(node.target, replace),
-            rewriteExpr(node.index, replace),
-        )
-        is Expr.Index2 -> Expr.Index2(
-            rewriteExpr(node.target, replace),
-            rewriteExpr(node.index0, replace),
-            rewriteExpr(node.index1, replace),
-        )
-        is Expr.Slice -> Expr.Slice(
-            rewriteExpr(node.target, replace),
-            node.start?.let { rewriteExpr(it, replace) },
-            node.stop?.let { rewriteExpr(it, replace) },
-            node.step?.let { rewriteExpr(it, replace) },
-        )
-        is Expr.Not -> Expr.Not(rewriteExpr(node.target, replace))
-        is Expr.Minus -> Expr.Minus(rewriteExpr(node.target, replace))
-        is Expr.Plus -> Expr.Plus(rewriteExpr(node.target, replace))
-        is Expr.BitNot -> Expr.BitNot(rewriteExpr(node.target, replace))
-        is Expr.If -> Expr.If(
-            rewriteExpr(node.condition, replace),
-            rewriteExpr(node.v1, replace),
-            rewriteExpr(node.v2, replace),
-        )
-        is Expr.List -> Expr.List(node.elems.map { rewriteExpr(it, replace) })
-        is Expr.Dict -> Expr.Dict(
-            node.entries.map { (k, v) ->
-                Expr.DictEntry(rewriteExpr(k, replace), rewriteExpr(v, replace))
-            }
-        )
-        is Expr.ListComprehension -> Expr.ListComprehension(
-            rewriteExpr(node.expr, replace),
-            node.firstFor,
-            node.clauses,
-        )
-        is Expr.DictComprehension -> Expr.DictComprehension(
-            rewriteExpr(node.key, replace),
-            rewriteExpr(node.value, replace),
-            node.firstFor,
-            node.clauses,
-        )
-        // Leaf nodes: no children to rewrite
-        is Expr.Identifier -> node
-        is Expr.Lambda -> node
-        is Expr.Literal -> node
-        is Expr.FString -> node
-    }
     return AstExpr(rewritten, expr.span)
 }
 
 private fun rewriteArg(
     arg: Argument,
     replace: Map<String, String>,
-): Argument {
-    return when (arg) {
+): Argument =
+    when (arg) {
         is Argument.Positional -> Argument.Positional(rewriteExpr(arg.expr, replace))
         is Argument.Named -> Argument.Named(arg.name, rewriteExpr(arg.expr, replace))
         is Argument.Args -> Argument.Args(rewriteExpr(arg.expr, replace))
         is Argument.KwArgs -> Argument.KwArgs(rewriteExpr(arg.expr, replace))
     }
-}
 
 /** Rewrite a statement, recursively rewriting all contained expressions. */
 private fun rewriteStmt(
@@ -343,66 +418,99 @@ private fun rewriteStmt(
     replace: Map<String, String>,
 ): AstStmt {
     val node = stmt.node
-    val rewritten: Stmt = when (node) {
-        is Stmt.Statements -> Stmt.Statements(
-            node.stmts.map { rewriteStmt(it, replace) },
-        )
-        is Stmt.Expression -> Stmt.Expression(
-            rewriteExpr(node.expr, replace),
-        )
-        is Stmt.Return -> Stmt.Return(
-            node.value?.let { rewriteExpr(it, replace) },
-        )
-        is Stmt.If -> Stmt.If(
-            rewriteExpr(node.cond, replace),
-            rewriteStmt(node.suite, replace),
-        )
-        is Stmt.IfElse -> Stmt.IfElse(
-            rewriteExpr(node.cond, replace),
-            rewriteStmt(node.suite1, replace),
-            rewriteStmt(node.suite2, replace),
-        )
-        is Stmt.For -> {
-            val forStmt = node.forStmt
-            Stmt.For(
-                For(
-                    variable = forStmt.variable,
-                    over = rewriteExpr(forStmt.over, replace),
-                    body = rewriteStmt(forStmt.body, replace),
+    val rewritten: Stmt =
+        when (node) {
+            is Stmt.Statements -> {
+                Stmt.Statements(
+                    node.stmts.map { rewriteStmt(it, replace) },
                 )
-            )
-        }
-        is Stmt.Def -> {
-            val def = node.def
-            Stmt.Def(
-                Def(
-                    name = def.name,
-                    params = def.params,
-                    returnType = def.returnType,
-                    body = rewriteStmt(def.body, replace),
-                    payload = def.payload,
+            }
+
+            is Stmt.Expression -> {
+                Stmt.Expression(
+                    rewriteExpr(node.expr, replace),
                 )
-            )
-        }
-        is Stmt.Assign -> {
-            val assign = node.assign
-            Stmt.Assign(
-                Assign(
-                    lhs = assign.lhs,
-                    ty = assign.ty,
-                    rhs = rewriteExpr(assign.rhs, replace),
+            }
+
+            is Stmt.Return -> {
+                Stmt.Return(
+                    node.value?.let { rewriteExpr(it, replace) },
                 )
-            )
+            }
+
+            is Stmt.If -> {
+                Stmt.If(
+                    rewriteExpr(node.cond, replace),
+                    rewriteStmt(node.suite, replace),
+                )
+            }
+
+            is Stmt.IfElse -> {
+                Stmt.IfElse(
+                    rewriteExpr(node.cond, replace),
+                    rewriteStmt(node.suite1, replace),
+                    rewriteStmt(node.suite2, replace),
+                )
+            }
+
+            is Stmt.For -> {
+                val forStmt = node.forStmt
+                Stmt.For(
+                    For(
+                        variable = forStmt.variable,
+                        over = rewriteExpr(forStmt.over, replace),
+                        body = rewriteStmt(forStmt.body, replace),
+                    ),
+                )
+            }
+
+            is Stmt.Def -> {
+                val def = node.def
+                Stmt.Def(
+                    Def(
+                        name = def.name,
+                        params = def.params,
+                        returnType = def.returnType,
+                        body = rewriteStmt(def.body, replace),
+                        payload = def.payload,
+                    ),
+                )
+            }
+
+            is Stmt.Assign -> {
+                val assign = node.assign
+                Stmt.Assign(
+                    Assign(
+                        lhs = assign.lhs,
+                        ty = assign.ty,
+                        rhs = rewriteExpr(assign.rhs, replace),
+                    ),
+                )
+            }
+
+            is Stmt.AssignModify -> {
+                Stmt.AssignModify(
+                    node.lhs,
+                    node.op,
+                    rewriteExpr(node.rhs, replace),
+                )
+            }
+
+            is Stmt.Load -> {
+                node
+            }
+
+            is Stmt.Break -> {
+                node
+            }
+
+            is Stmt.Continue -> {
+                node
+            }
+
+            is Stmt.Pass -> {
+                node
+            }
         }
-        is Stmt.AssignModify -> Stmt.AssignModify(
-            node.lhs,
-            node.op,
-            rewriteExpr(node.rhs, replace),
-        )
-        is Stmt.Load -> node
-        is Stmt.Break -> node
-        is Stmt.Continue -> node
-        is Stmt.Pass -> node
-    }
     return AstStmt(rewritten, stmt.span)
 }

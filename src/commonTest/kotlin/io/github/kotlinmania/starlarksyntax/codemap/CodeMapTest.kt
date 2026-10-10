@@ -110,10 +110,11 @@ class CodeMapTest {
 
     @Test
     fun testResolvedSpanContains() {
-        val span = ResolvedSpan(
-            begin = ResolvedPos(line = 2, column = 3),
-            end = ResolvedPos(line = 4, column = 5),
-        )
+        val span =
+            ResolvedSpan(
+                begin = ResolvedPos(line = 2, column = 3),
+                end = ResolvedPos(line = 4, column = 5),
+            )
         assertFalse(span.contains(ResolvedPos(line = 0, column = 7)))
         assertFalse(span.contains(ResolvedPos(line = 2, column = 2)))
         assertTrue(span.contains(ResolvedPos(line = 2, column = 3)))
@@ -169,14 +170,15 @@ class CodeMapTest {
 
     @Test
     fun testResolvedFileSpanToBeginResolvedFileLine() {
-        val span = ResolvedFileSpan(
-            file = "test.rs",
-            span = ResolvedSpan(
-                begin = ResolvedPos(line = 2, column = 3),
-                end = ResolvedPos(line = 4, column = 5),
-            ),
-        )
+        val span =
+            ResolvedFileSpan(
+                file = "test.rs",
+                span =
+                    ResolvedSpan(
+                        begin = ResolvedPos(line = 2, column = 3),
+                        end = ResolvedPos(line = 4, column = 5),
+                    ),
+            )
         assertEquals("test.rs:3", span.beginFileLine().toString())
     }
 }
-

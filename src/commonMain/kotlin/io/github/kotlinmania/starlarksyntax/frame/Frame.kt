@@ -44,21 +44,34 @@ data class Frame(
         write: StringBuilder,
     ) {
         if (location != null) {
-            val line = location
-                .file
-                .sourceLineAtPos(location.span.begin())
-                .trim()
+            val line =
+                location
+                    .file
+                    .sourceLineAtPos(location.span.begin())
+                    .trim()
             val (truncatedLine, ddd) = truncateSnippet(line, 80)
-            write.append(indent).append("* ").append(location.resolve().beginFileLine())
+            write
+                .append(indent)
+                .append("* ")
+                .append(location.resolve().beginFileLine())
                 .append(", in ")
                 // Note we print caller function here as in Python, not callee,
                 // so in the stack trace, top frame is printed without executed function name.
                 .append(caller)
                 .append('\n')
-            write.append(indent).append("    ").append(truncatedLine).append(ddd).append('\n')
+            write
+                .append(indent)
+                .append("    ")
+                .append(truncatedLine)
+                .append(ddd)
+                .append('\n')
         } else {
             // Python just omits builtin functions in the traceback.
-            write.append(indent).append("File <builtin>, in ").append(caller).append('\n')
+            write
+                .append(indent)
+                .append("File <builtin>, in ")
+                .append(caller)
+                .append('\n')
         }
     }
 }

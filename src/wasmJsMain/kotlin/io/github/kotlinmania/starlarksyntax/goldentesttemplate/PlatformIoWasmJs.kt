@@ -1,5 +1,6 @@
 // port-lint: source src/golden_test_template.rs
 @file:OptIn(kotlin.js.ExperimentalWasmJsInterop::class)
+
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 /*
@@ -41,14 +42,22 @@ private val platformReadUtf8FileImpl: (String) -> String =
     js(
         "(path) => {\n" +
             "  const isNode = typeof process !== 'undefined' && process && process.versions && process.versions.node;\n" +
-            "  if (isNode && typeof require !== 'undefined') {\n" +
+            "  let fs = null;\n" +
+            "  let p = null;\n" +
+            "  if (isNode) {\n" +
+            "    if (typeof require !== 'undefined') {\n" +
+            "      try { fs = require('fs'); p = require('path'); } catch (_) {}\n" +
+            "    }\n" +
+            "    if (!fs && typeof process.getBuiltinModule === 'function') {\n" +
+            "      try { fs = process.getBuiltinModule('fs'); p = process.getBuiltinModule('path'); } catch (_) {}\n" +
+            "    }\n" +
+            "  }\n" +
+            "  if (fs && p) {\n" +
             "    try {\n" +
-            "      const fs = require('fs');\n" +
-            "      const p = require('path');\n" +
             "      if (fs.existsSync(path)) {\n" +
             "        return fs.readFileSync(path, 'utf8').toString();\n" +
             "      }\n" +
-            "      let dir = (typeof process !== 'undefined' && process && process.cwd) ? process.cwd() : null;\n" +
+            "      let dir = (process && process.cwd) ? process.cwd() : null;\n" +
             "      while (dir) {\n" +
             "        const candidate = p.join(dir, path);\n" +
             "        if (fs.existsSync(candidate)) {\n" +
@@ -62,18 +71,21 @@ private val platformReadUtf8FileImpl: (String) -> String =
             "      }\n" +
             "      return fs.readFileSync(path, 'utf8').toString();\n" +
             "    } catch (_) {\n" +
-            "      // fall through to browser XHR fallback\n" +
-            "      }\n" +
+            "      // fall through to browser XHR fallback if in browser\n" +
+            "    }\n" +
             "  }\n" +
-            "  const normalized = path.startsWith('./') ? path.substring(2) : path;\n" +
-            "  const requestPath = normalized.startsWith('/') ? normalized : '/base/' + normalized;\n" +
-            "  const xhr = new XMLHttpRequest();\n" +
-            "  xhr.open('GET', requestPath, false);\n" +
-            "  xhr.send();\n" +
-            "  if (xhr.status === 200 || xhr.status === 0) {\n" +
-            "    return xhr.responseText;\n" +
+            "  if (typeof XMLHttpRequest !== 'undefined') {\n" +
+            "    const normalized = path.startsWith('./') ? path.substring(2) : path;\n" +
+            "    const requestPath = normalized.startsWith('/') ? normalized : '/base/' + normalized;\n" +
+            "    const xhr = new XMLHttpRequest();\n" +
+            "    xhr.open('GET', requestPath, false);\n" +
+            "    xhr.send();\n" +
+            "    if (xhr.status === 200 || xhr.status === 0) {\n" +
+            "      return xhr.responseText;\n" +
+            "    }\n" +
+            "    throw new Error('Failed to load golden file `' + path + '` in browser, HTTP status ' + xhr.status);\n" +
             "  }\n" +
-            "  throw new Error('Failed to load golden file `' + path + '` in browser, HTTP status ' + xhr.status);\n" +
+            "  throw new Error('Cannot read file `' + path + '`: neither fs nor XMLHttpRequest is available');\n" +
             "}",
     )
 
@@ -88,13 +100,16 @@ private val platformWriteUtf8FileImpl: (String, String) -> Unit =
     js(
         "(path, content) => {\n" +
             "  const isNode = typeof process !== 'undefined' && process && process.versions && process.versions.node;\n" +
-            "  if (!isNode || typeof require === 'undefined') {\n" +
-            "    throw new Error('Golden regeneration is not supported in JS browser runtime');\n" +
+            "  let fs = null;\n" +
+            "  if (isNode) {\n" +
+            "    if (typeof require !== 'undefined') {\n" +
+            "      try { fs = require('fs'); } catch (_) {}\n" +
+            "    }\n" +
+            "    if (!fs && typeof process.getBuiltinModule === 'function') {\n" +
+            "      try { fs = process.getBuiltinModule('fs'); } catch (_) {}\n" +
+            "    }\n" +
             "  }\n" +
-            "  let fs;\n" +
-            "  try {\n" +
-            "    fs = require('fs');\n" +
-            "  } catch (_) {\n" +
+            "  if (!fs) {\n" +
             "    throw new Error('Golden regeneration is not supported in JS browser runtime');\n" +
             "  }\n" +
             "  fs.writeFileSync(path, content, 'utf8');\n" +

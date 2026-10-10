@@ -39,34 +39,22 @@ class Error internal constructor(
 ) {
     companion object {
         /** Create a new error. */
-        fun newKind(kind: ErrorKind): Error {
-            return Error(WithDiagnostic.newEmpty(kind))
-        }
+        fun newKind(kind: ErrorKind): Error = Error(WithDiagnostic.newEmpty(kind))
 
         /** Create a new error with a span. */
-        fun newSpanned(kind: ErrorKind, span: Span, codemap: CodeMap): Error {
-            return Error(WithDiagnostic.newSpanned(kind, span, codemap))
-        }
+        fun newSpanned(kind: ErrorKind, span: Span, codemap: CodeMap): Error = Error(WithDiagnostic.newSpanned(kind, span, codemap))
 
         /** Create a new error with no diagnostic and of kind [ErrorKind.Other]. */
-        fun newOther(e: Throwable): Error {
-            return Error(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
-        }
+        fun newOther(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
 
         /** Create a new error with no diagnostic and of kind [ErrorKind.Native]. */
-        fun newNative(e: Throwable): Error {
-            return Error(WithDiagnostic.newEmpty(ErrorKind.Native(e)))
-        }
+        fun newNative(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Native(e)))
 
         /** Create a new error with no diagnostic and of kind [ErrorKind.Value]. */
-        fun newValue(e: Throwable): Error {
-            return Error(WithDiagnostic.newEmpty(ErrorKind.Value(e)))
-        }
+        fun newValue(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Value(e)))
 
         /** Construct an [Error] from a generic [Throwable]. */
-        fun from(e: Throwable): Error {
-            return Error(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
-        }
+        fun from(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
     }
 
     /** The kind of this error. */
@@ -75,15 +63,14 @@ class Error internal constructor(
     /** Convert the error into the underlying kind. */
     fun intoKind(): ErrorKind = inner.intoInner()
 
-    fun hasDiagnostic(): Boolean {
-        return inner.span() != null || !inner.callStack().isEmpty()
-    }
+    fun hasDiagnostic(): Boolean = inner.span() != null || !inner.callStack().isEmpty()
 
     /** Convert this error into a generic [Throwable]. */
     fun intoAnyhow(): Throwable {
         val self = this
         return object : Exception(self.toString()) {
             override fun toString(): String = self.toString()
+
             override val cause: Throwable?
                 get() = self.kind().source()
         }
@@ -132,19 +119,18 @@ class Error internal constructor(
     }
 
     /** Change error kind to internal error. */
-    fun intoInternalError(): Error {
-        return if (kind() is ErrorKind.Internal) {
+    fun intoInternalError(): Error =
+        if (kind() is ErrorKind.Internal) {
             this
         } else {
             Error(inner.map { ek -> ek.intoInternalError() })
         }
-    }
 
     override fun toString(): String = fmtImpl(this, isDebug = false, alternate = false)
 }
 
-private fun fmtImpl(self: Error, isDebug: Boolean, alternate: Boolean): String {
-    return if (self.hasDiagnostic()) {
+private fun fmtImpl(self: Error, isDebug: Boolean, alternate: Boolean): String =
+    if (self.hasDiagnostic()) {
         // Not showing the context trace without `{:#}` or `{:?}` is the same thing that anyhow does
         val withContext = (alternate || isDebug) && self.kind().source() != null
         val out = StringBuilder()
@@ -153,57 +139,76 @@ private fun fmtImpl(self: Error, isDebug: Boolean, alternate: Boolean): String {
     } else {
         self.withoutDiagnostic().toString()
     }
-}
 
 /** The different kinds of errors that can be produced by starlark. */
 sealed class ErrorKind {
     /** An explicit `fail` invocation. */
-    data class Fail(val error: Throwable) : ErrorKind()
+    data class Fail(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /** Starlark call stack overflow. */
-    data class StackOverflow(val error: Throwable) : ErrorKind()
+    data class StackOverflow(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /**
      * An error approximately associated with a value.
      *
      * Includes unsupported operations, missing attributes, things of that sort.
      */
-    data class Value(val error: Throwable) : ErrorKind()
+    data class Value(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /** Errors relating to the way a function is called (wrong number of args, etc.). */
-    data class Function(val error: Throwable) : ErrorKind()
+    data class Function(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /** Out of scope variables and similar. */
-    data class Scope(val error: Throwable) : ErrorKind()
+    data class Scope(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /** Syntax error. */
-    data class Parser(val error: Throwable) : ErrorKind() {
+    data class Parser(
+        val error: Throwable,
+    ) : ErrorKind() {
         override fun toString(): String = error.message ?: error.toString()
     }
 
     /** Freeze errors. Should have no metadata attached. */
-    data class Freeze(val error: Throwable) : ErrorKind()
+    data class Freeze(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /** Indicates a logic bug in starlark. */
-    data class Internal(val error: Throwable) : ErrorKind()
+    data class Internal(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /**
      * Error from user provided native function
      * (but not from native functions provided by starlark crate).
      * When a native function declares a [Result] return type, it is automatically converted to this variant.
      */
-    data class Native(val error: Throwable) : ErrorKind()
+    data class Native(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /**
      * Fallback option.
      *
      * For errors produced by starlark which have not yet been assigned their own kind.
      */
-    data class Other(val error: Throwable) : ErrorKind()
+    data class Other(
+        val error: Throwable,
+    ) : ErrorKind()
 
     /** The source of the error, akin to [Throwable.cause]. */
-    fun source(): Throwable? {
-        return when (this) {
+    fun source(): Throwable? =
+        when (this) {
             is Fail -> null
             is StackOverflow -> null
             is Value -> null
@@ -215,11 +220,10 @@ sealed class ErrorKind {
             is Native -> error.cause
             is Other -> error.cause
         }
-    }
 
     /** Change type to [Internal]. */
-    internal fun intoInternalError(): ErrorKind {
-        return when (this) {
+    internal fun intoInternalError(): ErrorKind =
+        when (this) {
             is Internal -> Internal(error)
             is Fail -> Internal(error)
             is Value -> Internal(error)
@@ -231,10 +235,9 @@ sealed class ErrorKind {
             is Native -> Internal(error)
             is Other -> Internal(error)
         }
-    }
 
-    override fun toString(): String {
-        return when (this) {
+    override fun toString(): String =
+        when (this) {
             is Fail -> "fail:$error"
             is StackOverflow -> error.toString()
             is Value -> error.toString()
@@ -246,7 +249,6 @@ sealed class ErrorKind {
             is Native -> error.toString()
             is Other -> error.toString()
         }
-    }
 }
 
 interface StarlarkResultExt<T> {
@@ -254,8 +256,8 @@ interface StarlarkResultExt<T> {
 }
 
 /** Convert this Result<T, Error> into a Result<T> that wraps an anyhow-style throwable. */
-fun <T> Result<T>.intoAnyhowResult(): Result<T> {
-    return this.fold(
+fun <T> Result<T>.intoAnyhowResult(): Result<T> =
+    this.fold(
         onSuccess = { Result.success(it) },
         onFailure = { e ->
             if (e is StarlarkErrorException) {
@@ -263,28 +265,21 @@ fun <T> Result<T>.intoAnyhowResult(): Result<T> {
             } else {
                 Result.failure(e)
             }
-        }
+        },
     )
-}
 
 /** Wrapper exception used when an [Error] needs to be carried through Kotlin's [Result]/[Throwable] APIs. */
-class StarlarkErrorException(val error: Error) : Exception(error.toString())
+class StarlarkErrorException(
+    val error: Error,
+) : Exception(error.toString())
 
-fun internalErrorImpl(message: String): Error {
-    return Error.newKind(ErrorKind.Internal(Exception(message)))
-}
+fun internalErrorImpl(message: String): Error = Error.newKind(ErrorKind.Internal(Exception(message)))
 
-fun otherErrorImpl(message: String): Error {
-    return Error.newKind(ErrorKind.Other(Exception(message)))
-}
+fun otherErrorImpl(message: String): Error = Error.newKind(ErrorKind.Other(Exception(message)))
 
-fun valueErrorImpl(message: String): Error {
-    return Error.newKind(ErrorKind.Value(Exception(message)))
-}
+fun valueErrorImpl(message: String): Error = Error.newKind(ErrorKind.Value(Exception(message)))
 
-fun functionErrorImpl(message: String): Error {
-    return Error.newKind(ErrorKind.Function(Exception(message)))
-}
+fun functionErrorImpl(message: String): Error = Error.newKind(ErrorKind.Function(Exception(message)))
 
 /** Internal error of starlark. */
 fun internalError(message: String): Error = internalErrorImpl(message)

@@ -30,7 +30,9 @@ package io.github.kotlinmania.starlarksyntax.codemap
 import io.github.kotlinmania.starlarksyntax.faststring.len
 
 /** A small, copy, value representing a position in a [CodeMap]'s file. */
-data class Pos(val value: Int) : Comparable<Pos> {
+data class Pos(
+    val value: Int,
+) : Comparable<Pos> {
     companion object {
         /** Constructor. */
         fun new(x: Int): Pos = Pos(x)
@@ -40,12 +42,15 @@ data class Pos(val value: Int) : Comparable<Pos> {
     fun get(): Int = value
 
     fun add(other: Int): Pos = this + other
+
     fun sub(other: Int): Pos = this - other
 
     fun addAssign(other: Int): Pos = Pos(value + other)
 
     operator fun plus(other: Int): Pos = Pos(value + other)
+
     operator fun minus(other: Int): Pos = Pos(value - other)
+
     override fun compareTo(other: Pos): Int = value.compareTo(other.value)
 }
 
@@ -65,9 +70,7 @@ data class Span(
             return Span(begin, end)
         }
 
-        fun mergeAll(spans: Sequence<Span>): Span {
-            return spans.reduceOrNull { a, b -> a.merge(b) } ?: DEFAULT
-        }
+        fun mergeAll(spans: Sequence<Span>): Span = spans.reduceOrNull { a, b -> a.merge(b) } ?: DEFAULT
 
         fun mergeAll(spans: Iterable<Span>): Span = mergeAll(spans.asSequence())
     }
@@ -82,10 +85,11 @@ data class Span(
     fun len(): Int = endPos.value - beginPos.value
 
     /** Create a span that encloses both `this` and `other`. */
-    fun merge(other: Span): Span = Span(
-        beginPos = if (beginPos <= other.beginPos) beginPos else other.beginPos,
-        endPos = if (endPos >= other.endPos) endPos else other.endPos,
-    )
+    fun merge(other: Span): Span =
+        Span(
+            beginPos = if (beginPos <= other.beginPos) beginPos else other.beginPos,
+            endPos = if (endPos >= other.endPos) endPos else other.endPos,
+        )
 
     /** Empty span in the end of this span. */
     fun endSpan(): Span = Span(endPos, endPos)
@@ -121,6 +125,7 @@ open class Spanned<out T>(
     fun derefMut(): T = node
 
     operator fun component1(): T = node
+
     operator fun component2(): Span = span
 
     override fun equals(other: Any?): Boolean {
@@ -143,14 +148,14 @@ open class Spanned<out T>(
  * somewhat delving into internal details.
  * Remains unique because we take a reference to the CodeMap.
  */
-class CodeMapId internal constructor(internal val ref: Any?) {
+class CodeMapId internal constructor(
+    internal val ref: Any?,
+) {
     companion object {
         val EMPTY: CodeMapId = CodeMapId(null)
     }
 
-    override fun equals(other: Any?): Boolean {
-        return other is CodeMapId && this.ref === other.ref
-    }
+    override fun equals(other: Any?): Boolean = other is CodeMapId && this.ref === other.ref
 
     override fun hashCode(): Int = ref?.let { systemIdentityHashCode(it) } ?: 0
 
@@ -158,12 +163,19 @@ class CodeMapId internal constructor(internal val ref: Any?) {
 }
 
 internal sealed class CodeMapImpl {
-    internal class Real(val data: CodeMapData) : CodeMapImpl()
-    internal class Native(val data: NativeCodeMap) : CodeMapImpl()
+    internal class Real(
+        val data: CodeMapData,
+    ) : CodeMapImpl()
+
+    internal class Native(
+        val data: NativeCodeMap,
+    ) : CodeMapImpl()
 }
 
 /** A data structure recording a source code file for position lookup. */
-class CodeMap internal constructor(internal val impl: CodeMapImpl) {
+class CodeMap internal constructor(
+    internal val impl: CodeMapImpl,
+) {
     companion object {
         private val EMPTY_CODEMAP: CodeMap by lazy { default() }
 
@@ -183,8 +195,8 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
                         source = source,
                         sourceBytes = sourceBytes,
                         lines = lines,
-                    )
-                )
+                    ),
+                ),
             )
         }
 
@@ -194,27 +206,25 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
     }
 
     /** Only used internally for profiling optimisations. */
-    fun id(): CodeMapId = when (val i = impl) {
-        is CodeMapImpl.Real -> CodeMapId(i.data)
-        is CodeMapImpl.Native -> CodeMapId(i.data)
-    }
+    fun id(): CodeMapId =
+        when (val i = impl) {
+            is CodeMapImpl.Real -> CodeMapId(i.data)
+            is CodeMapImpl.Native -> CodeMapId(i.data)
+        }
 
-    fun fullSpan(): Span {
-        return Span.new(Pos(0), Pos(sourceBytes().size))
-    }
+    fun fullSpan(): Span = Span.new(Pos(0), Pos(sourceBytes().size))
 
     /** Gets the file and its line and column ranges represented by a [Span]. */
     fun fileSpan(span: Span): FileSpan = FileSpan(this, span)
 
     /** Gets the name of the file. */
-    fun filename(): String = when (val i = impl) {
-        is CodeMapImpl.Real -> i.data.filename
-        is CodeMapImpl.Native -> i.data.filename
-    }
+    fun filename(): String =
+        when (val i = impl) {
+            is CodeMapImpl.Real -> i.data.filename
+            is CodeMapImpl.Native -> i.data.filename
+        }
 
-    fun byteAt(pos: Pos): Byte {
-        return sourceBytes()[pos.value]
-    }
+    fun byteAt(pos: Pos): Byte = sourceBytes()[pos.value]
 
     /**
      * Gets the line number of a Pos.
@@ -230,7 +240,10 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
                 val idx = i.data.lines.binarySearch(pos)
                 if (idx >= 0) idx else -idx - 2
             }
-            is CodeMapImpl.Native -> i.data.start.line
+
+            is CodeMapImpl.Native -> {
+                i.data.start.line
+            }
         }
     }
 
@@ -255,23 +268,28 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
                 val column = len(prefixStr).value
                 ResolvedPos(line, column)
             }
-            is CodeMapImpl.Native -> ResolvedPos(
-                line = i.data.start.line,
-                column = i.data.start.column + pos.value,
-            )
+
+            is CodeMapImpl.Native -> {
+                ResolvedPos(
+                    line = i.data.start.line,
+                    column = i.data.start.column + pos.value,
+                )
+            }
         }
     }
 
     /** Gets the full source text of the file. */
-    fun source(): String = when (val i = impl) {
-        is CodeMapImpl.Real -> i.data.source
-        is CodeMapImpl.Native -> NativeCodeMap.SOURCE
-    }
+    fun source(): String =
+        when (val i = impl) {
+            is CodeMapImpl.Real -> i.data.source
+            is CodeMapImpl.Native -> NativeCodeMap.SOURCE
+        }
 
-    private fun sourceBytes(): ByteArray = when (val i = impl) {
-        is CodeMapImpl.Real -> i.data.sourceBytes
-        is CodeMapImpl.Native -> NativeCodeMap.SOURCE_BYTES
-    }
+    private fun sourceBytes(): ByteArray =
+        when (val i = impl) {
+            is CodeMapImpl.Real -> i.data.sourceBytes
+            is CodeMapImpl.Native -> NativeCodeMap.SOURCE_BYTES
+        }
 
     /**
      * Gets the source text of a Span.
@@ -290,10 +308,9 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
     }
 
     /** Like [lineSpanOpt] but panics if the line number is out of range. */
-    fun lineSpan(line: Int): Span {
-        return lineSpanOpt(line)
+    fun lineSpan(line: Int): Span =
+        lineSpanOpt(line)
             ?: error("Line $line is out of range for $this")
-    }
 
     /** Trim trailing newline if any, including windows, from the line span. */
     fun lineSpanTrimNewline(line: Int): Span {
@@ -315,17 +332,27 @@ class CodeMap internal constructor(internal val impl: CodeMapImpl) {
      *
      * Returns null if the number if out of range.
      */
-    fun lineSpanOpt(line: Int): Span? = when (val i = impl) {
-        is CodeMapImpl.Real -> if (line < i.data.lines.size) {
-            Span.new(
-                begin = i.data.lines[line],
-                end = if (line + 1 < i.data.lines.size) i.data.lines[line + 1] else fullSpan().end(),
-            )
-        } else null
-        is CodeMapImpl.Native -> if (line == i.data.start.line) {
-            Span.new(Pos(0), Pos(NativeCodeMap.SOURCE.length))
-        } else null
-    }
+    fun lineSpanOpt(line: Int): Span? =
+        when (val i = impl) {
+            is CodeMapImpl.Real -> {
+                if (line < i.data.lines.size) {
+                    Span.new(
+                        begin = i.data.lines[line],
+                        end = if (line + 1 < i.data.lines.size) i.data.lines[line + 1] else fullSpan().end(),
+                    )
+                } else {
+                    null
+                }
+            }
+
+            is CodeMapImpl.Native -> {
+                if (line == i.data.start.line) {
+                    Span.new(Pos(0), Pos(NativeCodeMap.SOURCE.length))
+                } else {
+                    null
+                }
+            }
+        }
 
     fun resolveSpan(span: Span): ResolvedSpan {
         val begin = findLineCol(span.begin())
@@ -507,10 +534,11 @@ data class FileSpan(
     fun resolveSpan(): ResolvedSpan = asRef().resolveSpan()
 
     /** Resolve the span to lines and columns. */
-    fun resolve(): ResolvedFileSpan = ResolvedFileSpan(
-        file = file.filename(),
-        span = file.resolveSpan(span),
-    )
+    fun resolve(): ResolvedFileSpan =
+        ResolvedFileSpan(
+            file = file.filename(),
+            span = file.resolveSpan(span),
+        )
 
     /**
      * Formats the span as `filename:startLine:startColumn: endLine:endColumn`,
@@ -599,12 +627,15 @@ data class ResolvedSpan(
      * Check that the given position is contained within this span.
      * Includes positions both at the beginning and the end of the range.
      */
-    fun contains(pos: ResolvedPos): Boolean {
-        return (begin.line < pos.line
-            || (begin.line == pos.line && begin.column <= pos.column))
-            && (end.line > pos.line
-                || (end.line == pos.line && end.column >= pos.column))
-    }
+    fun contains(pos: ResolvedPos): Boolean =
+        (
+            begin.line < pos.line ||
+                (begin.line == pos.line && begin.column <= pos.column)
+        ) &&
+            (
+                end.line > pos.line ||
+                    (end.line == pos.line && end.column >= pos.column)
+            )
 
     override fun compareTo(other: ResolvedSpan): Int {
         val c = begin.compareTo(other.begin)
@@ -644,10 +675,11 @@ data class ResolvedFileSpan(
     }
 
     /** File and line number of the beginning of the span. */
-    fun beginFileLine(): ResolvedFileLine = ResolvedFileLine(
-        file = file,
-        line = span.begin.line,
-    )
+    fun beginFileLine(): ResolvedFileLine =
+        ResolvedFileLine(
+            file = file,
+            line = span.begin.line,
+        )
 
     override fun toString(): String = "$file:$span"
 

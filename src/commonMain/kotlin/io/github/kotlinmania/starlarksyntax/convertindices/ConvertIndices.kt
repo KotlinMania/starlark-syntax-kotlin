@@ -18,15 +18,14 @@ package io.github.kotlinmania.starlarksyntax.convertindices
  * limitations under the License.
  */
 
-private fun bound(value: Int, limit: Int): Int {
-    return if (value <= 0) {
+private fun bound(value: Int, limit: Int): Int =
+    if (value <= 0) {
         0
     } else if (value >= limit) {
         limit
     } else {
         value
     }
-}
 
 fun convertIndices(len: Int, start: Int?, end: Int?): Pair<Int, Int> {
     val s = start ?: 0

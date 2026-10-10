@@ -41,7 +41,9 @@ internal sealed class DefParamKind {
         /** Default value. */
         val defaultValue: AstExpr?,
     ) : DefParamKind()
+
     class Args : DefParamKind()
+
     class Kwargs : DefParamKind()
 }
 
@@ -126,19 +128,26 @@ internal class DefParams(
             var indexOfStar: Int? = null
 
             val firstSlash = astParams.indexOfFirst { it.node is Parameter.Slash }
-            val numPositionalOnly: UInt = when {
-                firstSlash < 0 -> 0u
-                firstSlash == 0 -> {
-                    return Result.failure(
-                        EvalException.parserError(
-                            "`/` cannot be first parameter",
-                            astParams[0].span,
-                            codemap,
+            val numPositionalOnly: UInt =
+                when {
+                    firstSlash < 0 -> {
+                        0u
+                    }
+
+                    firstSlash == 0 -> {
+                        return Result.failure(
+                            EvalException.parserError(
+                                "`/` cannot be first parameter",
+                                astParams[0].span,
+                                codemap,
+                            ),
                         )
-                    )
+                    }
+
+                    else -> {
+                        firstSlash.toUInt()
+                    }
                 }
-                else -> firstSlash.toUInt()
-            }
 
             var state = if (numPositionalOnly == 0u) State.SeenSlash else State.Normal
 
@@ -159,7 +168,7 @@ internal class DefParams(
                                     "Parameter after kwargs",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         val defaultValue = node.default
@@ -170,7 +179,7 @@ internal class DefParams(
                                         "positional parameter after non positional",
                                         param.span,
                                         codemap,
-                                    )
+                                    ),
                                 )
                             }
                         } else {
@@ -179,22 +188,25 @@ internal class DefParams(
                         if (state < State.SeenStar) {
                             numPositional += 1
                         }
-                        val mode = when {
-                            state < State.SeenSlash -> DefRegularParamMode.PosOnly
-                            state < State.SeenStar -> DefRegularParamMode.PosOrName
-                            else -> DefRegularParamMode.NameOnly
-                        }
+                        val mode =
+                            when {
+                                state < State.SeenSlash -> DefRegularParamMode.PosOnly
+                                state < State.SeenStar -> DefRegularParamMode.PosOrName
+                                else -> DefRegularParamMode.NameOnly
+                            }
                         params.add(
                             Spanned(
                                 span = span,
-                                node = DefParam(
-                                    ident = node.name,
-                                    kind = DefParamKind.Regular(mode, defaultValue),
-                                    ty = node.type,
-                                ),
-                            )
+                                node =
+                                    DefParam(
+                                        ident = node.name,
+                                        kind = DefParamKind.Regular(mode, defaultValue),
+                                        ty = node.type,
+                                    ),
+                            ),
                         )
                     }
+
                     is Parameter.NoArgs -> {
                         if (state >= State.SeenStar) {
                             return Result.failure(
@@ -202,7 +214,7 @@ internal class DefParams(
                                     "Args parameter after another args or kwargs parameter",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         state = State.SeenStar
@@ -212,11 +224,12 @@ internal class DefParams(
                                     "Multiple `*` in parameters, must have been caught earlier",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         indexOfStar = i
                     }
+
                     is Parameter.Slash -> {
                         if (state >= State.SeenSlash) {
                             return Result.failure(
@@ -224,11 +237,12 @@ internal class DefParams(
                                     "Multiple `/` in parameters",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         state = State.SeenSlash
                     }
+
                     is Parameter.Args -> {
                         if (state >= State.SeenStar) {
                             return Result.failure(
@@ -236,7 +250,7 @@ internal class DefParams(
                                     "Args parameter after another args or kwargs parameter",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         state = State.SeenStar
@@ -246,21 +260,23 @@ internal class DefParams(
                                     "Multiple *args",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         args = params.size.toUInt()
                         params.add(
                             Spanned(
                                 span = span,
-                                node = DefParam(
-                                    ident = node.name,
-                                    kind = DefParamKind.Args(),
-                                    ty = node.type,
-                                ),
-                            )
+                                node =
+                                    DefParam(
+                                        ident = node.name,
+                                        kind = DefParamKind.Args(),
+                                        ty = node.type,
+                                    ),
+                            ),
                         )
                     }
+
                     is Parameter.KwArgs -> {
                         if (state >= State.SeenStarStar) {
                             return Result.failure(
@@ -268,7 +284,7 @@ internal class DefParams(
                                     "Multiple kwargs dictionary in parameters",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         if (kwargs != null) {
@@ -277,7 +293,7 @@ internal class DefParams(
                                     "Multiple **kwargs",
                                     param.span,
                                     codemap,
-                                )
+                                ),
                             )
                         }
                         kwargs = params.size.toUInt()
@@ -285,39 +301,43 @@ internal class DefParams(
                         params.add(
                             Spanned(
                                 span = span,
-                                node = DefParam(
-                                    ident = node.name,
-                                    kind = DefParamKind.Kwargs(),
-                                    ty = node.type,
-                                ),
-                            )
+                                node =
+                                    DefParam(
+                                        ident = node.name,
+                                        kind = DefParamKind.Kwargs(),
+                                        ty = node.type,
+                                    ),
+                            ),
                         )
                     }
                 }
             }
 
             if (indexOfStar != null) {
-                val next = astParams.getOrNull(indexOfStar + 1)
-                    ?: return Result.failure(
-                        EvalException.parserError(
-                            "`*` parameter must not be last",
-                            astParams[indexOfStar].span,
-                            codemap,
+                val next =
+                    astParams.getOrNull(indexOfStar + 1)
+                        ?: return Result.failure(
+                            EvalException.parserError(
+                                "`*` parameter must not be last",
+                                astParams[indexOfStar].span,
+                                codemap,
+                            ),
                         )
-                    )
                 when (next.node) {
                     is Parameter.Normal -> {}
+
                     is Parameter.KwArgs,
                     is Parameter.Args,
                     is Parameter.NoArgs,
-                    is Parameter.Slash -> {
+                    is Parameter.Slash,
+                    -> {
                         // We get here only for `**kwargs`, the rest is handled above.
                         return Result.failure(
                             EvalException.parserError(
                                 "`*` must be followed by named parameter",
                                 next.span,
                                 codemap,
-                            )
+                            ),
                         )
                     }
                 }
@@ -326,13 +346,14 @@ internal class DefParams(
             return Result.success(
                 DefParams(
                     params = params,
-                    indices = DefParamIndices(
-                        numPositional = numPositional.toUInt(),
-                        numPositionalOnly = numPositionalOnly,
-                        args = args,
-                        kwargs = kwargs,
-                    ),
-                )
+                    indices =
+                        DefParamIndices(
+                            numPositional = numPositional.toUInt(),
+                            numPositionalOnly = numPositionalOnly,
+                            args = args,
+                            kwargs = kwargs,
+                        ),
+                ),
             )
         }
 
@@ -348,7 +369,7 @@ internal class DefParams(
                         "duplicated parameter name",
                         arg.span,
                         codemap,
-                    )
+                    ),
                 )
             }
             return Result.success(Unit)
@@ -358,11 +379,13 @@ internal class DefParams(
 
 private enum class State {
     Normal,
+
     /** After `/`. */
     SeenSlash,
+
     /** After `*` or `*args`. */
     SeenStar,
+
     /** After `**kwargs`. */
     SeenStarStar,
 }
-

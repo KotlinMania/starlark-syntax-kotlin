@@ -23,7 +23,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 class LexerTest {
-
     @Test
     fun testIsValidIdentifier() {
         assertEquals("foo", lexExactlyOneIdentifier("foo"))

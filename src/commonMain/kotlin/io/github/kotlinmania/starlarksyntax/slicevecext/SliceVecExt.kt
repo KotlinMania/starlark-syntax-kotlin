@@ -71,7 +71,10 @@ fun <T, B> List<T>.tryMapExt(f: (T) -> Result<B>): Result<List<B>> {
         object : Iterator<Result<B>> {
             override fun hasNext(): Boolean = base.hasNext()
 
-            override fun next(): Result<B> = f(base.next())
+            override fun next(): Result<B> {
+                if (!hasNext()) throw NoSuchElementException()
+                return f(base.next())
+            }
         }
     return collectResult(mapped, size)
 }

@@ -22,7 +22,6 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class FrameTest {
-
     @Test
     fun testTruncateSnippet() {
         assertEquals("" to "", truncateSnippet("", 5))

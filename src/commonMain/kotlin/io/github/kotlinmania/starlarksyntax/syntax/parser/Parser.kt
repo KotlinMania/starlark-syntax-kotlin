@@ -18,14 +18,14 @@ package io.github.kotlinmania.starlarksyntax.syntax.parser
  * limitations under the License.
  */
 
-//! Parser abstraction for Starlark.
-//!
-//! [Parser] is the common interface implemented by each parser backend.
-//! Today the only impl is the LALRPOP-backed one; additional
-//! impls (e.g. recursive descent) plug in here.
+// ! Parser abstraction for Starlark.
+// !
+// ! [Parser] is the common interface implemented by each parser backend.
+// ! Today the only impl is the LALRPOP-backed one; additional
+// ! impls (e.g. recursive descent) plug in here.
 
-import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.parseerror.ParseError
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
@@ -47,7 +47,11 @@ internal fun interface Parser {
 }
 
 internal sealed class Result<out T, out E> {
-    data class Ok<T>(val value: T) : Result<T, Nothing>()
+    data class Ok<T>(
+        val value: T,
+    ) : Result<T, Nothing>()
 
-    data class Err<E>(val error: E) : Result<Nothing, E>()
+    data class Err<E>(
+        val error: E,
+    ) : Result<Nothing, E>()
 }

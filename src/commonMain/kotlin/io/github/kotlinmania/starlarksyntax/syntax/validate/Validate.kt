@@ -20,6 +20,7 @@ package io.github.kotlinmania.starlarksyntax.syntax.validate
 
 /** AST validation for parsed starlark files. */
 
+import io.github.kotlinmania.starlarksyntax.DialectTypes
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstExpr
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstLiteral
@@ -29,12 +30,11 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.CallArgs
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Expr
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Parameter
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
-import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitExpr
-import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitStmt
 import io.github.kotlinmania.starlarksyntax.syntax.call.CallArgsUnpack
 import io.github.kotlinmania.starlarksyntax.syntax.def.DefParams
-import io.github.kotlinmania.starlarksyntax.DialectTypes
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
+import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitExpr
+import io.github.kotlinmania.starlarksyntax.syntax.uniplate.visitStmt
 
 /**
  * We want to check a function call is well-formed.
@@ -69,7 +69,7 @@ internal fun checkCall(
 
 /** Validate all statements only occur where they are allowed to. */
 internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
-    fun validateParams(params: List<AstParameter>, parserState: ParserState) {
+    fun validateParams(params: List<AstParameter>) {
         if (!parserState.dialect.enableKeywordOnlyArguments) {
             for (param in params) {
                 if (param.node is Parameter.NoArgs) {
@@ -103,45 +103,56 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
     // All load's must occur at the top-level.
     // At the top-level we only allow for/if when the dialect permits it.
     fun f(
-        stmt: AstStmt,
-        parserState: ParserState,
+        s: AstStmt,
         topLevel: Boolean,
         insideFor: Boolean,
         insideDef: Boolean,
     ) {
-        val span = stmt.span
+        val span = s.span
 
-        when (val node = stmt.node) {
+        when (val node = s.node) {
             is Stmt.Def -> {
                 if (!parserState.dialect.enableDef) {
                     parserState.error(span, "`def` is not allowed in this dialect")
                 }
-                validateParams(node.def.params, parserState)
-                f(node.def.body, parserState, false, false, true)
+                validateParams(node.def.params)
+                f(node.def.body, false, false, true)
             }
+
             is Stmt.For -> {
                 if (topLevel && !parserState.dialect.enableTopLevelStmt) {
                     parserState.error(span, "`for` cannot be used outside `def` in this dialect")
                 } else {
-                    f(node.forStmt.body, parserState, false, true, insideDef)
+                    f(node.forStmt.body, false, true, insideDef)
                 }
             }
+
             is Stmt.If, is Stmt.IfElse -> {
                 if (topLevel && !parserState.dialect.enableTopLevelStmt) {
                     parserState.error(span, "`if` cannot be used outside `def` in this dialect")
                 } else {
-                    node.visitStmt { x -> f(x, parserState, false, insideFor, insideDef) }
+                    node.visitStmt { x -> f(x, false, insideFor, insideDef) }
                 }
             }
-            is Stmt.Break -> if (!insideFor) {
-                parserState.error(span, "`break` cannot be used outside of a `for` loop")
+
+            is Stmt.Break -> {
+                if (!insideFor) {
+                    parserState.error(span, "`break` cannot be used outside of a `for` loop")
+                }
             }
-            is Stmt.Continue -> if (!insideFor) {
-                parserState.error(span, "`continue` cannot be used outside of a `for` loop")
+
+            is Stmt.Continue -> {
+                if (!insideFor) {
+                    parserState.error(span, "`continue` cannot be used outside of a `for` loop")
+                }
             }
-            is Stmt.Return -> if (!insideDef) {
-                parserState.error(span, "`return` cannot be used outside of a `def` function")
+
+            is Stmt.Return -> {
+                if (!insideDef) {
+                    parserState.error(span, "`return` cannot be used outside of a `def` function")
+                }
             }
+
             is Stmt.Load -> {
                 if (!topLevel) {
                     parserState.error(span, "`load` must only occur at the top of a module")
@@ -150,11 +161,14 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
                     parserState.error(span, "`load` is not allowed in this dialect")
                 }
             }
-            else -> node.visitStmt { x -> f(x, parserState, topLevel, insideFor, insideDef) }
+
+            else -> {
+                node.visitStmt { x -> f(x, topLevel, insideFor, insideDef) }
+            }
         }
     }
 
-    fun expr(x: AstExpr, parserState: ParserState) {
+    fun expr(x: AstExpr) {
         when (val node = x.node) {
             is Expr.Literal -> {
                 if (node.literal is AstLiteral.EllipsisLiteral) {
@@ -163,18 +177,20 @@ internal fun validateModule(stmt: AstStmt, parserState: ParserState) {
                     }
                 }
             }
+
             is Expr.Lambda -> {
                 if (!parserState.dialect.enableLambda) {
                     parserState.error(x.span, "`lambda` is not allowed in this dialect")
                 }
-                validateParams(node.lambda.params, parserState)
+                validateParams(node.lambda.params)
             }
+
             else -> {}
         }
-        x.node.visitExpr { y -> expr(y, parserState) }
+        x.node.visitExpr { y -> expr(y) }
     }
 
-    f(stmt, parserState, true, false, false)
+    f(stmt, true, false, false)
 
-    stmt.visitExpr { x -> expr(x, parserState) }
+    stmt.visitExpr { x -> expr(x) }
 }

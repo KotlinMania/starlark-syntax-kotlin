@@ -24,23 +24,26 @@ import io.github.kotlinmania.starlarksyntax.lexer.Lexer
 import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.lexer.Token.FStringToken
 import io.github.kotlinmania.starlarksyntax.lexer.Token.StringToken
-import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParseResult
 import kotlin.math.max
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParseResult
 
 private fun lexTokens(program: String): List<Triple<Int, Token, Int>> {
-    fun tokens(dialect: Dialect, program: String): List<Triple<Int, Token, Int>> {
-        val codemap = CodeMap.new("assert.bzl", program)
-        val lexer = Lexer(program, dialect, codemap)
+    fun tokens(dialect: Dialect, code: String): List<Triple<Int, Token, Int>> {
+        val codemap = CodeMap.new("assert.bzl", code)
+        val lexer = Lexer(code, dialect, codemap)
         val out = mutableListOf<Triple<Int, Token, Int>>()
         for (lexeme in lexer) {
             when (lexeme) {
-                is ParseResult.Ok -> out.add(lexeme.value)
+                is ParseResult.Ok -> {
+                    out.add(lexeme.value)
+                }
+
                 is ParseResult.Err -> {
                     throw AssertionError(
                         "starlark::assert::lexTokens, expected lex success but failed\n" +
-                            "Code: $program\n" +
+                            "Code: $code\n" +
                             "Error: ${lexeme.error}",
                     )
                 }
@@ -82,13 +85,34 @@ private fun jsonStringLiteral(s: String): String {
     out.append('"')
     for (ch in s) {
         when (ch) {
-            '\\' -> out.append("\\\\")
-            '"' -> out.append("\\\"")
-            '\b' -> out.append("\\b")
-            '\u000C' -> out.append("\\f")
-            '\n' -> out.append("\\n")
-            '\r' -> out.append("\\r")
-            '\t' -> out.append("\\t")
+            '\\' -> {
+                out.append("\\\\")
+            }
+
+            '"' -> {
+                out.append("\\\"")
+            }
+
+            '\b' -> {
+                out.append("\\b")
+            }
+
+            '\u000C' -> {
+                out.append("\\f")
+            }
+
+            '\n' -> {
+                out.append("\\n")
+            }
+
+            '\r' -> {
+                out.append("\\r")
+            }
+
+            '\t' -> {
+                out.append("\\t")
+            }
+
             else -> {
                 if (ch.code < 0x20) {
                     out.append("\\u")
@@ -103,13 +127,28 @@ private fun jsonStringLiteral(s: String): String {
     return out.toString()
 }
 
-private fun Token.unlex(): String {
-    return when (this) {
-        Token.Indent -> "\t"
-        Token.Newline -> "\n"
-        Token.Dedent -> "#dedent"
-        is StringToken -> jsonStringLiteral(this.value)
-        is FStringToken -> "f" + jsonStringLiteral(this.value.content)
+private fun Token.unlex(): String =
+    when (this) {
+        Token.Indent -> {
+            "\t"
+        }
+
+        Token.Newline -> {
+            "\n"
+        }
+
+        Token.Dedent -> {
+            "#dedent"
+        }
+
+        is StringToken -> {
+            jsonStringLiteral(this.value)
+        }
+
+        is FStringToken -> {
+            "f" + jsonStringLiteral(this.value.content)
+        }
+
         else -> {
             val s = toString()
             val first = s.indexOf('\'')
@@ -120,11 +159,8 @@ private fun Token.unlex(): String {
             }
         }
     }
-}
 
-private fun lex(program: String): String {
-    return lexTokens(program).joinToString(" ") { it.second.unlex() }
-}
+private fun lex(program: String): String = lexTokens(program).joinToString(" ") { it.second.unlex() }
 
 private fun lexerGoldenTest(name: String, program: String) {
     val programTrimmed = program.trim()
@@ -135,9 +171,10 @@ private fun lexerGoldenTest(name: String, program: String) {
     out.appendLine()
     out.appendLine("Tokens:")
 
-    val tokens = lexTokens(programTrimmed).map { (from, token, to) ->
-        Triple(from, token.toString(), to)
-    }
+    val tokens =
+        lexTokens(programTrimmed).map { (from, token, to) ->
+            Triple(from, token.toString(), to)
+        }
     var maxWidth = 0
     for ((_, token, _) in tokens) {
         maxWidth = max(maxWidth, token.length)
@@ -166,7 +203,10 @@ private fun lexerFailGoldenTest(name: String, programs: List<String>) {
                 lexer.forEach { lexeme ->
                     when (lexeme) {
                         is ParseResult.Ok -> {}
-                        is ParseResult.Err -> throw lexeme.error
+
+                        is ParseResult.Err -> {
+                            throw lexeme.error
+                        }
                     }
                 }
             }.exceptionOrNull() ?: error("Expected lexer failure but got success")
@@ -183,7 +223,6 @@ private fun lexerFailGoldenTest(name: String, programs: List<String>) {
 }
 
 class LexerTest {
-
     @Test
     fun testIntLit() {
         lexerGoldenTest(

@@ -18,7 +18,9 @@ package io.github.kotlinmania.starlarksyntax.cursors
  * limitations under the License.
  */
 
-class CursorBytes(private val source: String) {
+class CursorBytes(
+    private val source: String,
+) {
     private val bytes: ByteArray = source.encodeToByteArray()
     private var index: Int = 0
 
@@ -28,9 +30,7 @@ class CursorBytes(private val source: String) {
     }
 
     // If it returns a value greater than 127, it should not be trusted
-    fun nextChar(): Char? {
-        return next()?.let { (it.toInt() and 0xff).toChar() }
-    }
+    fun nextChar(): Char? = next()?.let { (it.toInt() and 0xff).toChar() }
 
     fun pos(): Int = index
 }
@@ -40,9 +40,7 @@ class CursorChars(
     private var offset: Int,
 ) {
     companion object {
-        fun newOffset(source: String, offset: Int): CursorChars {
-            return CursorChars(source.encodeToByteArray(), offset)
-        }
+        fun newOffset(source: String, offset: Int): CursorChars = CursorChars(source.encodeToByteArray(), offset)
     }
 
     fun next(): Int? {
@@ -50,12 +48,16 @@ class CursorChars(
         val b0 = bytes[offset].toInt() and 0xff
         val (codePoint, size) =
             when {
-                b0 and 0b1000_0000 == 0 -> Pair(b0, 1)
+                b0 and 0b1000_0000 == 0 -> {
+                    Pair(b0, 1)
+                }
+
                 b0 and 0b1110_0000 == 0b1100_0000 -> {
                     if (offset + 1 >= bytes.size) return null
                     val b1 = bytes[offset + 1].toInt() and 0xff
                     Pair(((b0 and 0b0001_1111) shl 6) or (b1 and 0b0011_1111), 2)
                 }
+
                 b0 and 0b1111_0000 == 0b1110_0000 -> {
                     if (offset + 2 >= bytes.size) return null
                     val b1 = bytes[offset + 1].toInt() and 0xff
@@ -67,6 +69,7 @@ class CursorChars(
                         3,
                     )
                 }
+
                 b0 and 0b1111_1000 == 0b1111_0000 -> {
                     if (offset + 3 >= bytes.size) return null
                     val b1 = bytes[offset + 1].toInt() and 0xff
@@ -80,7 +83,10 @@ class CursorChars(
                         4,
                     )
                 }
-                else -> return null
+
+                else -> {
+                    return null
+                }
             }
 
         offset += size
@@ -108,11 +114,10 @@ class CursorChars(
     fun pos(): Int = offset
 }
 
-private fun utf8Len(codePoint: Int): Int {
-    return when {
+private fun utf8Len(codePoint: Int): Int =
+    when {
         codePoint <= 0x7f -> 1
         codePoint <= 0x7ff -> 2
         codePoint <= 0xffff -> 3
         else -> 4
     }
-}

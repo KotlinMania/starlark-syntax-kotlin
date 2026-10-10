@@ -19,7 +19,9 @@ package io.github.kotlinmania.starlarksyntax.dotformatparser
  */
 
 /** Parser for `.format()` arguments. */
-class FormatParser(s: String) {
+class FormatParser(
+    s: String,
+) {
     private val view: StringView = StringView(s)
 
     /** Parse the next token from the format string. */
@@ -44,26 +46,31 @@ class FormatParser(s: String) {
                             '}'.code.toByte() -> {
                                 val capture = view.eat(i + 1).substring(1, i)
                                 return Result.success(
-                                    FormatToken.Capture(capture, pos, FormatConv.STR)
+                                    FormatToken.Capture(capture, pos, FormatConv.STR),
                                 )
                             }
+
                             '!'.code.toByte() -> {
                                 val capture = view.eat(i + 1).substring(1, i)
                                 val rem = view.rem()
-                                val conv = when {
-                                    rem.startsWith('r') -> FormatConv.REPR
-                                    rem.startsWith('s') -> FormatConv.STR
-                                    rem.startsWith('}') -> return Result.failure(
-                                        IllegalArgumentException(
-                                            "Missing conversion character in format string `${view.original()}`"
+                                val conv =
+                                    when {
+                                        rem.startsWith('r') -> FormatConv.REPR
+
+                                        rem.startsWith('s') -> FormatConv.STR
+
+                                        rem.startsWith('}') -> return Result.failure(
+                                            IllegalArgumentException(
+                                                "Missing conversion character in format string `${view.original()}`",
+                                            ),
                                         )
-                                    )
-                                    else -> return Result.failure(
-                                        IllegalArgumentException(
-                                            "Invalid conversion in format string `${view.original()}`"
+
+                                        else -> return Result.failure(
+                                            IllegalArgumentException(
+                                                "Invalid conversion in format string `${view.original()}`",
+                                            ),
                                         )
-                                    )
-                                }
+                                    }
                                 view.eat(1) // `r` or `s` after the exclamation mark.
                                 if (!view.startsWith('}')) {
                                     break
@@ -71,6 +78,7 @@ class FormatParser(s: String) {
                                 view.eat(1) // Closing brace.
                                 return Result.success(FormatToken.Capture(capture, pos, conv))
                             }
+
                             '{'.code.toByte() -> {
                                 if (i == 1) {
                                     view.eat(2)
@@ -78,13 +86,16 @@ class FormatParser(s: String) {
                                 }
                                 break
                             }
-                            else -> i += 1
+
+                            else -> {
+                                i += 1
+                            }
                         }
                     }
                     return Result.failure(
                         IllegalArgumentException(
-                            "Unmatched '{' in format string `${view.original()}`"
-                        )
+                            "Unmatched '{' in format string `${view.original()}`",
+                        ),
                     )
                 } else {
                     check(i == 0)
@@ -94,8 +105,8 @@ class FormatParser(s: String) {
                     }
                     return Result.failure(
                         IllegalArgumentException(
-                            "Standalone '}' in format string `${view.original()}`"
-                        )
+                            "Standalone '}' in format string `${view.original()}`",
+                        ),
                     )
                 }
             } else {
@@ -122,7 +133,10 @@ enum class FormatConv {
 /** Token in the format string. */
 sealed class FormatToken {
     /** Text to copy verbatim to the output. */
-    data class Text(val text: String) : FormatToken()
+    data class Text(
+        val text: String,
+    ) : FormatToken()
+
     data class Capture(
         /** Format part inside curly braces before the conversion. */
         val capture: String,
@@ -131,36 +145,40 @@ sealed class FormatToken {
         /** The conversion to apply to this capture. */
         val conv: FormatConv,
     ) : FormatToken()
-    data class Escape(val escape: EscapeCurlyBrace) : FormatToken()
+
+    data class Escape(
+        val escape: EscapeCurlyBrace,
+    ) : FormatToken()
 }
 
 /** Emitted when processing an escape (`{{` or `}}`). */
 enum class EscapeCurlyBrace {
     OPEN,
-    CLOSE;
+    CLOSE,
+    ;
 
     /** Get what this represents. */
-    fun asStr(): String {
-        return when (this) {
+    fun asStr(): String =
+        when (this) {
             OPEN -> "{"
             CLOSE -> "}"
         }
-    }
 
     /** Get back the escaped form for this. */
-    fun backToEscape(): String {
-        return when (this) {
+    fun backToEscape(): String =
+        when (this) {
             OPEN -> "{{"
             CLOSE -> "}}"
         }
-    }
 }
 
 /**
  * A String and an index pointing into this string. This behaves as if you had just the part
  * starting at this index, and you can use `eat(n)` to advance.
  */
-private class StringView(private val s: String) {
+private class StringView(
+    private val s: String,
+) {
     private val bytes: ByteArray = s.encodeToByteArray()
     private var i: Int = 0
 
