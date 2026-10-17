@@ -33,8 +33,7 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 import io.github.kotlinmania.starlarksyntax.syntax.ast.TypeExpr
 
 /**
- * One AST child being visited — either a statement or an expression. Mirrors upstream
- * `Visit<'a, P>`.
+ * One AST child being visited — either a statement or an expression.
  */
 internal sealed class Visit {
     class Stmt(

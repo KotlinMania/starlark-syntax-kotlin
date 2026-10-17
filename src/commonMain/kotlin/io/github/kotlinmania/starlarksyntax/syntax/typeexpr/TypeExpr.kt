@@ -134,8 +134,8 @@ internal sealed class TypeExprUnpack {
                                     for (elem in butLast) {
                                         fullPath += ".${elem.node}"
                                     }
-                                    // TODO(nga): allow it after we prohibit
-                                    //   string constants as types.
+                                    // Note: allow it after prohibiting
+                                    // string constants as types.
                                     throw WithDiagnosticException(
                                         WithDiagnostic.newSpanned(
                                             TypeExprUnpackError.DotTypeBan(fullPath),
@@ -270,8 +270,7 @@ internal sealed class TypeExprUnpack {
 
                 is Expr.Literal -> {
                     when (node.literal) {
-                        // TODO(nga): eventually this should be allowed for self-referential types:
-                        //   https://www.internalfb.com/tasks/?t=184482361
+                        // Note: eventually this should be allowed for self-referential types.
                         is AstLiteral.StringLiteral -> err("string literal")
 
                         is AstLiteral.IntLiteral -> err("int")

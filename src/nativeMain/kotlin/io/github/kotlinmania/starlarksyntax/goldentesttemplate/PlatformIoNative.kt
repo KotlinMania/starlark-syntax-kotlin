@@ -1,5 +1,5 @@
 // port-lint: source src/golden_test_template.rs
-@file:OptIn(kotlinx.cinterop.ExperimentalForeignApi::class, kotlin.experimental.ExperimentalNativeApi::class)
+@file:OptIn(kotlin.experimental.ExperimentalNativeApi::class)
 
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
@@ -20,53 +20,43 @@ package io.github.kotlinmania.starlarksyntax.goldentesttemplate
  * limitations under the License.
  */
 
-import kotlinx.cinterop.toKString
-import platform.posix.EOF
-import platform.posix.fclose
-import platform.posix.fgetc
-import platform.posix.fopen
-import platform.posix.fputc
-import platform.posix.getenv
+import io.github.kotlinmania.io.buffered
+import io.github.kotlinmania.io.files.Path
+import io.github.kotlinmania.io.files.SystemFileSystem
+import io.github.kotlinmania.io.readString
+import io.github.kotlinmania.io.writeString
 import kotlin.native.OsFamily
 import kotlin.native.Platform
+import io.github.kotlinmania.libc.unix.getenv as unixGetenv
+import io.github.kotlinmania.libc.windows.getenv as windowsGetenv
 
 internal actual fun platformGetEnv(name: String): String? {
-    val v = getenv(name) ?: getenv("SIMCTL_CHILD_$name") ?: return null
-    return v.toKString()
+    val v =
+        if (Platform.osFamily == OsFamily.WINDOWS) {
+            windowsGetenv(name) ?: windowsGetenv("SIMCTL_CHILD_$name")
+        } else {
+            unixGetenv(name) ?: unixGetenv("SIMCTL_CHILD_$name")
+        }
+    return v
 }
 
 internal actual fun platformReadUtf8File(path: String): String {
-    var f = fopen(path, "rb")
-    if (f == null && !path.startsWith("/")) {
-        val cleanPath = path.removePrefix("./")
-        val candidate = "/Volumes/stuff/Projects/kotlinmania/starlark-syntax-kotlin/$cleanPath"
-        f = fopen(candidate, "rb")
-    }
-    val fileHandle = f ?: error("Unable to open file: $path")
-    try {
-        val bytes = ArrayList<Byte>()
-        while (true) {
-            val c = fgetc(fileHandle)
-            if (c == EOF) break
-            bytes.add(c.toByte())
+    val p = Path(path)
+    val resolved =
+        if (!SystemFileSystem.exists(p) && !path.startsWith("/")) {
+            val cleanPath = path.removePrefix("./")
+            val candidate = Path("/Volumes/stuff/Projects/kotlinmania/starlark-syntax-kotlin/$cleanPath")
+            if (SystemFileSystem.exists(candidate)) candidate else p
+        } else {
+            p
         }
-        return bytes.toByteArray().decodeToString()
-    } finally {
-        fclose(fileHandle)
-    }
+    return SystemFileSystem.source(resolved).buffered().use { it.readString() }
 }
 
 internal actual fun platformWriteUtf8File(path: String, content: String) {
-    val f = fopen(path, "wb") ?: error("Unable to open file: $path")
-    try {
-        val bytes = content.encodeToByteArray()
-        for (byte in bytes) {
-            val res = fputc(byte.toInt(), f)
-            check(res != EOF) { "Unable to write file: $path" }
-        }
-    } finally {
-        fclose(f)
-    }
+    val p = Path(path)
+    p.parent?.let { SystemFileSystem.createDirectories(it) }
+    SystemFileSystem.sink(p).buffered().use { it.writeString(content) }
 }
 
 internal actual fun platformIsWindows(): Boolean = Platform.osFamily == OsFamily.WINDOWS

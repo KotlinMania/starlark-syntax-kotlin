@@ -26,7 +26,7 @@ private fun makeGolden(output: String): String {
     golden.append("# @generated\n")
     golden.append("# To regenerate, run:\n")
     golden.append("# ```\n")
-    // TODO(nga): fix instruction for `starlark_syntax` crate.
+    // Note: instruction for starlark-syntax.
     golden.append("# ").append(REGENERATE_VAR_NAME).append("=1 cargo test -p starlark --lib\n")
     golden.append("# ```\n")
     golden.append('\n')

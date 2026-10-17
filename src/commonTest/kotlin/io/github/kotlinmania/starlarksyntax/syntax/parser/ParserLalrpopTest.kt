@@ -1,4 +1,4 @@
-// port-lint: tests syntax/parser_lalrpop.rs
+// port-lint: tests src/syntax/parser_lalrpop.rs
 package io.github.kotlinmania.starlarksyntax.syntax.parser
 
 /*

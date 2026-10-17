@@ -1,4 +1,4 @@
-// port-lint: source src/codemap.rs
+// port-lint: tests src/codemap.rs
 package io.github.kotlinmania.starlarksyntax.codemap
 
 import kotlin.test.Test
@@ -180,5 +180,11 @@ class CodeMapTest {
                     ),
             )
         assertEquals("test.rs:3", span.beginFileLine().toString())
+    }
+
+    @Test
+    fun testSpanLen() {
+        val span = Span.new(Pos.new(10), Pos.new(25))
+        assertEquals(15, span.len())
     }
 }

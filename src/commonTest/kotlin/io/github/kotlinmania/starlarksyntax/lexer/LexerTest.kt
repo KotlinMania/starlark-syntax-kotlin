@@ -1,4 +1,4 @@
-// port-lint: tests lexer.rs
+// port-lint: tests src/lexer.rs
 package io.github.kotlinmania.starlarksyntax.lexer
 
 /*
