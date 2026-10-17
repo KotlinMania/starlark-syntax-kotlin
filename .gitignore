@@ -23,6 +23,7 @@ tmp/
 port_status_report.md
 high_priority_ports.md
 ast_distance_starlark_strict_output.txt
+deep_symbol_inventory.txt
 
 # AST distance agent state and lock files
 .cache/
