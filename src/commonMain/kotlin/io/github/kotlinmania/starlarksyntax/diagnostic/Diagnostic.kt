@@ -27,7 +27,7 @@ import io.github.kotlinmania.starlarksyntax.spandisplay.spanDisplay
 /**
  * A value of type `T`, together with some diagnostic information.
  *
- * Most code in starlark should be using [io.github.kotlinmania.starlarksyntax.error.Error] as the error type.
+ * Most code in starlark should be using [io.github.kotlinmania.starlarksyntax.error.StarlarkError] as the error type.
  * However, some code may want to have strongly typed errors, while still being able to have diagnostics.
  * `WithDiagnostic<MyErrorType>` is the tool for that. `WithDiagnostic` is always one word in size,
  * and so can be used as an error type in performance sensitive code.
@@ -55,7 +55,7 @@ internal class WithDiagnostic<T> internal constructor(
 
         /**
          * The contract of this type is normally that it actually contains diagnostic information.
-         * However, [io.github.kotlinmania.starlarksyntax.error.Error] doesn't guarantee that, but it'd be convenient to use this type
+         * However, [io.github.kotlinmania.starlarksyntax.error.StarlarkError] doesn't guarantee that, but it'd be convenient to use this type
          * for it anyway. So we make an exception. Don't use this function for anything else.
          */
         internal fun <T> newEmpty(t: T): WithDiagnostic<T> =

@@ -34,27 +34,28 @@ import io.github.kotlinmania.starlarksyntax.diagnostic.diagnosticDisplay
  * In order to prevent accidental conversions to a generic [Throwable], this type intentionally does not
  * extend [Exception]. That should probably change in the future.
  */
-class Error internal constructor(
+class StarlarkError internal constructor(
     internal val inner: WithDiagnostic<ErrorKind>,
 ) {
     companion object {
         /** Create a new error. */
-        fun newKind(kind: ErrorKind): Error = Error(WithDiagnostic.newEmpty(kind))
+        fun newKind(kind: ErrorKind): StarlarkError = StarlarkError(WithDiagnostic.newEmpty(kind))
 
         /** Create a new error with a span. */
-        fun newSpanned(kind: ErrorKind, span: Span, codemap: CodeMap): Error = Error(WithDiagnostic.newSpanned(kind, span, codemap))
+        fun newSpanned(kind: ErrorKind, span: Span, codemap: CodeMap): StarlarkError =
+            StarlarkError(WithDiagnostic.newSpanned(kind, span, codemap))
 
         /** Create a new error with no diagnostic and of kind [ErrorKind.Other]. */
-        fun newOther(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
+        fun newOther(e: Throwable): StarlarkError = StarlarkError(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
 
         /** Create a new error with no diagnostic and of kind [ErrorKind.Native]. */
-        fun newNative(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Native(e)))
+        fun newNative(e: Throwable): StarlarkError = StarlarkError(WithDiagnostic.newEmpty(ErrorKind.Native(e)))
 
         /** Create a new error with no diagnostic and of kind [ErrorKind.Value]. */
-        fun newValue(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Value(e)))
+        fun newValue(e: Throwable): StarlarkError = StarlarkError(WithDiagnostic.newEmpty(ErrorKind.Value(e)))
 
-        /** Construct an [Error] from a generic [Throwable]. */
-        fun from(e: Throwable): Error = Error(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
+        /** Construct a [StarlarkError] from a generic [Throwable]. */
+        fun from(e: Throwable): StarlarkError = StarlarkError(WithDiagnostic.newEmpty(ErrorKind.Other(e)))
     }
 
     /** The kind of this error. */
@@ -119,17 +120,17 @@ class Error internal constructor(
     }
 
     /** Change error kind to internal error. */
-    fun intoInternalError(): Error =
+    fun intoInternalError(): StarlarkError =
         if (kind() is ErrorKind.Internal) {
             this
         } else {
-            Error(inner.map { ek -> ek.intoInternalError() })
+            StarlarkError(inner.map { ek -> ek.intoInternalError() })
         }
 
     override fun toString(): String = fmtImpl(this, isDebug = false, alternate = false)
 }
 
-private fun fmtImpl(self: Error, isDebug: Boolean, alternate: Boolean): String =
+private fun fmtImpl(self: StarlarkError, isDebug: Boolean, alternate: Boolean): String =
     if (self.hasDiagnostic()) {
         // Not showing the context trace without `{:#}` or `{:?}` is the same thing that anyhow does
         val withContext = (alternate || isDebug) && self.kind().source() != null
@@ -268,24 +269,24 @@ fun <T> Result<T>.intoAnyhowResult(): Result<T> =
         },
     )
 
-/** Wrapper exception used when an [Error] needs to be carried through Kotlin's [Result]/[Throwable] APIs. */
+/** Wrapper exception used when a [StarlarkError] needs to be carried through Kotlin's [Result]/[Throwable] APIs. */
 class StarlarkErrorException(
-    val error: Error,
+    val error: StarlarkError,
 ) : Exception(error.toString())
 
-fun internalErrorImpl(message: String): Error = Error.newKind(ErrorKind.Internal(Exception(message)))
+fun internalErrorImpl(message: String): StarlarkError = StarlarkError.newKind(ErrorKind.Internal(Exception(message)))
 
-fun otherErrorImpl(message: String): Error = Error.newKind(ErrorKind.Other(Exception(message)))
+fun otherErrorImpl(message: String): StarlarkError = StarlarkError.newKind(ErrorKind.Other(Exception(message)))
 
-fun valueErrorImpl(message: String): Error = Error.newKind(ErrorKind.Value(Exception(message)))
+fun valueErrorImpl(message: String): StarlarkError = StarlarkError.newKind(ErrorKind.Value(Exception(message)))
 
-fun functionErrorImpl(message: String): Error = Error.newKind(ErrorKind.Function(Exception(message)))
+fun functionErrorImpl(message: String): StarlarkError = StarlarkError.newKind(ErrorKind.Function(Exception(message)))
 
 /** Internal error of starlark. */
-fun internalError(message: String): Error = internalErrorImpl(message)
+fun internalError(message: String): StarlarkError = internalErrorImpl(message)
 
-fun otherError(message: String): Error = otherErrorImpl(message)
+fun otherError(message: String): StarlarkError = otherErrorImpl(message)
 
-fun valueError(message: String): Error = valueErrorImpl(message)
+fun valueError(message: String): StarlarkError = valueErrorImpl(message)
 
-fun functionError(message: String): Error = functionErrorImpl(message)
+fun functionError(message: String): StarlarkError = functionErrorImpl(message)

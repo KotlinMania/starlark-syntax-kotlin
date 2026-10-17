@@ -6,8 +6,8 @@ Based on AST analysis, here are the concrete next steps.
 
 - **Files Present:** 32/36 (88.9%)
 - **Function parity:** 335/470 matched (target 524) — 71.3%
-- **Class/type parity:** 127/142 matched (target 325) — 89.4%
-- **Combined symbol parity:** 462/612 matched (target 849) — 75.5%
+- **Class/type parity:** 126/142 matched (target 325) — 88.7%
+- **Combined symbol parity:** 461/612 matched (target 849) — 75.3%
 - **Average inline-code cosine:** 0.36 (function body across 32 matched files)
 - **Average documentation cosine:** 0.75 (doc text across 32 matched files)
 - **Cheat-zeroed Files:** 0
@@ -54,9 +54,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 2. eval_exception
 
 - **Target:** `evalexception.EvalException`
-- **Similarity:** 0.56
+- **Similarity:** 0.51
 - **Dependents:** 8
-- **Priority Score:** 8001104.5
+- **Priority Score:** 8001105.0
 - **Functions:** 10/10 matched
 - **Missing functions:** _none_
 - **Types:** 1/1 matched
@@ -109,14 +109,14 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 7. error
 
-- **Target:** `error.Error`
-- **Similarity:** 0.22
+- **Target:** `error.StarlarkError`
+- **Similarity:** 0.20
 - **Dependents:** 2
-- **Priority Score:** 2083607.9
+- **Priority Score:** 2093608.0
 - **Functions:** 25/32 matched (target 33)
 - **Missing functions:** `fmt`, `fmt`, `fmt`, `fmt`, `source`, `fmt`, `fmt`
-- **Types:** 3/4 matched (target 14)
-- **Missing types:** `Wrapped`
+- **Types:** 2/4 matched (target 14)
+- **Missing types:** `Error`, `Wrapped`
 
 ### 8. lexer
 
@@ -133,9 +133,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 9. syntax.parse_error
 
 - **Target:** `parseerror.ParseError`
-- **Similarity:** 0.26
+- **Similarity:** 0.31
 - **Dependents:** 2
-- **Priority Score:** 2000207.4
+- **Priority Score:** 2000206.9
 - **Functions:** 1/1 matched
 - **Missing functions:** _none_
 - **Types:** 1/1 matched (target 3)
@@ -335,9 +335,9 @@ Every matched file is listed below with function and type symbol parity.
 ### 27. syntax.parser_lalrpop
 
 - **Target:** `parser.ParserLalrpop`
-- **Similarity:** 0.31
+- **Similarity:** 0.30
 - **Dependents:** 0
-- **Priority Score:** 506.9
+- **Priority Score:** 507.0
 - **Functions:** 4/4 matched (target 5)
 - **Missing functions:** _none_
 - **Types:** 1/1 matched (target 2)

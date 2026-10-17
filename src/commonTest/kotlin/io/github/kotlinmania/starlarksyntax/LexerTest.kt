@@ -27,7 +27,7 @@ import io.github.kotlinmania.starlarksyntax.lexer.Token.StringToken
 import kotlin.math.max
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParseResult
+import io.github.kotlinmania.starlarksyntax.syntax.parser.ParserResult as ParseResult
 
 private fun lexTokens(program: String): List<Triple<Int, Token, Int>> {
     fun tokens(dialect: Dialect, code: String): List<Triple<Int, Token, Int>> {

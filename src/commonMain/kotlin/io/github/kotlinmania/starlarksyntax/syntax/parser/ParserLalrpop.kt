@@ -51,7 +51,7 @@ internal fun lalrpopErrorToParseError(
 ): ParseError =
     when (err) {
         is LuParseError.InvalidToken -> {
-            ParseError.Error(
+            ParseError.GenericError(
                 message = "Parse error: invalid token",
                 span = Span.new(Pos.new(err.location), Pos.new(err.location)),
             )
@@ -59,14 +59,14 @@ internal fun lalrpopErrorToParseError(
 
         is LuParseError.UnrecognizedToken -> {
             val (x, t, y) = err.token
-            ParseError.Error(
+            ParseError.GenericError(
                 message = "Parse error: unexpected $t here, expected ${oneOf(err.expected)}",
                 span = Span.new(Pos.new(x), Pos.new(y)),
             )
         }
 
         is LuParseError.UnrecognizedEof -> {
-            ParseError.Error(
+            ParseError.GenericError(
                 message = "Parse error: unexpected end of file",
                 span = Span.new(Pos.new(eofPos), Pos.new(eofPos)),
             )
@@ -74,7 +74,7 @@ internal fun lalrpopErrorToParseError(
 
         is LuParseError.ExtraToken -> {
             val (x, t, y) = err.token
-            ParseError.Error(
+            ParseError.GenericError(
                 message = "Parse error: extraneous token $t",
                 span = Span.new(Pos.new(x), Pos.new(y)),
             )
@@ -91,9 +91,9 @@ internal class LalrpopParser : Parser {
         state: ParserState,
         tokens: Iterator<Lexeme>,
         eofPos: Int,
-    ): Result<AstStmt, ParseError> =
+    ): ParserResult<AstStmt, ParseError> =
         when (val parsed = StarlarkParser().parse(state, tokens)) {
-            is Result.Ok -> Result.Ok(parsed.value)
-            is Result.Err -> Result.Err(lalrpopErrorToParseError(parsed.error, eofPos))
+            is ParserResult.Ok -> ParserResult.Ok(parsed.value)
+            is ParserResult.Err -> ParserResult.Err(lalrpopErrorToParseError(parsed.error, eofPos))
         }
 }

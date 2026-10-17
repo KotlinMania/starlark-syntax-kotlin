@@ -24,10 +24,10 @@ import io.github.kotlinmania.starlarksyntax.codemap.Pos
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.cursors.CursorBytes
 import io.github.kotlinmania.starlarksyntax.cursors.CursorChars
-import io.github.kotlinmania.starlarksyntax.error.Error
 import io.github.kotlinmania.starlarksyntax.error.ErrorKind
+import io.github.kotlinmania.starlarksyntax.error.StarlarkError
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
-import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParseResult
+import io.github.kotlinmania.starlarksyntax.syntax.parser.ParserResult as ParseResult
 
 sealed class LexemeError(
     val message: String,
@@ -113,7 +113,7 @@ internal class Lexer(
 
     private fun errSpan(msg: LexemeError, start: Int, end: Int): EvalException =
         EvalException.new(
-            Error.newKind(ErrorKind.Parser(LexemeErrorException(msg))),
+            StarlarkError.newKind(ErrorKind.Parser(LexemeErrorException(msg))),
             Span.new(Pos.new(start), Pos.new(end)),
             codemap,
         )
