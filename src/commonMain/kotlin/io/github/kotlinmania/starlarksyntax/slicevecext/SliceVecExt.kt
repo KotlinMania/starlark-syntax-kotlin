@@ -102,4 +102,3 @@ fun <T, B> List<T>.intoMap(f: (T) -> B): List<B> = this.map(f)
  * A shorthand for consuming a list and mapping elements with fallible results.
  */
 fun <T, B> List<T>.intoTryMap(f: (T) -> Result<B>): Result<List<B>> = tryMap(f)
-

@@ -25,29 +25,31 @@ import io.github.kotlinmania.io.files.Path
 import io.github.kotlinmania.io.files.SystemFileSystem
 import io.github.kotlinmania.io.readString
 import io.github.kotlinmania.io.writeString
-import io.github.kotlinmania.libc.unix.getenv as unixGetenv
-import io.github.kotlinmania.libc.windows.getenv as windowsGetenv
 import kotlin.native.OsFamily
 import kotlin.native.Platform
+import io.github.kotlinmania.libc.unix.getenv as unixGetenv
+import io.github.kotlinmania.libc.windows.getenv as windowsGetenv
 
 internal actual fun platformGetEnv(name: String): String? {
-    val v = if (Platform.osFamily == OsFamily.WINDOWS) {
-        windowsGetenv(name) ?: windowsGetenv("SIMCTL_CHILD_$name")
-    } else {
-        unixGetenv(name) ?: unixGetenv("SIMCTL_CHILD_$name")
-    }
+    val v =
+        if (Platform.osFamily == OsFamily.WINDOWS) {
+            windowsGetenv(name) ?: windowsGetenv("SIMCTL_CHILD_$name")
+        } else {
+            unixGetenv(name) ?: unixGetenv("SIMCTL_CHILD_$name")
+        }
     return v
 }
 
 internal actual fun platformReadUtf8File(path: String): String {
     val p = Path(path)
-    val resolved = if (!SystemFileSystem.exists(p) && !path.startsWith("/")) {
-        val cleanPath = path.removePrefix("./")
-        val candidate = Path("/Volumes/stuff/Projects/kotlinmania/starlark-syntax-kotlin/$cleanPath")
-        if (SystemFileSystem.exists(candidate)) candidate else p
-    } else {
-        p
-    }
+    val resolved =
+        if (!SystemFileSystem.exists(p) && !path.startsWith("/")) {
+            val cleanPath = path.removePrefix("./")
+            val candidate = Path("/Volumes/stuff/Projects/kotlinmania/starlark-syntax-kotlin/$cleanPath")
+            if (SystemFileSystem.exists(candidate)) candidate else p
+        } else {
+            p
+        }
     return SystemFileSystem.source(resolved).buffered().use { it.readString() }
 }
 
