@@ -77,14 +77,14 @@ interface AstModuleFields {
  * A few methods to obtain information about the AST are provided.
  */
 class AstModule internal constructor(
-    val codemap: CodeMap,
+    internal val codemap: CodeMap,
     internal var statement: AstStmt,
-    val dialect: Dialect,
+    internal val dialect: Dialect,
     /**
      * Opt-in typecheck.
      * Specified with `@starlark-rust: typecheck`.
      */
-    val typecheck: Boolean,
+    internal val typecheck: Boolean,
     /**
      * Lint issues suppressed in this module using inline comments of shape
      * `# starlark-lint-disable <ISSUE_NAME>, <ISSUE_NAME>, ...`
@@ -100,7 +100,7 @@ class AstModule internal constructor(
     override fun intoParts(): AstModuleParts =
         AstModuleParts(codemap, statement, dialect, typecheck)
 
-    fun typecheck(): Boolean = typecheck
+    internal fun typecheck(): Boolean = typecheck
 
     internal fun lintSuppressions(): LintSuppressions = lintSuppressions
 
