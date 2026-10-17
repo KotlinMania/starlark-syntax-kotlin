@@ -22,12 +22,16 @@ package io.github.kotlinmania.starlarksyntax.lexer
 sealed class TokenInt {
     data class I32(
         val value: Int,
-    ) : TokenInt()
+    ) : TokenInt() {
+        override fun toString(): String = super.toString()
+    }
 
     /** Only if larger than `i32`. */
     data class BigInt(
         val value: String,
-    ) : TokenInt()
+    ) : TokenInt() {
+        override fun toString(): String = super.toString()
+    }
 
     override fun toString(): String =
         when (this) {
@@ -132,25 +136,35 @@ sealed class Token {
 
     data class FloatToken(
         val value: Double,
-    ) : Token() // 36
+    ) : Token() { // 36
+        override fun toString(): String = super.toString()
+    }
 
     data class FStringToken(
         val value: TokenFString,
-    ) : Token() // 37
+    ) : Token() { // 37
+        override fun toString(): String = super.toString()
+    }
 
     data class Identifier(
         val name: String,
-    ) : Token() // 38
+    ) : Token() { // 38
+        override fun toString(): String = super.toString()
+    }
 
     object Indent : Token() // 39
 
     data class IntToken(
         val value: TokenInt,
-    ) : Token() // 40
+    ) : Token() { // 40
+        override fun toString(): String = super.toString()
+    }
 
     data class StringToken(
         val value: String,
-    ) : Token() // 41
+    ) : Token() { // 41
+        override fun toString(): String = super.toString()
+    }
 
     object OpeningSquare : Token() // 42
 
@@ -203,7 +217,9 @@ sealed class Token {
     // Non-grammar tokens (not in the LR tables, consumed by lexer internally)
     data class Comment(
         val text: String,
-    ) : Token()
+    ) : Token() {
+        override fun toString(): String = super.toString()
+    }
 
     object Reserved : Token()
 

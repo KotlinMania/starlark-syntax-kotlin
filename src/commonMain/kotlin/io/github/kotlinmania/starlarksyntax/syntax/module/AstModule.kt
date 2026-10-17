@@ -25,6 +25,13 @@ import io.github.kotlinmania.starlarksyntax.codemap.FileSpan
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.codemap.Spanned
 import io.github.kotlinmania.starlarksyntax.evalexception.EvalException
+import io.github.kotlinmania.io.buffered
+import io.github.kotlinmania.io.files.Path
+import io.github.kotlinmania.io.files.SystemFileSystem
+import io.github.kotlinmania.io.readString
+import io.github.kotlinmania.starlarksyntax.error.StarlarkErrorException
+import io.github.kotlinmania.starlarksyntax.lexer.Lexer
+import io.github.kotlinmania.starlarksyntax.lexer.Token
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Argument
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Assign
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstArgument
@@ -41,10 +48,13 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.LoadArg
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 import io.github.kotlinmania.starlarksyntax.syntax.astload.AstLoad
 import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressions
+import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressionsBuilder
+import io.github.kotlinmania.starlarksyntax.syntax.parser.LalrpopParser
+import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParserResult
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.starlarksyntax.syntax.validate.validateModule
 
-internal data class AstModuleParts(
+data class AstModuleParts(
     val codemap: CodeMap,
     val statement: AstStmt,
     val dialect: Dialect,
@@ -52,13 +62,19 @@ internal data class AstModuleParts(
 )
 
 /**
+ * Accessor interface for Starlark AST module fields.
+ */
+interface AstModuleFields {
+    fun codemap(): CodeMap
+    fun statement(): AstStmt
+    fun dialect(): Dialect
+    fun intoParts(): AstModuleParts
+}
+
+/**
  * A representation of a Starlark module abstract syntax tree.
  *
- * Constructed externally — the parser lives in the consuming project for now and
- * supplies the constructor with the validated [AstStmt] root.
- *
- * The internal details (statements/expressions) are deliberately omitted, as they change
- * more regularly. A few methods to obtain information about the AST are provided.
+ * A few methods to obtain information about the AST are provided.
  */
 class AstModule internal constructor(
     val codemap: CodeMap,
@@ -74,19 +90,22 @@ class AstModule internal constructor(
      * `# starlark-lint-disable <ISSUE_NAME>, <ISSUE_NAME>, ...`
      */
     private val lintSuppressions: LintSuppressions,
-) {
-    internal fun intoParts(): AstModuleParts =
+) : AstModuleFields {
+    override fun codemap(): CodeMap = codemap
+
+    override fun statement(): AstStmt = statement
+
+    override fun dialect(): Dialect = dialect
+
+    override fun intoParts(): AstModuleParts =
         AstModuleParts(codemap, statement, dialect, typecheck)
 
+    fun typecheck(): Boolean = typecheck
+
+    internal fun lintSuppressions(): LintSuppressions = lintSuppressions
+
     companion object {
-        /**
-         * Validate a parsed [AstStmt] root and wrap it in an [AstModule], or return the
-         * first validation error.
-         *
-         * Internal until the LALRPOP parser is ported here — at that point a public
-         * `parse(filename, content, dialect)` companion will call this helper.
-         */
-        internal fun fromStatement(
+        internal fun create(
             codemap: CodeMap,
             statement: AstStmt,
             dialect: Dialect,
@@ -100,7 +119,7 @@ class AstModule internal constructor(
             )
             val firstError = errors.firstOrNull()
             if (firstError != null) {
-                return Result.failure(firstError)
+                return Result.failure(StarlarkErrorException(firstError.intoError()))
             }
             return Result.success(
                 AstModule(
@@ -111,6 +130,104 @@ class AstModule internal constructor(
                     lintSuppressions = lintSuppressions,
                 ),
             )
+        }
+
+        internal fun fromStatement(
+            codemap: CodeMap,
+            statement: AstStmt,
+            dialect: Dialect,
+            typecheck: Boolean,
+            lintSuppressions: LintSuppressions,
+        ): Result<AstModule> = create(codemap, statement, dialect, typecheck, lintSuppressions)
+
+        /**
+         * Parse a Starlark module to produce an [AstModule], or an error if there are syntax errors.
+         * The [filename] is for error messages only, and does not have to be a valid file.
+         * The [dialect] selects which Starlark constructs are valid.
+         */
+        fun parse(
+            filename: String,
+            content: String,
+            dialect: Dialect,
+        ): Result<AstModule> {
+            val typecheck = content.contains("@starlark-rust: typecheck")
+            val codemap = CodeMap.new(filename, content)
+            val lexer = Lexer(codemap.source(), dialect, codemap)
+            val lintSuppressionsBuilder = LintSuppressionsBuilder.new()
+            var inCommentBlock = false
+            val errors = mutableListOf<EvalException>()
+            val parserState = ParserState(dialect, codemap, errors)
+
+            val filteredTokens = sequence {
+                for (lexeme in lexer) {
+                    when (lexeme) {
+                        is ParserResult.Ok -> {
+                            val (start, token, end) = lexeme.value
+                            if (token is Token.Comment) {
+                                lintSuppressionsBuilder.parseComment(codemap, token.text, start, end)
+                                inCommentBlock = true
+                            } else {
+                                if (inCommentBlock) {
+                                    lintSuppressionsBuilder.endOfCommentBlock(codemap)
+                                    inCommentBlock = false
+                                }
+                                yield(lexeme)
+                            }
+                        }
+
+                        is ParserResult.Err -> {
+                            if (inCommentBlock) {
+                                lintSuppressionsBuilder.endOfCommentBlock(codemap)
+                                inCommentBlock = false
+                            }
+                            yield(lexeme)
+                        }
+                    }
+                }
+                if (inCommentBlock) {
+                    lintSuppressionsBuilder.endOfCommentBlock(codemap)
+                    inCommentBlock = false
+                }
+            }
+
+            val parser = LalrpopParser()
+            return when (val parseResult = parser.parseModule(parserState, filteredTokens.iterator(), codemap.source().length)) {
+                is ParserResult.Ok -> {
+                    val firstErr = errors.firstOrNull()
+                    if (firstErr != null) {
+                        Result.failure(StarlarkErrorException(firstErr.intoError()))
+                    } else {
+                        create(
+                            codemap,
+                            parseResult.value,
+                            dialect,
+                            typecheck,
+                            lintSuppressionsBuilder.build(),
+                        )
+                    }
+                }
+
+                is ParserResult.Err -> {
+                    Result.failure(StarlarkErrorException(parseResult.error.intoCrateError(codemap)))
+                }
+            }
+        }
+
+        /**
+         * Parse a file stored on disk.
+         */
+        fun parseFile(
+            path: String,
+            dialect: Dialect,
+        ): Result<AstModule> {
+            val content =
+                try {
+                    val p = Path(path)
+                    SystemFileSystem.source(p).buffered().use { it.readString() }
+                } catch (e: Exception) {
+                    return Result.failure(e)
+                }
+            return parse(path, content, dialect)
         }
     }
 
