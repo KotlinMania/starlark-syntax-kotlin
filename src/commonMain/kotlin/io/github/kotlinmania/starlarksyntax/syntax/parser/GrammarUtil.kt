@@ -276,7 +276,7 @@ internal fun fstring(
         val res = parser.next()
         val token =
             res.getOrElse { e ->
-                // TODO: Reporting the exact position of the error would be better.
+                // Note: Reporting the exact position of the error would be better.
                 parserState.error(
                     Span.new(Pos.new(begin), Pos.new(end)),
                     "Invalid format: ${e.message}",
