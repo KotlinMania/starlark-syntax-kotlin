@@ -47,25 +47,24 @@ private fun <T> collectResult(
 }
 
 /**
- * Extension traits on slices/lists.
- *
- * Kotlin already has `map`, but we keep these helpers so transliterations can mirror the
- * upstream call sites and, when we know the size up front, allocate once.
+ * Extension traits on slices.
  */
-fun <T, B> List<T>.mapExt(f: (T) -> B): List<B> {
-    val res = ArrayList<B>(size)
-    for (x in this) {
-        res.add(f(x))
-    }
-    return res
+interface SliceExt<T> {
+    /**
+     * A shorthand for mapping an iterator and collecting to a list.
+     */
+    fun <B> map(f: (T) -> B): List<B>
+
+    /**
+     * A shorthand for mapping an iterator and collecting results to a list.
+     */
+    fun <B> tryMap(f: (T) -> Result<B>): Result<List<B>>
 }
 
 /**
- * A shorthand for `mapExt(f)` where the mapping function returns a [Result].
- *
- * This mirrors upstream `try_map`, collapsing the first failure without allocating the full list.
+ * A shorthand for mapping a list returning results.
  */
-fun <T, B> List<T>.tryMapExt(f: (T) -> Result<B>): Result<List<B>> {
+fun <T, B> List<T>.tryMap(f: (T) -> Result<B>): Result<List<B>> {
     val base = iterator()
     val mapped =
         object : Iterator<Result<B>> {
@@ -80,11 +79,27 @@ fun <T, B> List<T>.tryMapExt(f: (T) -> Result<B>): Result<List<B>> {
 }
 
 /**
- * Extension traits on lists acting as `Vec`.
- *
- * Kotlin doesn't have move semantics, but keeping the "into_*" names preserves the upstream
- * structure in transliterations.
+ * Extension traits on lists.
  */
-fun <T, B> List<T>.intoMapExt(f: (T) -> B): List<B> = mapExt(f)
+interface VecExt<T> {
+    /**
+     * A shorthand for consuming a list and mapping elements.
+     */
+    fun <B> intoMap(f: (T) -> B): List<B>
 
-fun <T, B> List<T>.intoTryMapExt(f: (T) -> Result<B>): Result<List<B>> = tryMapExt(f)
+    /**
+     * A shorthand for consuming a list and mapping elements with fallible results.
+     */
+    fun <B> intoTryMap(f: (T) -> Result<B>): Result<List<B>>
+}
+
+/**
+ * A shorthand for consuming a list and mapping elements.
+ */
+fun <T, B> List<T>.intoMap(f: (T) -> B): List<B> = this.map(f)
+
+/**
+ * A shorthand for consuming a list and mapping elements with fallible results.
+ */
+fun <T, B> List<T>.intoTryMap(f: (T) -> Result<B>): Result<List<B>> = tryMap(f)
+
