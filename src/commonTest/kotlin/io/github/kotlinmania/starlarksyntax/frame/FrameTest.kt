@@ -1,4 +1,4 @@
-// port-lint: tests frame.rs
+// port-lint: tests src/frame.rs
 package io.github.kotlinmania.starlarksyntax.frame
 
 /*

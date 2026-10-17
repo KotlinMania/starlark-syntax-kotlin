@@ -1,4 +1,4 @@
-// port-lint: source src/codemap.rs
+// port-lint: tests src/codemap.rs
 package io.github.kotlinmania.starlarksyntax.codemap
 
 import kotlin.test.Test

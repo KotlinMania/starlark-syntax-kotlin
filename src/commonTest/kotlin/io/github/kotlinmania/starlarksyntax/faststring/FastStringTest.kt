@@ -1,4 +1,4 @@
-// port-lint: tests fast_string.rs
+// port-lint: tests src/fast_string.rs
 package io.github.kotlinmania.starlarksyntax.faststring
 
 /*

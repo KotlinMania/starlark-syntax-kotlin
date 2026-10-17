@@ -1,4 +1,3 @@
-// port-lint: ignore JS runtime regression test for browser environment fallback behavior.
 package io.github.kotlinmania.starlarksyntax.goldentesttemplate
 
 import kotlin.test.Test

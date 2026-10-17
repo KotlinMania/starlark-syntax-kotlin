@@ -1,4 +1,4 @@
-// port-lint: tests dot_format_parser.rs
+// port-lint: tests src/dot_format_parser.rs
 package io.github.kotlinmania.starlarksyntax.dotformatparser
 
 /*
