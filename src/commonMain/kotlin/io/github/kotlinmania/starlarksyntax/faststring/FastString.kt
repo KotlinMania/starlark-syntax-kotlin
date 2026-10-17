@@ -54,7 +54,7 @@ private fun skipAtMost1Byte(x: String, n: Int): Int {
     // then process 8 bytes at a time.
     // If we see a higher value, we bail to the standard Kotlin byte loop.
     // It is possible to do faster with population count, but we don't expect many real UTF8 strings.
-    // (c.f. https://github.com/haskell-foundation/foundation/blob/master/foundation/cbits/foundation_utf8.c)
+    // (c.f. https://github.com/haskell-foundation/foundation)
 
     // Same function, but returning the end offset.
     fun f(): Int {
@@ -314,14 +314,14 @@ fun contains(haystack: String, needle: String): Boolean {
         if (haystackBytes[start] != needle0) {
             continue
         }
-        var match = true
+        var matched = true
         for (k in 1 until needleBytes.size) {
             if (haystackBytes[start + k] != needleBytes[k]) {
-                match = false
+                matched = false
                 break
             }
         }
-        if (match) return true
+        if (matched) return true
     }
     return false
 }

@@ -251,7 +251,7 @@ sealed class ErrorKind {
         }
 }
 
-interface StarlarkResultExt<T> {
+internal interface StarlarkResultExt<T> {
     fun intoAnyhowResult(): Result<T>
 }
 

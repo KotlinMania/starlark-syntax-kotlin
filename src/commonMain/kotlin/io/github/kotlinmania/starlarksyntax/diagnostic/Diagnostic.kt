@@ -37,7 +37,7 @@ import io.github.kotlinmania.starlarksyntax.spandisplay.spanDisplay
  * Returning a `WithDiagnostic` value guarantees that a diagnostic is actually present, ie the
  * diagnostic is not optional.
  */
-class WithDiagnostic<T> internal constructor(
+internal class WithDiagnostic<T> internal constructor(
     private val inner: WithDiagnosticInner<T>,
 ) {
     companion object {

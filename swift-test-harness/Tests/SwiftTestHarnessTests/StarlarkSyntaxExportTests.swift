@@ -1,9 +1,10 @@
-import Testing
+import XCTest
 import StarlarkSyntax
 
-@Suite("StarlarkSyntaxExportTests")
-struct StarlarkSyntaxExportTests {
-    @Test func testSwiftModuleLoads() throws {
-        #expect(Bool(true), "StarlarkSyntax swift module imported cleanly")
+final class StarlarkSyntaxExportTests: XCTestCase {
+    func testSwiftModuleLoadsAndConstructsCodeMap() throws {
+        let cm = codemap.CodeMap.Companion.shared.new(filename: "test.bzl", source: "x = 1\ny = 2\n")
+        XCTAssertEqual(cm.filename(), "test.bzl")
+        XCTAssertEqual(cm.fullSpan().len(), 12)
     }
 }
