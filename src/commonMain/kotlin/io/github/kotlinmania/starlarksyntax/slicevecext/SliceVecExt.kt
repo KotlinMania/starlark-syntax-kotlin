@@ -49,7 +49,7 @@ private fun <T> collectResult(
 /**
  * Extension traits on slices.
  */
-interface SliceExt<T> {
+internal interface SliceExt<T> {
     /**
      * A shorthand for mapping an iterator and collecting to a list.
      */
@@ -81,7 +81,7 @@ fun <T, B> List<T>.tryMap(f: (T) -> Result<B>): Result<List<B>> {
 /**
  * Extension traits on lists.
  */
-interface VecExt<T> {
+internal interface VecExt<T> {
     /**
      * A shorthand for consuming a list and mapping elements.
      */

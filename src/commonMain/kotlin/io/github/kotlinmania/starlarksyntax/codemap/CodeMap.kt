@@ -111,6 +111,7 @@ data class Span(
 }
 
 /** Associate a Span with a value of arbitrary type (e.g. an AST node). */
+// generic by design: associates a source Span with an arbitrary AST node type.
 open class Spanned<out T>(
     open val node: T,
     open val span: Span,

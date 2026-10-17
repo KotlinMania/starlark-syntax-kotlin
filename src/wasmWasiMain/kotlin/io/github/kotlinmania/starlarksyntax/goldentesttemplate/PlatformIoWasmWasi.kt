@@ -27,7 +27,7 @@ import kotlin.wasm.unsafe.UnsafeWasmMemoryApi
 import kotlin.wasm.unsafe.withScopedMemoryAllocator
 
 @WasmImport("wasi_snapshot_preview1", "path_open")
-internal external fun path_open(
+internal external fun wasiPathOpen(
     fd: Int,
     dirflags: Int,
     pathPtr: Int,
@@ -40,7 +40,7 @@ internal external fun path_open(
 ): Int
 
 @WasmImport("wasi_snapshot_preview1", "fd_read")
-internal external fun fd_read(
+internal external fun wasiFdRead(
     fd: Int,
     iovecsPtr: Int,
     iovecsLen: Int,
@@ -48,7 +48,7 @@ internal external fun fd_read(
 ): Int
 
 @WasmImport("wasi_snapshot_preview1", "fd_write")
-internal external fun fd_write(
+internal external fun wasiFdWrite(
     fd: Int,
     iovecsPtr: Int,
     iovecsLen: Int,
@@ -56,13 +56,13 @@ internal external fun fd_write(
 ): Int
 
 @WasmImport("wasi_snapshot_preview1", "fd_close")
-internal external fun fd_close(fd: Int): Int
+internal external fun wasiFdClose(fd: Int): Int
 
 @WasmImport("wasi_snapshot_preview1", "environ_sizes_get")
-internal external fun environ_sizes_get(environCountPtr: Int, environBufSizePtr: Int): Int
+internal external fun wasiEnvironSizesGet(environCountPtr: Int, environBufSizePtr: Int): Int
 
 @WasmImport("wasi_snapshot_preview1", "environ_get")
-internal external fun environ_get(environPtr: Int, environBufPtr: Int): Int
+internal external fun wasiEnvironGet(environPtr: Int, environBufPtr: Int): Int
 
 @OptIn(UnsafeWasmMemoryApi::class)
 private fun Pointer.loadInt(offset: Int): Int = (this + offset).loadInt()
@@ -91,7 +91,7 @@ internal actual fun platformGetEnv(name: String): String? {
     return withScopedMemoryAllocator { allocator ->
         val countPtr = allocator.allocateInt()
         val sizePtr = allocator.allocateInt()
-        val sizesRes = environ_sizes_get(countPtr.address.toInt(), sizePtr.address.toInt())
+        val sizesRes = wasiEnvironSizesGet(countPtr.address.toInt(), sizePtr.address.toInt())
         if (sizesRes != 0) return@withScopedMemoryAllocator null
 
         val count = countPtr.loadInt()
@@ -101,7 +101,7 @@ internal actual fun platformGetEnv(name: String): String? {
         val ptrsBuffer = allocator.allocate(count * 4)
         val dataBuffer = allocator.allocate(size)
 
-        val getRes = environ_get(ptrsBuffer.address.toInt(), dataBuffer.address.toInt())
+        val getRes = wasiEnvironGet(ptrsBuffer.address.toInt(), dataBuffer.address.toInt())
         if (getRes != 0) return@withScopedMemoryAllocator null
 
         for (i in 0 until count) {
@@ -142,7 +142,7 @@ internal actual fun platformReadUtf8File(path: String): String {
         }
 
         val openRes =
-            path_open(
+            wasiPathOpen(
                 fd = 3,
                 dirflags = 1,
                 pathPtr = pathBuffer.address.toInt(),
@@ -154,7 +154,7 @@ internal actual fun platformReadUtf8File(path: String): String {
                 resultPtr = fdPtr.address.toInt(),
             )
         if (openRes != 0) {
-            error("Failed to open file $path via WASI path_open, errno: $openRes")
+            error("Failed to open file $path via WASI wasiPathOpen, errno: $openRes")
         }
         val fileFd = fdPtr.loadInt()
 
@@ -169,14 +169,14 @@ internal actual fun platformReadUtf8File(path: String): String {
 
             while (true) {
                 val readRes =
-                    fd_read(
+                    wasiFdRead(
                         fd = fileFd,
                         iovecsPtr = iovec.address.toInt(),
                         iovecsLen = 1,
                         resultPtr = bytesReadPtr.address.toInt(),
                     )
                 if (readRes != 0) {
-                    error("Failed to read file $path via WASI fd_read, errno: $readRes")
+                    error("Failed to read file $path via WASI wasiFdRead, errno: $readRes")
                 }
                 val readBytes = bytesReadPtr.loadInt()
                 if (readBytes == 0) break
@@ -187,7 +187,7 @@ internal actual fun platformReadUtf8File(path: String): String {
             }
             output.toByteArray().decodeToString()
         } finally {
-            fd_close(fileFd)
+            wasiFdClose(fileFd)
         }
     }
 }
@@ -204,7 +204,7 @@ internal actual fun platformWriteUtf8File(path: String, content: String) {
         }
 
         val openRes =
-            path_open(
+            wasiPathOpen(
                 fd = 3,
                 dirflags = 1,
                 pathPtr = pathBuffer.address.toInt(),
@@ -216,7 +216,7 @@ internal actual fun platformWriteUtf8File(path: String, content: String) {
                 resultPtr = fdPtr.address.toInt(),
             )
         if (openRes != 0) {
-            error("Failed to open file $path for writing via WASI path_open, errno: $openRes")
+            error("Failed to open file $path for writing via WASI wasiPathOpen, errno: $openRes")
         }
         val fileFd = fdPtr.loadInt()
 
@@ -233,17 +233,17 @@ internal actual fun platformWriteUtf8File(path: String, content: String) {
 
             val bytesWrittenPtr = allocator.allocateInt()
             val writeRes =
-                fd_write(
+                wasiFdWrite(
                     fd = fileFd,
                     iovecsPtr = iovec.address.toInt(),
                     iovecsLen = 1,
                     resultPtr = bytesWrittenPtr.address.toInt(),
                 )
             if (writeRes != 0) {
-                error("Failed to write to file $path via WASI fd_write, errno: $writeRes")
+                error("Failed to write to file $path via WASI wasiFdWrite, errno: $writeRes")
             }
         } finally {
-            fd_close(fileFd)
+            wasiFdClose(fileFd)
         }
     }
 }

@@ -87,7 +87,7 @@ class EvalException internal constructor(
             return d?.resolve() ?: error("Expected error with diagnostic, got $err")
         }
 
-        fun from(e: WithDiagnostic<Error>): EvalException {
+        internal fun from(e: WithDiagnostic<Error>): EvalException {
             val into = e.intoInner()
             return EvalException(into)
         }

@@ -8,9 +8,9 @@ Based on AST analysis, here are the concrete next steps.
 - **Function parity:** 335/470 matched (target 524) — 71.3%
 - **Class/type parity:** 127/142 matched (target 325) — 89.4%
 - **Combined symbol parity:** 462/612 matched (target 849) — 75.5%
-- **Average inline-code cosine:** 0.34 (function body across 32 matched files)
+- **Average inline-code cosine:** 0.36 (function body across 32 matched files)
 - **Average documentation cosine:** 0.75 (doc text across 32 matched files)
-- **Cheat-zeroed Files:** 3
+- **Cheat-zeroed Files:** 0
 - **Critical Issues:** 28 files with <0.60 function similarity
 - **Needs Review:** 1 files with 0.60-0.84 function similarity
 - **Excellent:** 3 files with >=0.85 function similarity
@@ -75,10 +75,10 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 4. fast_string
 
-- **Target:** `faststring.FastString [ZERO]`
-- **Similarity:** 0.00
+- **Target:** `faststring.FastString`
+- **Similarity:** 0.26
 - **Dependents:** 3
-- **Priority Score:** 3042210.0
+- **Priority Score:** 3042207.5
 - **Functions:** 16/19 matched (target 21)
 - **Missing functions:** `sub`, `add`, `none_ors`
 - **Types:** 2/3 matched
@@ -98,10 +98,10 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 6. golden_test_template
 
-- **Target:** `goldentesttemplate.PlatformIoJs [ZERO]`
-- **Similarity:** 0.00
+- **Target:** `goldentesttemplate.PlatformIoJs`
+- **Similarity:** 0.11
 - **Dependents:** 3
-- **Priority Score:** 3000210.0
+- **Priority Score:** 3000209.0
 - **Functions:** 2/2 matched (target 37)
 - **Missing functions:** _none_
 - **Types:** 0/0 matched
@@ -120,10 +120,10 @@ Every matched file is listed below with function and type symbol parity.
 
 ### 8. lexer
 
-- **Target:** `lexer.Lexer [ZERO]`
-- **Similarity:** 0.00
+- **Target:** `lexer.Lexer`
+- **Similarity:** 0.22
 - **Dependents:** 2
-- **Priority Score:** 2063010.0
+- **Priority Score:** 2063007.8
 - **Functions:** 17/22 matched (target 58)
 - **Missing functions:** `from`, `new`, `unlex`, `fmt`, `next`
 - **Types:** 7/8 matched (target 102)

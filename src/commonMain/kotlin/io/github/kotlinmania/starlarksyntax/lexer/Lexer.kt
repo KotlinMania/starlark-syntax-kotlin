@@ -271,8 +271,7 @@ internal class Lexer(
                 }
             }
         }
-        // Reject overlong/overflowing escapes: Rust converts via `char::from_u32` which fails
-        // for values outside the Unicode scalar value range.
+        // Reject overlong/overflowing escapes outside the Unicode scalar value range.
         if (value > 0x10ffff) return null
         return value.toInt()
     }
@@ -329,7 +328,7 @@ internal class Lexer(
             }
 
             'x'.code -> {
-                // Rust uses `char::from_u32` for these escapes, so they must be valid Unicode scalar values.
+                // Hex escapes must be valid Unicode scalar values.
                 val ch = escapeChar(it, 2, 2, 16) ?: return false
                 res.appendCodePoint(ch)
                 true
