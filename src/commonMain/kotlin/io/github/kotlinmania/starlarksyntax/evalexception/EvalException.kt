@@ -23,8 +23,8 @@ import io.github.kotlinmania.starlarksyntax.codemap.CodeMap
 import io.github.kotlinmania.starlarksyntax.codemap.ResolvedFileSpan
 import io.github.kotlinmania.starlarksyntax.codemap.Span
 import io.github.kotlinmania.starlarksyntax.diagnostic.WithDiagnostic
-import io.github.kotlinmania.starlarksyntax.error.Error
 import io.github.kotlinmania.starlarksyntax.error.ErrorKind
+import io.github.kotlinmania.starlarksyntax.error.StarlarkError
 import io.github.kotlinmania.starlarksyntax.error.internalError
 
 /** Error with location. */
@@ -32,10 +32,10 @@ class EvalException internal constructor(
     /**
      * Error is guaranteed to have a diagnostic.
      */
-    private val error: Error,
+    private val error: StarlarkError,
 ) : Exception(error.toString()) {
     companion object {
-        fun new(error: Error, span: Span, codemap: CodeMap): EvalException {
+        fun new(error: StarlarkError, span: Span, codemap: CodeMap): EvalException {
             error.setSpan(span, codemap)
             return EvalException(error)
         }
@@ -45,10 +45,10 @@ class EvalException internal constructor(
          * Sometimes we need to construct `EvalException`, but span is not available,
          * so this function can be used. Avoid this function if possible.
          */
-        fun newUnknownSpan(error: Error): EvalException = EvalException(error)
+        fun newUnknownSpan(error: StarlarkError): EvalException = EvalException(error)
 
         fun newWithCallstack(
-            error: Error,
+            error: StarlarkError,
             span: Span,
             codemap: CodeMap,
             callStack: () -> CallStack,
@@ -60,7 +60,7 @@ class EvalException internal constructor(
 
         fun newAnyhow(error: Throwable, span: Span, codemap: CodeMap): EvalException =
             EvalException(
-                Error.newSpanned(
+                StarlarkError.newSpanned(
                     ErrorKind.Other(error),
                     span,
                     codemap,
@@ -75,25 +75,25 @@ class EvalException internal constructor(
             codemap: CodeMap,
         ): EvalException =
             EvalException(
-                Error.newSpanned(
+                StarlarkError.newSpanned(
                     ErrorKind.Parser(Exception(error.toString())),
                     span,
                     codemap,
                 ),
             )
 
-        fun testingLoc(err: Error): ResolvedFileSpan {
+        fun testingLoc(err: StarlarkError): ResolvedFileSpan {
             val d = err.span()
             return d?.resolve() ?: error("Expected error with diagnostic, got $err")
         }
 
-        internal fun from(e: WithDiagnostic<Error>): EvalException {
+        internal fun from(e: WithDiagnostic<StarlarkError>): EvalException {
             val into = e.intoInner()
             return EvalException(into)
         }
     }
 
-    fun intoError(): Error = error
+    fun intoError(): StarlarkError = error
 
     fun intoInternalError(): EvalException = EvalException(error.intoInternalError())
 }

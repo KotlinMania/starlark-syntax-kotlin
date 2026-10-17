@@ -30,7 +30,7 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.parseerror.ParseError
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 
-internal typealias Lexeme = Result<Triple<Int, Token, Int>, EvalException>
+internal typealias Lexeme = ParserResult<Triple<Int, Token, Int>, EvalException>
 
 /**
  * Parse a Starlark module from a token stream.
@@ -43,15 +43,15 @@ internal fun interface Parser {
         state: ParserState,
         tokens: Iterator<Lexeme>,
         eofPos: Int,
-    ): Result<AstStmt, ParseError>
+    ): ParserResult<AstStmt, ParseError>
 }
 
-internal sealed class Result<out T, out E> {
+internal sealed class ParserResult<out T, out E> {
     data class Ok<T>(
         val value: T,
-    ) : Result<T, Nothing>()
+    ) : ParserResult<T, Nothing>()
 
     data class Err<E>(
         val error: E,
-    ) : Result<Nothing, E>()
+    ) : ParserResult<Nothing, E>()
 }

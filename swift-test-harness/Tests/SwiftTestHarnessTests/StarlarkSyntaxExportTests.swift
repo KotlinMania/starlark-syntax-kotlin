@@ -6,5 +6,7 @@ final class StarlarkSyntaxExportTests: XCTestCase {
         let cm = codemap.CodeMap.Companion.shared.new(filename: "test.bzl", source: "x = 1\ny = 2\n")
         XCTAssertEqual(cm.filename(), "test.bzl")
         XCTAssertEqual(cm.fullSpan().len(), 12)
+        let err: error.StarlarkError = error.internalError(message: "boom")
+        XCTAssertFalse(err.hasDiagnostic())
     }
 }

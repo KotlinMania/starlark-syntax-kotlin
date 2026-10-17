@@ -50,9 +50,9 @@ import io.github.kotlinmania.starlarksyntax.syntax.astload.AstLoad
 import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressions
 import io.github.kotlinmania.starlarksyntax.syntax.lintsuppressions.LintSuppressionsBuilder
 import io.github.kotlinmania.starlarksyntax.syntax.parser.LalrpopParser
+import io.github.kotlinmania.starlarksyntax.syntax.parser.ParserResult
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.starlarksyntax.syntax.validate.validateModule
-import io.github.kotlinmania.starlarksyntax.syntax.parser.Result as ParserResult
 
 data class AstModuleParts(
     val codemap: CodeMap,

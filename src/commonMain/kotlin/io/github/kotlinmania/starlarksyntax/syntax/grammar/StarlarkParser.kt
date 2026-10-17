@@ -25,7 +25,7 @@ import io.github.kotlinmania.starlarksyntax.syntax.ast.AstNoPayload
 import io.github.kotlinmania.starlarksyntax.syntax.ast.AstStmt
 import io.github.kotlinmania.starlarksyntax.syntax.ast.Stmt
 import io.github.kotlinmania.starlarksyntax.syntax.parser.Lexeme
-import io.github.kotlinmania.starlarksyntax.syntax.parser.Result
+import io.github.kotlinmania.starlarksyntax.syntax.parser.ParserResult
 import io.github.kotlinmania.starlarksyntax.syntax.state.ParserState
 import io.github.kotlinmania.lalrpoputil.ParseError as LuParseError
 import io.github.kotlinmania.starlarksyntax.codemap.Pos as Pos
@@ -155,7 +155,7 @@ internal class StarlarkParser {
     fun parse(
         state: ParserState,
         tokens: Iterator<Lexeme>,
-    ): Result<AstStmt, LuParseError<Int, Token, EvalException>> {
+    ): ParserResult<AstStmt, LuParseError<Int, Token, EvalException>> {
         val tokenIterator =
             object : Iterator<Triple<Int, Token, Int>> {
                 override fun hasNext(): Boolean = tokens.hasNext()
@@ -163,15 +163,15 @@ internal class StarlarkParser {
                 override fun next(): Triple<Int, Token, Int> {
                     if (!hasNext()) throw NoSuchElementException()
                     return when (val token = tokens.next()) {
-                        is Result.Ok -> token.value
-                        is Result.Err -> throw token.error
+                        is ParserResult.Ok -> token.value
+                        is ParserResult.Err -> throw token.error
                     }
                 }
             }
         return try {
-            Result.Ok(Parser.parse(state, tokenIterator))
+            ParserResult.Ok(Parser.parse(state, tokenIterator))
         } catch (e: EvalException) {
-            Result.Err(LuParseError.User<Int, Token, EvalException>(e))
+            ParserResult.Err(LuParseError.User<Int, Token, EvalException>(e))
         }
     }
 }
