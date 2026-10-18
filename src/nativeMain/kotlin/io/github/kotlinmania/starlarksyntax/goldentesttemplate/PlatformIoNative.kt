@@ -45,8 +45,8 @@ internal actual fun platformReadUtf8File(path: String): String {
     val resolved =
         if (!SystemFileSystem.exists(p) && !path.startsWith("/")) {
             val cleanPath = path.removePrefix("./")
-            val candidate = Path("/Volumes/stuff/Projects/kotlinmania/starlark-syntax-kotlin/$cleanPath")
-            if (SystemFileSystem.exists(candidate)) candidate else p
+            val candidate = platformGetEnv("CARGO_MANIFEST_DIR")?.let { Path("$it/$cleanPath") }
+            if (candidate != null && SystemFileSystem.exists(candidate)) candidate else p
         } else {
             p
         }
