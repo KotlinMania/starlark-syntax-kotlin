@@ -461,8 +461,6 @@ class Load(
     val payload: Any? = null,
 )
 
-typealias AstLoadArg = LoadArg
-
 class ForClause(
     val variable: AstAssignTarget,
     val over: AstExpr,
