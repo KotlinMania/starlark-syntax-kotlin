@@ -20,7 +20,7 @@ This is an **in-progress port**. The goal is feature parity with the upstream Ru
 
 ```kotlin
 dependencies {
-    implementation("io.github.kotlinmania:starlark-syntax-kotlin:0.1.1")
+    implementation("io.github.kotlinmania:starlark-syntax-kotlin:0.2.0")
 }
 ```
 

@@ -116,34 +116,6 @@ class AstComma(
 ) : Spanned<Comma>(node, span)
 
 // Backward compatibility typealiases
-typealias ArgumentP<P> = Argument
-typealias ParameterP<P> = Parameter
-typealias LambdaP<P> = Lambda
-typealias CallArgsP<P> = CallArgs
-typealias ExprP<P> = Expr
-typealias TypeExprP<P> = TypeExpr
-typealias AssignTargetP<P> = AssignTarget
-typealias AssignP<P> = Assign
-typealias AssignIdentP<P> = AssignIdent
-typealias IdentP<P> = Ident
-typealias LoadArgP<P> = LoadArg
-typealias LoadP<P> = Load
-typealias ForClauseP<P> = ForClause
-typealias ClauseP<P> = Clause
-typealias DefP<P> = Def
-typealias ForP<P> = For
-typealias FStringP<P> = FString
-typealias StmtP<P> = Stmt
-
-typealias AstExprP<P> = AstExpr
-typealias AstTypeExprP<P> = AstTypeExpr
-typealias AstAssignTargetP<P> = AstAssignTarget
-typealias AstAssignIdentP<P> = AstAssignIdent
-typealias AstIdentP<P> = AstIdent
-typealias AstArgumentP<P> = AstArgument
-typealias AstParameterP<P> = AstParameter
-typealias AstStmtP<P> = AstStmt
-typealias AstFStringP<P> = AstFString
 
 // A trait rather than a function to allow .ast() chaining in the parser.
 
@@ -488,8 +460,6 @@ class Load(
     val args: kotlin.collections.List<LoadArg>,
     val payload: Any? = null,
 )
-
-typealias AstLoadArg = LoadArg
 
 class ForClause(
     val variable: AstAssignTarget,
